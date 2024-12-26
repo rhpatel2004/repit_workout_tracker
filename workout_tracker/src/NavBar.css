@@ -1,0 +1,26 @@
+nav{
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--nav-color);
+    height: 25vw;
+    width: 100vw;
+  }
+  .navLink{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    text-decoration: none;
+    width: 25vw;
+    border-radius: 50%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .navLink :active{
+    background-color: #aec3b034;
+  
+  }
+  .active{
+    background-color: #aec3b029;
+  }

@@ -1,0 +1,26 @@
+.detailHead{
+    font-weight: 500;
+    margin-bottom: 2vw;
+}
+.kg{
+    font-weight: 300;
+}
+.horizon{
+    display: flex;
+    /* justify-content: space-around; */
+    align-items: center;
+    margin: 1vw 0;
+    gap: 2vw;
+}
+.detailBox input{
+    width: 14vw;
+    height: 10vw;
+    margin: 0;
+    background-color: #a1aea229;
+    border: none;
+    border-radius: 5vw;
+    padding-left: 4vw;
+    color: #7e7e7e;
+    font-weight: 550;
+    font-size: 20px;
+}

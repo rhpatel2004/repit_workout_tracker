@@ -1,0 +1,198 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Kanit", sans-serif;
+  color: var(--text-color);
+}
+:root {
+  --darkBlue: #124559;
+  --lightBlue: #598392;
+  --background-color: white; /* Light mode background */
+  --text-color: #124559;
+  --nav-color:  #EFF6E0;     /* Light mode text color */
+}
+
+[data-theme='dark'] {
+  --background-color: #0c2d3a; /* Dark mode background */
+  --text-color: white;    
+  --nav-color:  #1c3945;
+  --darkBlue:white;
+  --lightBlue:#d1f2ff;
+}
+svg{
+  fill: var(--darkBlue);
+}
+.tickText{
+  fill: var(--background-color);
+}
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+
+
+@media(max-width:600px) {
+  .DesktopHead {
+    display: none;
+  }
+}
+
+@media(min-width:600px) {
+  .App {
+    display: none;
+  }
+
+  .DesktopHead {
+    display: flex;
+  }
+
+
+}
+
+button:active {
+
+  transition: 0.2s;
+  opacity: 0.9;
+  transform: scale(1.01);
+}
+
+.search-btn {
+  margin: 0;
+}
+
+.cardSpace{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column-reverse;
+  
+  gap: 15px;
+}
+.page {
+  padding: 4vw;
+  width: 100vw;
+  height: calc(100vh - 25vw);
+  overflow: auto;
+  color: var(--text-color);
+}
+.subPage{
+    padding: 4vw;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;  
+}
+
+.heading {
+  font-size: 36px;
+  font-weight: 400;
+}
+
+.text {
+  font-size: 16px;
+  letter-spacing: 2px;
+  color: var(--lightBlue);
+  font-weight: 400;
+}
+
+.topButton {
+  border: none;
+  height: 50px;
+  width: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+}
+
+.topButton:active {
+  background-color: #aec3b029;
+}
+
+.workoutCard h4 {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.download {
+  padding: 10px 40px;
+  background-color: #124559;
+  color: white;
+  border: none;
+  font-size: 18px;
+  border-radius: 20px;
+  margin-top: 5vw;
+}
+
+.column {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10vw;
+}
+
+.column1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 4vw;
+}
+
+.tickButton {
+  background-color: #124559;
+  height: 70px;
+  width: 70px;
+  border: none;
+  border-radius: 50%;
+  padding-top: 5px;
+  position: fixed;
+  bottom: 15vh;
+  right: 7vw;
+}
+
+.subTickButton{
+  background-color: #124559;
+  height: 70px;
+  width: 70px;
+  border: none;
+  border-radius: 50%;
+  padding-top: 5px;
+  position: fixed;
+  bottom: 7vw;
+  right: 7vw;
+}
+.extra{
+  display: flex;
+  justify-content: start;
+  gap: 5vw;
+  margin-bottom: 5vw;
+}
+.exerciseCard h3 {
+  margin-top: 2.5vh;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.exerciseCard p {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+select {
+  padding: 10px 20px;
+  margin-right: 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+}
+
+.option {
+  font-size: 12px;
+
+
+}
+
+.selected {
+  border-radius: 10px;
+}

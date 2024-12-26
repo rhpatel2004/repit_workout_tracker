@@ -1,0 +1,42 @@
+.addNewWorkout{
+    width: 92vw;
+    height: 7vh;
+    border: none;
+    border-radius: 2vh;
+    background-color: #124559;
+    color: white;
+    margin: 2vh 0;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+.plus{
+    border: none;
+    height: 30px;
+    width: 30px; 
+    margin-right: 5vw;
+    background-color: transparent;
+    border-radius: 50%;
+}
+.plus:active{
+    background-color: #aec3b029 ;
+}
+
+.workoutCard{
+    border: 1.5px solid #598392;
+    border-radius: 5vw;
+    padding: 20px 0px 20px 30px;
+    margin: 20px 0;
+}
+.workoutCard ul{
+    list-style-type: none;
+}
+.workoutCard h3{
+    font-size: 18;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+.workoutCard ul li,.workoutCard p{
+    font-size: 16px;
+    font-weight: 400;
+}
