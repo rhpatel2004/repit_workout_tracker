@@ -2,6 +2,8 @@ import "./login.css";
 import { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import ForgotPassword from './ForgotPassword';
+
 
 function Login() {
     const [email, setEmail] = useState();
