@@ -10,7 +10,6 @@ import DefaultExercise from "./navPage/DefaultExercise"
 import MakeWorkout from "./navPage/MakeWorkout"
 import Login from "./login"
 import Register from "./register"
-import ResetPassword from "./ResetPassword"
 function App() {
 
   return (
@@ -26,7 +25,6 @@ function App() {
         <Route path="/selectExercises" element={<SelectExercises />} />
         <Route path="/defaultExercise" element={<DefaultExercise />} />
         <Route path="/makeWorkout" element={<MakeWorkout />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
 
 
 
