@@ -11,7 +11,7 @@ function ProfilePage() {
 
     useEffect(() => {
         if (userId) {
-            axios.get(`http://localhost:3001/getUser/${userId}`)
+            axios.get(`http://localhost:3001/api/getUser/${userId}`)
                 .then(response => {
                     setUserData(response.data); 
                 })
@@ -41,19 +41,19 @@ function ProfilePage() {
             </div>
             <br />
             <p>Username</p>
-            <input type="text" value={userData.name || ""} readOnly /> 
+            <input className="input" type="text" value={userData.name || ""} readOnly /> 
 
             <p>Email</p>
-            <input type="text" value={userData.email || ""} readOnly /> 
+            <input className="input" type="text" value={userData.email || ""} readOnly /> 
 
             <div className="column">
                 <div>
                     <p>Weight</p>
-                    <input type="number" value={userData.weight || 60} readOnly /> 
+                    <input className="input" type="number" value={userData.weight || 60} readOnly /> 
                 </div>
                 <div>
                     <p>Height</p>
-                    <input type="text" value={userData.height || "170cm"} readOnly /> 
+                    <input className="input" type="text" value={userData.height || "170cm"} readOnly /> 
                 </div>
             </div>
         </div>

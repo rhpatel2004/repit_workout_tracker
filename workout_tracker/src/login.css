@@ -2,7 +2,7 @@
     display: flex;
     justify-content: flex-start;
     align-items:center;
-    padding: 15px;
+    padding: 7px;
     gap: 5px;
 }
 
@@ -30,84 +30,5 @@ form h3{
 form a{
     font-weight: 600;
 }
-.forgot-link {
-    color: #007bff;
-    cursor: pointer;
-    text-align: center;
-    margin-top: 10px;
-  }
-  
-  .forgot-link:hover {
-    text-decoration: underline;
-  }
-  
-  .forgot-password-container {
-    margin-top: 20px;
-  }
-  
-  .forgot-password-form .input-group {
-    margin-bottom: 15px;
-  }
-  
-  .forgot-password-form .auth-btn {
-    margin-top: 10px;
-  }
-  .auth-container {
-    width: 300px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-  }
-  
-  h2 {
-    text-align: center;
-  }
-  
-  .auth-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .input-group {
-    margin-bottom: 15px;
-  }
-  
-  .input-group label {
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .input-group input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .auth-btn {
-    padding: 10px;
-    border: none;
-    background-color: #28a745;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .auth-btn:hover {
-    background-color: #218838;
-  }
-  
-  .error-message {
-    color: red;
-    text-align: center;
-    margin-top: 10px;
-  }
-  
-  .success-message {
-    color: green;
-    text-align: center;
-    margin-top: 10px;
-  }
+
     

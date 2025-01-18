@@ -5,27 +5,34 @@
   font-family: "Kanit", sans-serif;
   color: var(--text-color);
 }
+
 :root {
   --darkBlue: #124559;
   --lightBlue: #598392;
-  --background-color: white; /* Light mode background */
+  --background-color: white;
+  /* Light mode background */
   --text-color: #124559;
-  --nav-color:  #EFF6E0;     /* Light mode text color */
+  --nav-color: #EFF6E0;
+  /* Light mode text color */
 }
 
 [data-theme='dark'] {
-  --background-color: #0c2d3a; /* Dark mode background */
-  --text-color: white;    
-  --nav-color:  #1c3945;
-  --darkBlue:white;
-  --lightBlue:#d1f2ff;
+  --background-color: #0c2d3a;
+  /* Dark mode background */
+  --text-color: white;
+  --nav-color: #1c3945;
+  --darkBlue: white;
+  --lightBlue: #d1f2ff;
 }
-svg{
+
+svg {
   fill: var(--darkBlue);
 }
-.tickText{
+
+.tickText {
   fill: var(--background-color);
 }
+
 body {
   background-color: var(--background-color);
   color: var(--text-color);
@@ -51,6 +58,26 @@ body {
 
 }
 
+select {
+  outline: none;
+  cursor: pointer;  
+  border: 2px solid #124559;
+  border-radius: 15px;
+  width: 150px;
+  height: 50px;
+}
+select option{
+  font-size: 16px;
+  padding-left: 0px;
+
+}
+
+select:focus {
+  outline: 1.5px solid #598392;
+
+}
+
+
 button:active {
 
   transition: 0.2s;
@@ -62,13 +89,14 @@ button:active {
   margin: 0;
 }
 
-.cardSpace{
+.cardSpace {
   margin-top: 20px;
   display: flex;
   flex-direction: column-reverse;
-  
+
   gap: 15px;
 }
+
 .page {
   padding: 4vw;
   width: 100vw;
@@ -76,11 +104,12 @@ button:active {
   overflow: auto;
   color: var(--text-color);
 }
-.subPage{
-    padding: 4vw;
-    width: 100vw;
-    height: 100vh;
-    overflow: auto;  
+
+.subPage {
+  padding: 4vw;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
 }
 
 .heading {
@@ -150,7 +179,7 @@ button:active {
   right: 7vw;
 }
 
-.subTickButton{
+.subTickButton {
   background-color: #124559;
   height: 70px;
   width: 70px;
@@ -161,12 +190,14 @@ button:active {
   bottom: 7vw;
   right: 7vw;
 }
-.extra{
+
+.extra {
   display: flex;
   justify-content: start;
   gap: 5vw;
   margin-bottom: 5vw;
 }
+
 .exerciseCard h3 {
   margin-top: 2.5vh;
   font-size: 16px;
@@ -195,4 +226,17 @@ select {
 
 .selected {
   border-radius: 10px;
+}
+input{
+  width: 100%;
+  height: 5vh;
+  border: 1.2px solid #598392;
+  border-radius: 2vh;
+  margin-bottom: 2vh;
+  padding-left: 3vw;
+  font-size: 16px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  letter-spacing: 1px;
+  outline: none;
 }

@@ -10,7 +10,7 @@ function HistoryPage() {
     useEffect(() => {
         if (userId) {
             axios
-                .get(`http://localhost:3001/getWorkouts/${userId}`)
+                .get(`http://localhost:3001/api/getWorkouts/${userId}`)
                 .then(response => {
                     setWorkouts(response.data);
                 })
@@ -27,7 +27,7 @@ function HistoryPage() {
         );
 
         axios
-            .delete(`http://localhost:3001/deleteWorkout/${workoutId}`)
+            .delete(`http://localhost:3001/api/deleteWorkout/${workoutId}`)
             .then(response => {
                 console.log(response.data.message);
             })

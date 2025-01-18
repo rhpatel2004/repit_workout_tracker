@@ -22,7 +22,7 @@ function WorkoutPage() {
             if (!userId) return;
             try {
                 const response = await axios.get(
-                    `http://localhost:3001/getDefaultWorkouts/${userId}`
+                    `http://localhost:3001/api/getDefaultWorkouts/${userId}`
                 );
                 setDefaultWorkouts(response.data);
             } catch (error) {
@@ -50,7 +50,7 @@ function WorkoutPage() {
 
         // Call API to delete the workout
         axios
-            .delete(`http://localhost:3001/deleteDefaultWorkout/${workoutId}`)
+            .delete(`http://localhost:3001/api/deleteDefaultWorkout/${workoutId}`)
             .then(response => {
                 console.log(response.data.message); // Log success message
             })

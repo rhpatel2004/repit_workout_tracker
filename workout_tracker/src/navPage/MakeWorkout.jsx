@@ -49,7 +49,7 @@ function MakeWorkout() {
         };
 
         try {
-            const response = await fetch("http://localhost:3001/saveWorkout", {
+            const response = await fetch("http://localhost:3001/api/saveWorkout", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

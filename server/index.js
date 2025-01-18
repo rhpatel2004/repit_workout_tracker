@@ -4,47 +4,85 @@ const cors = require("cors");
 const User = require("./models/user");
 const Workout = require("./models/workout");
 const DefaultWorkout = require('./models/default');
+const Exercise = require('./models/Exercise');
+const bcrypt = require('bcrypt');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+// Create the router instance here
+const router = express.Router();
 
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/GymRats", { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("MongoDB connected"))
     .catch(err => console.error("MongoDB connection error:", err));
 
-// Import router
-const router = express.Router();
-app.use(router); // Register the router here
-
-
+// Use '/api' as the base URL for your API routes
+app.use('/api', router);
 
 // Route to register a new user
-app.post("/register", (req, res) => {
-    const { name, email, password } = req.body;
-    User.create({ name, email, password })
-        .then(user => res.json(user))
-        .catch(err => res.status(400).json(err));
+router.post("/register", async (req, res) => {
+    const { firstName, lastName, email, password, phoneNumber, role, trainerId } = req.body;
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await User.create({
+            firstName,
+            lastName,
+            email,
+            password: hashedPassword, 
+            phoneNumber,
+            role,
+            trainerId: role === 'user' ? (trainerId || null) : null, // Handle null trainerId
+        });
+        res.status(201).json(user);
+    } catch (err) {
+        console.error("Error during user registration:", err);
+        res.status(400).json({ message: "Error registering user", error: err.message });
+    }
 });
 
 // Route for login
-router.post("/", (req, res) => {
+router.post("/login", async (req, res) => {
     const { email, password } = req.body;
-    User.findOne({ email })
-        .then(user => {
-            if (!user) return res.status(404).json("User not found");
-            if (user.password !== password) return res.status(400).json("Incorrect password");
-            res.json({ message: "Success", userId: user._id });
-        })
-        .catch(err => res.status(500).json(err));
+  
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      // Compare the provided password with the stored hashed password
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: "Incorrect password" });
+      }
+  
+      // If login is successful, send back user ID and role
+      res.status(200).json({ message: "Success", userId: user._id, role: user.role });
+    } catch (err) {
+      console.error("Error during login:", err);
+      res.status(500).json({ message: "Login error", error: err.message });
+    }
+});
+
+// Route to get all trainers
+router.get('/trainers', async (req, res) => {
+    try {
+        const trainers = await User.find({ role: 'trainer' }, '_id firstName lastName');
+        res.status(200).json(trainers);
+    } catch (err) {
+        console.error("Error fetching trainers:", err);
+        res.status(500).json({ message: "Error fetching trainers", err });
+    }
 });
 
 // Route to save workout
 router.post("/saveWorkout", (req, res) => {
     const { userId, workoutName, workoutNote, date, exercises } = req.body;
 
-    // Check if required fields are missing
     if (!userId || !workoutName || !date || !exercises) {
         return res.status(400).json({ error: "Missing required fields" });
     }
@@ -110,7 +148,7 @@ router.delete("/deleteWorkout/:id", (req, res) => {
 // Route to delete a workout by ID
 router.delete("/deleteDefaultWorkout/:id", (req, res) => {
     const { id } = req.params;
-    console.log("ID received for deletion:", id); // Log the ID to verify it
+    console.log("ID received for deletion:", id);
 
     DefaultWorkout.findByIdAndDelete(id)
         .then(result => {
@@ -126,13 +164,11 @@ router.delete("/deleteDefaultWorkout/:id", (req, res) => {
         });
 });
 
-
-
 // Route for saving default workout
 router.post('/saveDefaultWorkout', async (req, res) => {
     try {
         const { userId, workoutName, exercises } = req.body;
-        console.log("Received data for saving default workout:", req.body); // Log incoming data
+        console.log("Received data for saving default workout:", req.body);
 
         const newWorkout = new DefaultWorkout({
             userId: userId,
@@ -143,7 +179,7 @@ router.post('/saveDefaultWorkout', async (req, res) => {
         await newWorkout.save();
         res.status(200).json({ message: 'Workout saved successfully' });
     } catch (error) {
-        console.error("Error saving workout:", error); // Log error details
+        console.error("Error saving workout:", error);
         res.status(400).json({ message: 'Error saving workout', error: error.message });
     }
 });
@@ -152,16 +188,41 @@ router.post('/saveDefaultWorkout', async (req, res) => {
 router.get("/getDefaultWorkouts/:userId", (req, res) => {
     const { userId } = req.params;
     DefaultWorkout.find({ userId })
-        .then(workouts => {
-            res.json(workouts);
-        })
+        .then(workouts => res.json(workouts))
         .catch(err => {
             console.error("Error fetching default workouts:", err);
             res.status(500).json({ message: "Error fetching default workouts", err });
         });
 });
 
+// Route to get exercises
+router.get('/exercises', async (req, res) => {
+    try {
+        const { muscleGroup, userId } = req.query;
+        let query = { isPublic: true };
+
+        if (muscleGroup && muscleGroup !== "All") {
+            query.muscleGroup = muscleGroup;
+        }
+
+        const publicExercises = await Exercise.find(query);
+
+        let userExercises = [];
+        if (userId) {
+            userExercises = await Exercise.find({ isPublic: false, userId: userId });
+        }
+
+        const exercises = [...publicExercises, ...userExercises];
+        console.log("Fetched exercises:", exercises);
+        res.status(200).json(exercises);
+    } catch (error) {
+        console.error('Error fetching exercises:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 // Start the server
-app.listen(3001, () => {
-    console.log("Server is running on port 3001");
+const PORT = 3001;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
