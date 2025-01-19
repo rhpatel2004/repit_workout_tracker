@@ -21,14 +21,16 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
-    }, // Hash passwords before saving!
+    },
     phoneNumber: {
         type: String,
         trim: true,
         // match: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
     },
     profilePictureUrl: {
-        type: String
+
+        type: String,
+        default: ""
     },
     role: {
         type: String,

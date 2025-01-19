@@ -97,23 +97,28 @@ router.post("/saveWorkout", (req, res) => {
         });
 });
 
-// Fetch user by ID
-router.get("/getUser/:userId", (req, res) => {
-    const { userId } = req.params;
-    User.findById(userId)
-        .then(user => {
-            if (!user) {
-                return res.status(404).json({ message: "User not found" });
-            }
-            const { password, ...userData } = user.toObject();
-            res.json(userData);
-        })
-        .catch(err => {
-            console.error("Error fetching user:", err);
-            res.status(500).json({ message: "Error fetching user data", err });
-        });
-});
+// index.js (Backend) - /api/getUser/:userId route
 
+router.get("/getUser/:userId", async (req, res) => {
+    const { userId } = req.params;
+  
+    try {
+      const user = await User.findById(userId).populate(
+        "trainerId",
+        "firstName lastName" // Populate the trainer's first and last name
+      );
+  
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      const { password, ...userData } = user.toObject();
+      res.status(200).json(userData);
+    } catch (err) {
+      console.error("Error fetching user:", err);
+      res.status(500).json({ message: "Error fetching user data", err });
+    }
+  });
 // Route to get workouts by userId
 router.get("/getWorkouts/:userId", (req, res) => {
     const { userId } = req.params;
@@ -194,7 +199,28 @@ router.get("/getDefaultWorkouts/:userId", (req, res) => {
             res.status(500).json({ message: "Error fetching default workouts", err });
         });
 });
-
+// Route to get a single exercise by ID
+router.get('/exercise/:id', async (req, res) => {
+    try {
+      const exerciseId = req.params.id;
+  
+      if (!mongoose.Types.ObjectId.isValid(exerciseId)) {
+        return res.status(400).json({ message: 'Invalid exercise ID' });
+      }
+  
+      const exercise = await Exercise.findById(exerciseId);
+  
+      if (!exercise) {
+        return res.status(404).json({ message: 'Exercise not found' });
+      }
+  
+      res.status(200).json(exercise);
+    } catch (error) {
+      console.error('Error fetching exercise:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+  
 // Route to get exercises
 router.get('/exercises', async (req, res) => {
     try {

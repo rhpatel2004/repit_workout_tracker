@@ -5,6 +5,13 @@ p{
     margin-bottom: 5px;
     color: var(--text-color);
 }
+.profile p{
+    
+    font-size: 16px;
+    color: var(--text-color);
+    letter-spacing: 1px;
+    
+}
 .input{
     width: 100%;
     height: 5vh;
@@ -16,5 +23,26 @@ p{
     color: var(--text-color);
     background-color: var(--background-color);
     letter-spacing: 1px;
-    outline: none;
+}
+.profileImage{
+    height: 30vw;
+    width: 30vw;
+}
+.center{
+    display: flex;
+    justify-content: center;
+
+}
+.profileBox{
+    margin:5vh 3vw 0vw 3vw;
+
+}
+.profileInfo{
+    max-width: 55vw;
+    margin: 1vh 0 1vh 0;
+}
+.logout{
+    background-color: #598392;
+    margin-top: 5vh;
+    height: 7vh;
 }

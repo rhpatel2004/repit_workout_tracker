@@ -1,9 +1,8 @@
-import "./Profile.css";
-import NavBar from "../NavBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import TrainerNav from "./TrainerNav";
 
-function ProfilePage() {
+function TrainerProfile() {
     const [userData, setUserData] = useState({});
     const [error, setError] = useState(null);
     const userId = localStorage.getItem("userId");
@@ -109,33 +108,16 @@ function ProfilePage() {
                             readOnly
                         />
                     </div>
-                    <div className="column1">
-                        {userData.trainerId ? (
-                            <p>Trainer</p>
-                        ) : (
-                            <p></p>
-                        )}
-                        {userData.trainerId ? (
-                            <input
-                                className="profileInfo"
-                                type="text"
-                                value={getTrainerFullName()}
-                                readOnly
-                            />
-                        ) : (
-                            <p></p>
-                        )}
-                    </div>
+                    
                 </div>
-
 
                 <button className="addNewWorkout logout" onClick={handleLogout}>
                     Log Out
                 </button>
             </div>
-            <NavBar />
+            <TrainerNav />
         </>
     );
 }
 
-export default ProfilePage;
+export default TrainerProfile;

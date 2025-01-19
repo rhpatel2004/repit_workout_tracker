@@ -10,7 +10,10 @@ import DefaultExercise from "./navPage/DefaultExercise"
 import MakeWorkout from "./navPage/MakeWorkout"
 import Login from "./login"
 import Register from "./register"
-import ResetPassword from "./ResetPassword"
+import Dashboard from "./trainerPage/Dashboard"
+import Leaderboard from "./trainerPage/Leaderboard"
+import Exercises from "./trainerPage/Exercises"
+import TrainerProfile from "./trainerPage/TrainerProfile"
 function App() {
 
   return (
@@ -26,8 +29,10 @@ function App() {
         <Route path="/selectExercises" element={<SelectExercises />} />
         <Route path="/defaultExercise" element={<DefaultExercise />} />
         <Route path="/makeWorkout" element={<MakeWorkout />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-
+        <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/trainerProfile" element={<TrainerProfile/>} />
+        <Route path="/leaderboard" element={<Leaderboard/>} />
+        <Route path="/exercises" element={<Exercises/>} />
 
 
       </Routes>
