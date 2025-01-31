@@ -1,30 +1,79 @@
 .workoutName {
-    font-size: 36px;
+    font-size: 30px;
     font-weight: 400;
     border: none;
     padding: 0;
     margin: 0;
-    width: 80vw;
+    width: 60vw;
 }
 .extra p{
     margin-bottom: 0;
 }
+.edit{
+    border: none;
+    background-color: white;
+}
 
 .picker{
     margin: 0;
-    width: 35vw;
+    width: 40vw;
     padding:20px;
+}
+.noteDiv{
+    margin: 5vw 0;
 }
 .notes{
     background-color: #a1aea229;
-    padding: 35px;
-    margin: 5vw 0;
+    padding: 10px 0 10px 20px ;
     color: rgb(96, 96, 96);
     font-size: 20px;
+    height: 60px;
     border: none;
+    border-radius: 5vw;
+    /* height: 10vw; */
+    width: 100%;
+    
+}
+.set-heading{
+    width: 15vw;
 }
 .beside {
     display: flex;
     align-items: center;
     gap: 10px;
+    margin-bottom: 5vw;
+}
+.column2{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4vw;
+  margin: 2vw 0;
+}
+.detailInp{
+    margin-bottom: 0;
+}
+.removeBtn{
+    border: none;
+    height: 30px;
+    width: 30px;
+    background-color: transparent;
+    border-radius: 50%;
+}
+.add-set-button{
+    border: none;
+    background-color: transparent;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+.saveBtn{
+    width: 92vw;
+    height: 7vh;
+    border: none;
+    border-radius: 2vh;
+    background-color: #124559;
+    color: white;
+    margin: 2vh 0;
+    font-size: 18px;
+    letter-spacing: 2px;
 }

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import "./MakeWorkout.css"
+import "./MakeWorkout.css";
 
 function SelectExercises() {
   const navigate = useNavigate();
@@ -10,7 +10,6 @@ function SelectExercises() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedExercises, setSelectedExercises] = useState([]);
-
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
@@ -35,8 +34,15 @@ function SelectExercises() {
         const response = await axios.get(
           `http://localhost:3001/api/exercises?muscleGroup=${selection}&userId=${userId}`
         );
-        setExercises(response.data);
+        // Check if response.data is an array before setting the state
+        if (Array.isArray(response.data)) {
+          setExercises(response.data);
+        } else {
+          console.error("API did not return an array:", response.data);
+          setError(new Error("Received data is not an array."));
+        }
       } catch (error) {
+        console.error("Error fetching exercises:", error); // Log the error to console
         setError(error);
       } finally {
         setLoading(false);
@@ -75,19 +81,13 @@ function SelectExercises() {
 
   return (
     <div className="subPage">
-      <button className="topButton" onClick={() => navigate("/workout")}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="30px"
-          viewBox="0 -960 960 960"
-          width="30px"
-          fill="#124559"
-        >
-          <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-        </svg>
-      </button>
 
-      <h1 className="heading">Add Exercise</h1>
+
+      <h1 className="heading">
+        <button className="topButton" onClick={() => navigate("/workout")}>
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#124559"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" /></svg>
+        </button>
+        Add Exercise</h1>
       <br />
 
       <div className="column">
@@ -106,18 +106,22 @@ function SelectExercises() {
 
       <div>
         {loading && <p>Loading exercises...</p>}
-        {error && <p>Error fetching exercises: {error.message}</p>}
+        {error && (
+          <p>
+            Error fetching exercises:{" "}
+            {error.response?.data?.message || error.message}
+          </p>
+        )}
         {!loading && !error && exercises.length === 0 && selection && (
           <p>No exercises found for the selected muscle group.</p>
         )}
         {!loading && !error && exercises.length > 0 && (
           <div>
-            {exercises.map((exercise, index) => (
+            {exercises.map((exercise) => (
               <div
-                key={index}
-                className={`exercise-card ${
-                  isSelected(exercise._id) ? "selected" : ""
-                }`}
+                key={exercise._id}
+                className={`exercise-card ${isSelected(exercise._id) ? "selected" : ""
+                  }`}
                 style={{
                   marginBottom: "2px",
                   padding: "15px",
@@ -146,16 +150,7 @@ function SelectExercises() {
           })
         }
       >
-        <svg
-          className="tickText"
-          xmlns="http://www.w3.org/2000/svg"
-          height="40px"
-          viewBox="0 -960 960 960"
-          width="40px"
-          fill="#EFF6E0"
-        >
-          <path d="M379.33-244 154-469.33 201.67-517l177.66 177.67 378.34-378.34L805.33-670l-426 426Z" />
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#ffffff"><path d="M379.33-244 154-469.33 201.67-517l177.66 177.67 378.34-378.34L805.33-670l-426 426Z" /></svg>
       </button>
     </div>
   );

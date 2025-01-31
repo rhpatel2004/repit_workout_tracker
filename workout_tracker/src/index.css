@@ -181,6 +181,7 @@ button:active {
 
 .subTickButton {
   background-color: #124559;
+  color: white;
   height: 70px;
   width: 70px;
   border: none;
@@ -189,6 +190,9 @@ button:active {
   position: fixed;
   bottom: 7vw;
   right: 7vw;
+}
+.subTickButton svg{
+  fill: #fff;
 }
 
 .extra {
