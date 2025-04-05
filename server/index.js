@@ -5,7 +5,7 @@ const cors = require("cors");
 const User = require("./models/user");
 const Workout = require("./models/completedWorkouts"); // Update the import path to completedWorkouts.js
 const DefaultWorkout = require('./models/default');
-const Exercise = require('./models/Exercise');
+const Exercise = require('./models/exercise');
 const WorkoutTemplate = require('./models/workoutTemplate'); // Import your WorkoutTemplate model
 const bcrypt = require('bcrypt');
 
