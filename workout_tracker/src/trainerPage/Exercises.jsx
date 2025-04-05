@@ -9,10 +9,13 @@ function Exercises() {
             <div className="page">
                 <h1 className="heading">Exercises</h1>
                 <br />
+                <br />
 
+                <br />
+                <h2 className="comingsoon">Not Available Yet</h2>
             </div>
 
-            <TrainerNav/>
+            <TrainerNav />
         </>
     );
 }

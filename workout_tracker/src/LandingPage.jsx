@@ -9,7 +9,7 @@ function LandingPage() {
   return (
     <div>
       {/* Navigation */}
-      <nav>
+      <nav className="navLandingPage">
         <div className="logo-container">
           <img src="/repit-logo.png" alt="Repit Logo" className="logo" />
         </div>

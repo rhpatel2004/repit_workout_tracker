@@ -29,7 +29,7 @@ function TrainerProfile() {
         localStorage.removeItem("userId");
         localStorage.removeItem("userRole");
         // Redirect to the login page or home page
-        window.location.href = "/"; // or use navigate("/") if you are using react-router-dom
+        window.location.href = "/login"; // or use navigate("/") if you are using react-router-dom
     };
     const getFullName = () => {
         if (userData.firstName && userData.lastName) {

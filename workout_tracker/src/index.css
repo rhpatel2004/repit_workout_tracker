@@ -248,3 +248,9 @@ input{
   letter-spacing: 1px;
   outline: none;
 }
+.comingsoon{
+  display: flex;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: 300;
+}

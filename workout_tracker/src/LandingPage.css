@@ -17,7 +17,7 @@
 }
 
 /* Navigation */
-nav {
+.navLandingPage {
   background-color: var(--nav-color);
   padding: 1rem 4rem;
   display: flex;
@@ -156,17 +156,6 @@ nav {
   color: var(--lightBlue);
 }
 
-/* CTA Section */
-.cta-section {
-  background-color: var(--nav-color);
-  padding: 4rem 2rem;
-  text-align: center;
-}
-
-.cta-content {
-  max-width: 800px;
-  margin: 0 auto;
-}
 
 /* Footer */
 footer {
@@ -221,7 +210,7 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  nav {
+  .navLandingPage {
     padding: 1rem 2rem;
   }
 
