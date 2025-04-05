@@ -8,7 +8,9 @@ function Login() {
     const [password, setPassword] = useState(""); // Initialize with empty string
     const navigate = useNavigate();
     const API_URL = import.meta.env.VITE_API_BASE_URL;
+    console.log("API_URL:", API_URL);
     const handleSubmit = (e) => {
+        console.log("handleSubmit triggered!");
         e.preventDefault();
         axios
             .post(`${API_URL}/login`, { email, password })
