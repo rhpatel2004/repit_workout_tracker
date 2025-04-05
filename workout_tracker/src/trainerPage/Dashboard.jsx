@@ -58,7 +58,7 @@ function Dashboard() {
 
         try {
             const response = await axios.get(
-                `http://localhost:3001/api/getWorkouts/${clientId}`
+                `${API_URL}/getWorkouts/${clientId}`
             ); // Fetch workouts using client ID directly
             // Ensure the response is an array before setting the state
             if (Array.isArray(response.data)) {

@@ -33,7 +33,7 @@ function HistoryPage() {
       );
 
       const response = await axios.delete(
-        `http://localhost:3001/api/deleteWorkout/${workoutId}`
+        `${API_URL}/deleteWorkout/${workoutId}`
       );
       console.log(response.data.message);
     } catch (error) {

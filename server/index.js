@@ -162,7 +162,6 @@ router.get("/getUser/:userId", async (req, res) => {
     }
 });
 
-// Route to get workouts by userId
 router.get("/getWorkouts/:userId", async (req, res) => {
     const { userId } = req.params;
     console.log("Fetching workouts for userId:", userId);
@@ -170,19 +169,20 @@ router.get("/getWorkouts/:userId", async (req, res) => {
     try {
         const workouts = await Workout.find({ userId })
             .populate({
-                path: 'exercises.exerciseId',
-                select: 'name category' // Specify the fields you want to populate
+                path: 'exercises.exerciseId', // Target the exerciseId within the exercises array
+                select: 'name category equipment' // Specify the fields you want from the Exercise model
             })
+            .sort({ date: -1 }) // Optional: Sort by date descending
             .exec();
 
-        console.log("Fetched workouts:", workouts);
+        console.log("Fetched and Populated workouts:", JSON.stringify(workouts, null, 2)); // Log to verify structure
+
         res.status(200).json(workouts);
     } catch (err) {
         console.error("Error fetching workouts:", err);
         res.status(500).json({ message: "Error fetching workouts", err });
     }
 });
-
 router.delete("/deleteWorkout/:id", (req, res) => {
     const { id } = req.params;
 
