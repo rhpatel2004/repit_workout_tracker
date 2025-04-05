@@ -17,50 +17,7 @@ function WorkoutPage() {
         }
     }, []);
 
-    useEffect(() => {
-        const fetchDefaultWorkouts = async () => {
-            if (!userId) return;
-            try {
-                const response = await axios.get(
-                    `http://localhost:3001/api/getDefaultWorkouts/${userId}`
-                );
-                setDefaultWorkouts(response.data);
-            } catch (error) {
-                console.error("Error fetching default workouts:", error);
-            }
-        };
-
-        fetchDefaultWorkouts();
-    }, [userId]);
-
-    const handleWorkoutClick = workout => {
-        navigate("/makeWorkout", {
-            state: {
-                workoutName: workout.workoutName,
-                selectedExercises: workout.exercises,
-            },
-        });
-    };
-
-    const handleDelete = workoutId => {
-        // Optimistically update the UI
-        setDefaultWorkouts(prevWorkouts =>
-            prevWorkouts.filter(workout => workout._id !== workoutId)
-        );
-
-        // Call API to delete the workout
-        axios
-            .delete(`http://localhost:3001/api/deleteDefaultWorkout/${workoutId}`)
-            .then(response => {
-                console.log(response.data.message); // Log success message
-            })
-            .catch(error => {
-                console.error(
-                    "Error deleting workout:",
-                    error.response ? error.response.data : error.message
-                );
-            });
-    };
+    
 
     return (
         <>

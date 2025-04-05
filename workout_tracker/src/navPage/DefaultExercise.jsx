@@ -4,19 +4,16 @@ import axios from "axios";
 
 function DefaultExercise() {
   const navigate = useNavigate();
+  const [selection, setSelection] = useState("All");
+  const [exercises, setExercises] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [selectedExercises, setSelectedExercises] = useState([]);
+  const [workoutName, setWorkoutName] = useState("Default Workout"); // Keep this for template name
+  const inputRef = useRef(null);
+  const [isEditable, setIsEditable] = useState(false);
+  const [userId, setUserId] = useState(null);
 
-  // State variables
-  const [selection, setSelection] = useState("All"); // Currently selected muscle group (default to "All")
-  const [exercises, setExercises] = useState([]); // List of exercises fetched from the database
-  const [loading, setLoading] = useState(false); // Loading indicator
-  const [error, setError] = useState(null); // Error message
-  const [selectedExercises, setSelectedExercises] = useState([]); // List of selected exercise IDs
-  const [workoutName, setWorkoutName] = useState("Default Workout"); // Name of the workout
-  const inputRef = useRef(null); // Ref for the workout name input field
-  const [isEditable, setIsEditable] = useState(false); // Flag to make workout name editable
-  const [userId, setUserId] = useState(null); // User ID
-
-  // Fetch userId from local storage on component mount
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
@@ -24,46 +21,38 @@ function DefaultExercise() {
     }
   }, []);
 
-  // Handle change in muscle group selection
   function handleSelect(event) {
     setSelection(event.target.value);
   }
 
-  // Toggle edit mode for workout name
   const enableEdit = () => {
     setIsEditable(!isEditable);
-    if (!isEditable) {
+    if (!isEditable && inputRef.current) {
       inputRef.current.focus();
     }
   };
 
-  // Fetch exercises from the database based on selection and userId
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       setError(null);
-      setExercises([]); // Clear existing exercises
+      setExercises([]);
 
       try {
-        // Use the full URL to your backend server:
         const response = await axios.get(
           `http://localhost:3001/api/exercises?muscleGroup=${selection}&userId=${userId}`
         );
 
-        // Assuming your API returns an array directly:
         if (Array.isArray(response.data)) {
           setExercises(response.data);
         } else {
-          console.error("API response is not an array:", response.data);
-          setError(new Error("Invalid data format received from server."));
+          console.error("API did not return an array:", response.data);
+          setError(new Error("Received data is not an array."));
+          setExercises([]); // Ensure exercises is an array
         }
       } catch (error) {
         console.error("Error fetching exercises:", error);
-        setError(
-          new Error(
-            "Failed to fetch exercises. Please make sure your server is running and accessible."
-          )
-        );
+        setError(error);
       } finally {
         setLoading(false);
       }
@@ -74,7 +63,6 @@ function DefaultExercise() {
     }
   }, [selection, userId]);
 
-  // Options for the muscle group select dropdown
   const options = [
     { label: "All", value: "All" },
     { label: "Chest", value: "Chest" },
@@ -87,49 +75,47 @@ function DefaultExercise() {
     { label: "Cardio", value: "Cardio" },
   ];
 
-  // Handle clicks on exercise cards
   const handleExerciseClick = (exercise) => {
     const exerciseId = exercise._id;
     if (selectedExercises.includes(exerciseId)) {
-      // Remove exercise ID if already selected
-      setSelectedExercises(selectedExercises.filter(id => id !== exerciseId));
+      setSelectedExercises(
+        selectedExercises.filter((id) => id !== exerciseId)
+      );
     } else {
-      // Add exercise ID to selectedExercises
       setSelectedExercises([...selectedExercises, exerciseId]);
     }
   };
 
-  // Check if an exercise is selected
   const isSelected = (exerciseId) => selectedExercises.includes(exerciseId);
 
-  // Handle changes to the workout name input field
   const handleInputChange = (e) => {
     setWorkoutName(e.target.value);
   };
 
-  // Save the workout and navigate back
-  const saveWorkoutAndGoBack = () => {
-    const newWorkout = {
+  // Changed function name for clarity
+  const saveTemplateAndGoBack = async () => {
+    const newTemplate = {
       userId: userId,
-      workoutName: workoutName,
+      name: workoutName, // Now the template name
       exercises: selectedExercises, // Array of exercise IDs
+      folderId: null, // Set folderId to null initially.  We'll add folder selection later.
     };
-
-    axios
-      .post("http://localhost:3001/api/saveDefaultWorkout", newWorkout) // Use full URL
-      .then(response => {
-        console.log(response.data.message);
-        navigate("/workout");
-      })
-      .catch(error => {
-        console.error("Error saving workout:", error);
-        setError(new Error("Failed to save workout. Please try again.")); // Set error state
-      });
+    try{
+      const response = await axios.post("http://localhost:3001/api/workout-templates", newTemplate)
+      console.log(response.data);
+      navigate("/workout"); // Or wherever your workout list is
+    } catch(error) {
+      console.error("Error saving template:", error);
+        if (error.response) {
+          alert(`Failed to save template: ${error.response.data.message}`);
+        } else {
+          alert("Failed to save template. Please try again.");
+        }
+    }
   };
 
   return (
     <div className="subPage">
-      {/* Back Button */}
       <button className="topButton" onClick={() => navigate("/workout")}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -142,8 +128,8 @@ function DefaultExercise() {
         </svg>
       </button>
 
-      {/* Save Workout Button */}
-      <button className="subTickButton" onClick={saveWorkoutAndGoBack}>
+      {/* Changed button text and onClick */}
+      <button className="subTickButton" onClick={saveTemplateAndGoBack}>
         <svg
           className="tickText"
           xmlns="http://www.w3.org/2000/svg"
@@ -157,8 +143,6 @@ function DefaultExercise() {
       </button>
 
       <br />
-
-      {/* Workout Name Input */}
       <div className="beside">
         <input
           ref={inputRef}
@@ -168,7 +152,6 @@ function DefaultExercise() {
           onChange={handleInputChange}
           readOnly={!isEditable}
         />
-        {/* Edit Button */}
         <button className="topButton" onClick={enableEdit}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -183,12 +166,10 @@ function DefaultExercise() {
       </div>
 
       <br />
-
-      {/* Muscle Group Selection */}
       <div className="column">
         <p className="text">Select Exercises</p>
         <select className="dropDown" onChange={handleSelect} value={selection}>
-          {options.map(option => (
+          {options.map((option) => (
             <option key={option.value} className="option" value={option.value}>
               {option.label}
             </option>
@@ -196,33 +177,34 @@ function DefaultExercise() {
         </select>
       </div>
 
-      {/* Exercise List */}
       <div>
         {loading && <p>Loading exercises...</p>}
         {error && <p>Error fetching exercises: {error.message}</p>}
-
-        {/* Handle case where no exercises are found */}
-        {!loading && !error && exercises.length === 0 && (
-          <p>No exercises found.</p>
+        {!loading && !error && exercises.length === 0 && selection && (
+          <p>No exercises found for the selected muscle group.</p>
         )}
-
-        {/* Display exercises if available */}
         {!loading && !error && exercises.length > 0 && (
           <div>
-            {exercises.map(exercise => (
+            {exercises.map((exercise) => (
               <div
                 key={exercise._id}
-                className={`exercise-card ${isSelected(exercise._id) ? "selected" : ""}`}
+                className={`exercise-card ${
+                  isSelected(exercise._id) ? "selected" : ""
+                }`}
                 style={{
                   marginBottom: "1px",
                   padding: "15px",
-                  backgroundColor: isSelected(exercise._id) ? "#d1e7dd" : "white",
+                  backgroundColor: isSelected(exercise._id)
+                    ? "#d1e7dd"
+                    : "white",
                   cursor: "pointer",
                 }}
                 onClick={() => handleExerciseClick(exercise)}
               >
                 <h3 style={{ letterSpacing: "1.5px" }}>{exercise.name}</h3>
-                <p>{exercise.muscleGroup} | {exercise.equipment}</p>
+                <p>
+                  {exercise.muscleGroup} | {exercise.equipment}
+                </p>
               </div>
             ))}
           </div>

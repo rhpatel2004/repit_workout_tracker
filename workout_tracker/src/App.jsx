@@ -14,6 +14,9 @@ import Dashboard from "./trainerPage/Dashboard"
 import Leaderboard from "./trainerPage/Leaderboard"
 import Exercises from "./trainerPage/Exercises"
 import TrainerProfile from "./trainerPage/TrainerProfile"
+import ClientWorkoutHistory from "./trainerPage/ClientWorkoutHistory"
+
+
 function App() {
 
   return (
@@ -33,6 +36,8 @@ function App() {
         <Route path="/trainerProfile" element={<TrainerProfile/>} />
         <Route path="/leaderboard" element={<Leaderboard/>} />
         <Route path="/exercises" element={<Exercises/>} />
+        <Route path="/trainer/clients/:clientId/workouts" element={<ClientWorkoutHistory />} />
+
 
 
       </Routes>

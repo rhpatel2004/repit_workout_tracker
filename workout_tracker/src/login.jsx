@@ -7,13 +7,13 @@ function Login() {
     const [email, setEmail] = useState(""); // Initialize with empty string
     const [password, setPassword] = useState(""); // Initialize with empty string
     const navigate = useNavigate();
-
+    const API_URL = import.meta.env.VITE_API_BASE_URL;
     const handleSubmit = (e) => {
         e.preventDefault();
         axios
-            .post("http://localhost:3001/api/login", { email, password })
+            .post(`${API_URL}/login`, { email, password })
             .then((result) => {
-                console.log(result);
+                console.log("Login Response:", result);
                 if (result.data.message === "Success") {
                     localStorage.setItem("userId", result.data.userId);
                     const userRole = result.data.role; // Get the role

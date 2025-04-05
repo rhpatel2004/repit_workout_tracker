@@ -3,6 +3,8 @@ import axios from "axios";
 import TrainerNav from "./TrainerNav";
 
 function TrainerProfile() {
+    const API_URL = import.meta.env.VITE_API_BASE_URL;
+
     const [userData, setUserData] = useState({});
     const [error, setError] = useState(null);
     const userId = localStorage.getItem("userId");
@@ -10,7 +12,7 @@ function TrainerProfile() {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/api/getUser/${userId}`);
+                const response = await axios.get(`${API_URL}/getUser/${userId}`);
                 setUserData(response.data);
             } catch (error) {
                 console.error("Error fetching user data:", error);

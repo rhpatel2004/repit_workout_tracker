@@ -4,6 +4,8 @@ import HistoryCard from "./HistoryCard";
 import NavBar from "../NavBar";
 
 function HistoryPage() {
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
+
   const [workouts, setWorkouts] = useState([]);
   const userId = localStorage.getItem("userId");
 
@@ -11,7 +13,7 @@ function HistoryPage() {
     const fetchWorkouts = async () => {
       try {
         if (userId) {
-          const response = await axios.get(`http://localhost:3001/api/getWorkouts/${userId}`);
+          const response = await axios.get(`${API_URL}/getWorkouts/${userId}`);
           setWorkouts(response.data);
         }
       } catch (error) {

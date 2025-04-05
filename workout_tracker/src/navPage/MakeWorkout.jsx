@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./MakeWorkout.css";
 
 function MakeWorkout() {
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
+
   const location = useLocation();
   const navigate = useNavigate();
   const selectedExerciseIds = location.state?.selectedExercises || [];
@@ -34,7 +36,7 @@ function MakeWorkout() {
       const exercisesDetails = await Promise.all(
         selectedExerciseIds.map(async (id) => {
           const response = await axios.get(
-            `http://localhost:3001/api/exercise/${id}`
+            `${API_URL}/exercise/${id}`
           );
           return response.data;
         })
@@ -111,10 +113,7 @@ function MakeWorkout() {
       };
 
     try {
-      const response = await axios.post(
-        "http://localhost:3001/api/saveWorkout",
-        workoutData
-      );
+      const response = await axios.post(`${API_URL}/saveWorkout`, workoutData);
       console.log("Workout saved successfully:", response.data);
       alert("Workout saved successfully!");
       navigate("/history");

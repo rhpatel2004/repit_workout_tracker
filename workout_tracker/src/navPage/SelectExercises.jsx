@@ -4,6 +4,8 @@ import axios from "axios";
 import "./MakeWorkout.css";
 
 function SelectExercises() {
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
+
   const navigate = useNavigate();
   const [selection, setSelection] = useState("All");
   const [exercises, setExercises] = useState([]);
@@ -32,7 +34,7 @@ function SelectExercises() {
 
       try {
         const response = await axios.get(
-          `http://localhost:3001/api/exercises?muscleGroup=${selection}&userId=${userId}`
+          `${API_URL}/exercises?muscleGroup=${selection}&userId=${userId}`
         );
         // Check if response.data is an array before setting the state
         if (Array.isArray(response.data)) {

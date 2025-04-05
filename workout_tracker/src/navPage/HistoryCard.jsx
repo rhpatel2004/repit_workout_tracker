@@ -3,19 +3,24 @@ import "./HistoryCard.css";
 import axios from "axios";
 
 function HistoryCard({ workout, onDelete }) {
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [exerciseDetails, setExerciseDetails] = useState({});
+  const userRole = localStorage.getItem("userRole"); // Get the user's role
 
   useEffect(() => {
     const fetchExerciseDetails = async () => {
       const details = {};
       for (const exercise of workout.exercises) {
         try {
-          const response = await axios.get(`/api/exercise/${exercise.exerciseId}`);
+          const response = await axios.get(
+            `/api/exercise/${exercise.exerciseId}`
+          );
           details[exercise.exerciseId] = response.data;
         } catch (error) {
           console.error("Error fetching exercise details:", error);
-          details[exercise.exerciseId] = { name: 'Unknown Exercise' };
+          details[exercise.exerciseId] = { name: "Unknown Exercise" };
         }
       }
       setExerciseDetails(details);
@@ -50,9 +55,20 @@ function HistoryCard({ workout, onDelete }) {
           <h3>{workout.name}</h3>
           <p>{formattedDate}</p>
         </div>
-        <button className="plus" onClick={handleDeleteClick}>
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#124559"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
-        </button>
+        {/* Conditionally render the delete button */}
+        {userRole === "user" && (
+          <button className="plus" onClick={handleDeleteClick}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="20px"
+              viewBox="0 -960 960 960"
+              width="20px"
+              fill="#124559"
+            >
+              <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
+            </svg>
+          </button>
+        )}
       </div>
 
       {isExpanded && (
@@ -69,16 +85,23 @@ function HistoryCard({ workout, onDelete }) {
               const exerciseDetail = exerciseDetails[exercise.exerciseId];
               return (
                 <li key={exercise.exerciseId}>
-                  <h4>{exercise.exerciseId.name || 'Exercise details not available'}</h4>
+                  <h4>
+                    {exerciseDetail?.name || "Exercise details not available"}
+                  </h4>
                   <ul>
                     {exercise.sets.map((set, setIndex) => (
                       <li key={setIndex}>
                         Set {setIndex + 1}:
                         {set.reps && <span> Reps: {set.reps},</span>}
-                        {set.weight && <span> Weight: {set.weight} kgs,</span>}
-                        {set.duration && <span> Duration: {set.duration} minutes,</span>}
-                        {/* {set.distance && <span> Duration: {set.distance} km,</span>} */}
-                        {set.restTime && <span> Rest Time: {set.restTime} seconds</span>}
+                        {set.weight && (
+                          <span> Weight: {set.weight} kgs,</span>
+                        )}
+                        {set.duration && (
+                          <span> Duration: {set.duration} minutes,</span>
+                        )}
+                        {set.restTime && (
+                          <span> Rest Time: {set.restTime} seconds</span>
+                        )}
                       </li>
                     ))}
                   </ul>

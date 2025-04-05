@@ -9,7 +9,9 @@
     font-size: 1.5rem; 
     margin: 0;
 }
-
+.workoutCard span{
+    text-decoration: none;
+}
 .workoutCard p {
     font-size: 1rem;
     margin: 5px 0;

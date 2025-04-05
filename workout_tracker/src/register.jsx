@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import "./login.css"; // Assuming this is your CSS file
 
 function Register() {
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
+
   const [firstName, setFirstName] = useState(""); // State for first name
   const [lastName, setLastName] = useState(""); // State for last name
   const [email, setEmail] = useState("");
@@ -17,7 +19,7 @@ function Register() {
   useEffect(() => {
     // Fetch the list of trainers when the component mounts
     axios
-      .get("http://localhost:3001/api/trainers") // Get trainers from /api/trainers
+      .get(`${API_URL}/trainers`) // Get trainers from /api/trainers
       .then((res) => {
         setTrainers(res.data); // Update state with fetched trainers
       })
@@ -27,7 +29,7 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3001/api/register", {
+      .post(`${API_URL}/register`, {
         firstName, // Send firstName
         lastName, // Send lastName
         email,
