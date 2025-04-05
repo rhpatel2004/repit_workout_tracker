@@ -57,8 +57,7 @@ function ProfilePage() {
                 <div className="column">
                     <h1 className="heading">Profile</h1>
                 </div>
-                <br />
-
+              
                 {error && <p className="error-message">Error: {error.message}</p>}
 
                 <div className="center">

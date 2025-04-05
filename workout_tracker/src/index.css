@@ -99,6 +99,7 @@ button:active {
 
 .page {
   padding: 4vw;
+  padding-bottom: 35vw;
   width: 100vw;
   height: calc(100vh - 25vw);
   overflow: auto;
@@ -163,7 +164,7 @@ button:active {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   gap: 4vw;
 }
 

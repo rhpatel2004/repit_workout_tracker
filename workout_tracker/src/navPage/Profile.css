@@ -17,7 +17,7 @@ p{
     height: 5vh;
     border: 1.5px solid #598392;
     border-radius: 2vh;
-    margin-bottom: 2vh;
+    margin-bottom: 1vh;
     padding-left: 3vw;
     font-size: 16px;
     color: var(--text-color);
@@ -34,7 +34,7 @@ p{
 
 }
 .profileBox{
-    margin:5vh 3vw 0vw 3vw;
+    margin:1vh 3vw 0vw 3vw;
 
 }
 .profileInfo{
@@ -43,6 +43,6 @@ p{
 }
 .logout{
     background-color: #598392;
-    margin-top: 5vh;
+    margin-top: 1vh;
     height: 7vh;
 }
