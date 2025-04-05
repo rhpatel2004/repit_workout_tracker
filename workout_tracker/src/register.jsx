@@ -42,7 +42,7 @@ function Register() {
       })
       .then((result) => {
         console.log(result);
-        navigate("/");
+        navigate("/login");
       })
       .catch((err) => console.error(err));
   };
@@ -160,7 +160,7 @@ function Register() {
         </button>
 
         <h3>
-          Already have an Account? <a href="/">Sign In</a>
+          Already have an Account? <a href="/login">Sign In</a>
         </h3>
       </form>
     </div>
