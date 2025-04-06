@@ -46,9 +46,9 @@ function Login() {
                 <h1 className="heading" style={{ marginTop: "5vh" }}>
                     Log In
                 </h1>
-                <p className="text" style={{ marginBottom: "5vh" }}>
+                {/* <p className="text" style={{ marginBottom: "5vh" }}>
                     Welcome!!
-                </p>
+                </p> */}
 
                 <form onSubmit={handleSubmit}>
                     <div className="label">

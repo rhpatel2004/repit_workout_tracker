@@ -53,9 +53,9 @@ function Register() {
         <h1 className="heading" style={{ marginTop: "1vh" }}>
           Create Account
         </h1>
-        <p className="text" style={{ marginBottom: "1vh" }}>
+        {/* <p className="text" style={{ marginBottom: "1vh" }}>
           Sign Up!
-        </p>
+        </p> */}
 
         <form onSubmit={handleSubmit}>
 
