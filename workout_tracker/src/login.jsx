@@ -42,6 +42,7 @@ function Login() {
     return (
         <>
             <div className="subPage">
+            <div className="auth-card">
                 <h1 className="heading" style={{ marginTop: "5vh" }}>
                     Log In
                 </h1>
@@ -98,6 +99,7 @@ function Login() {
                         Don't have an Account? <a href="/register">Create</a>
                     </h3>
                 </form>
+                </div> 
             </div>
         </>
     );

@@ -1,256 +1,460 @@
-* {
+/* === Base Reset and Root Setup === */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Kanit", sans-serif;
-  color: var(--text-color);
+  /* Inherit font settings from body */
+  font: inherit; 
+  /* Inherit color from parent */
+  color: inherit; 
 }
 
+html {
+  /* Set base font size for rem calculation: 1rem = 10px */
+  font-size: 62.5%; 
+  /* Make type rendering look better */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Prevent font scaling on orientation change */
+  -webkit-text-size-adjust: 100%; 
+}
+
+/* === Color Variables (Palette 1: Classic & Focused) === */
 :root {
-  --darkBlue: #124559;
-  --lightBlue: #598392;
-  --background-color: white;
-  /* Light mode background */
-  --text-color: #124559;
-  --nav-color: #EFF6E0;
-  /* Light mode text color */
+  /* --- Primary Palette --- */
+  --primary-blue: #0D47A1; /* Main interactive blue */
+  --accent-blue: #42A5F5;  /* Brighter highlight blue */
+  --success-green: #4CAF50; /* Confirmation green */
+
+  /* --- Neutrals --- */
+  --neutral-dark: #212121;   /* Primary text */
+  --neutral-medium: #757575; /* Secondary text */
+  --neutral-light: #F5F5F5;  /* Page background */
+  --neutral-white: #FFFFFF;  /* Card backgrounds, text on dark */
+  
+  /* --- Supporting --- */
+  --border-color: #E0E0E0; /* Subtle borders */
+  --shadow-color: rgba(0, 0, 0, 0.08); /* Subtle shadows */
+
+  /* --- Mapping to your existing names (Light Mode) --- */
+  --darkBlue: var(--primary-blue); /* Maps to primary interactive color */
+  --lightBlue: var(--neutral-medium); /* Maps to secondary text color */
+  --background-color: var(--neutral-light); /* Main background */
+  --text-color: var(--neutral-dark);      /* Main text */
+  --nav-color: var(--neutral-white);     /* Nav background */
 }
 
-[data-theme='dark'] {
-  --background-color: #0c2d3a;
-  /* Dark mode background */
-  --text-color: white;
-  --nav-color: #1c3945;
-  --darkBlue: white;
-  --lightBlue: #d1f2ff;
-}
-
-svg {
-  fill: var(--darkBlue);
-}
-
-.tickText {
-  fill: var(--background-color);
-}
 
 body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1.6rem; /* Default font size = 16px */
+  line-height: 1.5; /* Sensible default line height */
   background-color: var(--background-color);
   color: var(--text-color);
+  min-height: 100vh; /* Ensure body takes full height */
 }
 
-
-
-@media(max-width:768px) {
-  .DesktopHead {
-    display: none;
-  }
+/* === Global SVG and Element Styles === */
+svg {
+  fill: var(--darkBlue); /* Uses primary interactive color based on theme */
+  display: inline-block; /* Fix potential extra space issues */
+  vertical-align: middle; /* Align icons nicely with text */
 }
 
-@media(min-width:768px) {
-  .App {
-    display: none;
-  }
-
-  .DesktopHead {
-    display: flex;
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background-color: white; z-index: 1000; display: flex;
-    justify-content: center; align-items: center; text-align: center;
-  }
-
-
+/* Ensure images don't overflow containers */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
 }
 
-select {
-  outline: none;
-  cursor: pointer;  
-  border: 2px solid #124559;
-  border-radius: 15px;
-  width: 150px;
-  height: 50px;
+/* Basic button reset */
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit; /* Inherit font from body */
+  color: inherit;
 }
-select option{
-  font-size: 16px;
-  padding-left: 0px;
-
-}
-
-select:focus {
-  outline: 1.5px solid #598392;
-
-}
-
 
 button:active {
-
-  transition: 0.2s;
-  opacity: 0.9;
-  transform: scale(1.01);
+  /* More subtle active state - adjust as needed */
+  opacity: 0.8;
+  transform: scale(0.98);
+  transition: transform 0.1s ease-out, opacity 0.1s ease-out;
 }
 
-.search-btn {
-  margin: 0;
-}
+/* === Form Elements (Refined in index.css) === */
 
-.cardSpace {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column-reverse;
-
-  gap: 15px;
-}
-
-.page {
-  padding: 4vw;
-  padding-bottom: 35vw;
-  width: 100vw;
-  height: calc(100vh - 25vw);
-  overflow: auto;
+input, 
+textarea, 
+select {
+  /* Sizing & Box Model */
+  width: 100%; /* Inputs usually fill width */
+  height: 4.8rem; /* Consistent height */
+  border: 1.5px solid var(--border-color); /* Slightly thicker border */
+  border-radius: 0.8rem; /* Consistent radius */
+  padding: 0 1.6rem; /* Horizontal padding */
+  
+  /* Appearance */
+  background-color: var(--neutral-white); /* Use white bg for fields */
   color: var(--text-color);
+  outline: none; /* Remove default blue outline */
+  appearance: none; /* Remove default styling (esp. for select arrow) */
+  
+  /* Typography */
+  font-family: inherit;
+  font-size: 1.6rem; 
+  letter-spacing: 0.05rem;
+
+  /* Transitions */
+  transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+/* Specific height adjustment for textarea if needed */
+textarea {
+  height: auto;
+  min-height: 8rem;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+}
+
+/* Focus State */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--primary-blue); /* Highlight border with primary color */
+  /* Optional: Add a subtle glow effect */
+  /* box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.15); */
+}
+[data-theme='dark'] input, 
+[data-theme='dark'] textarea, 
+[data-theme='dark'] select {
+    background-color: var(--neutral-medium-bg); /* Darker bg for fields in dark mode */
+    border-color: var(--border-color-dark);
+}
+[data-theme='dark'] input:focus,
+[data-theme='dark'] textarea:focus,
+[data-theme='dark'] select:focus {
+    border-color: var(--primary-blue-dark);
+    /* box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2); */
+}
+
+
+/* Custom Select Arrow */
+select {
+  /* Add space for the arrow */
+  padding-right: 4rem; 
+  /* Background image for the arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23757575'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.2rem center;
+  background-size: 2rem;
+  cursor: pointer;
+}
+/* Dark mode select arrow */
+[data-theme='dark'] select {
+   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239E9E9E'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E"); /* Use medium dark text color */
+}
+
+/* Remove arrow in IE */
+select::-ms-expand {
+  display: none;
+}
+
+/* Adjust select padding calculation for browsers that need it */
+/* (You might not need this, test first) */
+/* select:-moz-focusring { color: transparent; text-shadow: 0 0 0 #000; } */
+/* select::-moz-padding-start { padding-right: 1.6rem; } */
+
+/* Style options if needed */
+select option {
+  font-size: 1.6rem;
+  background-color: var(--neutral-white); /* Ensure options have correct background */
+  color: var(--text-color);
+}
+[data-theme='dark'] select option {
+    background-color: var(--neutral-medium-bg);
+    color: var(--text-color);
+}
+/* === Utility and Layout Classes (Refactored) === */
+
+.page,
+.subPage {
+  padding: 2.4rem 1.6rem; /* Consistent padding (e.g., 24px top/bottom, 16px left/right) */
+  width: 100%;
+  min-height: 100vh; /* Use min-height */
+  /* Add padding-bottom to prevent content hiding behind fixed navbars */
+  /* Adjust this value based on your actual nav bar height */
+  padding-bottom: 10rem; /* Approx 100px - Adjust if needed! */ 
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+.page{
+  padding-bottom: 10rem; 
 }
 
 .subPage {
-  padding: 4vw;
-  width: 100vw;
-  height: 100vh;
-  overflow: auto;
+   /* If subPage shouldn't scroll independently or needs different padding */
+   /* Adjust padding or height properties here */
+   padding-bottom: 2.4rem; /* Example: Less bottom padding if no fixed nav */
 }
 
+
 .heading {
-  font-size: 36px;
-  font-weight: 400;
+  font-size: 2.8rem; /* ~28px */
+  font-weight: 600; /* Slightly bolder */
+  line-height: 1.3;
+  margin-bottom: 1.6rem; /* Add some space below headings */
+  color: var(--darkBlue); /* Use primary color for main headings */
 }
 
 .text {
-  font-size: 16px;
-  letter-spacing: 2px;
-  color: var(--lightBlue);
+  font-size: 1.4rem; /* ~14px */
+  letter-spacing: 0.05rem; /* Subtle letter spacing */
+  color: var(--lightBlue); /* Uses secondary text color */
   font-weight: 400;
+  line-height: 1.6;
 }
 
-.topButton {
-  border: none;
-  height: 50px;
-  width: 50px;
-  background-color: transparent;
-  border-radius: 50%;
-}
-
-.topButton:active {
-  background-color: #aec3b029;
-}
-
-.workoutCard h4 {
-  font-weight: 600;
-  font-size: 16px;
-}
-
-.download {
-  padding: 10px 40px;
-  background-color: #124559;
-  color: white;
-  border: none;
-  font-size: 18px;
-  border-radius: 20px;
-  margin-top: 5vw;
-}
-
-.column {
+.cardSpace {
+  margin-top: 2rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  gap: 10vw;
+  flex-direction: column; 
+  gap: 1.6rem; /* Consistent gap */
 }
 
+.workoutCard h4 { /* Example - assuming .workoutCard is a common component */
+  font-weight: 600;
+  font-size: 1.6rem; /* Base font size */
+  margin-bottom: 0.8rem; /* Space below title within card */
+}
+
+.exerciseCard h3 { /* Example styling */
+  margin-top: 1.6rem; 
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.05rem;
+  margin-bottom: 0.4rem;
+}
+
+.exerciseCard p { /* Example styling */
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--lightBlue); /* Secondary text */
+  line-height: 1.5;
+}
+
+.column, 
 .column1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
-  gap: 4vw;
+  margin-bottom: 1rem;
+  gap: 1.6rem; /* Consistent gap */
 }
 
-.tickButton {
-  background-color: #124559;
-  height: 70px;
-  width: 70px;
+/* === Form Elements (Refactored) === */
+
+select {
+  outline: none;
+  cursor: pointer;  
+  border: 1px solid var(--border-color); /* Use variable */
+  border-radius: 0.8rem; /* ~8px */
+  padding: 1.2rem 1.6rem; /* ~12px 16px */
+  height: auto; /* Let padding define height */
+  width: 100%; /* Let content or container define width */
+  min-width: 11rem; 
+  background-color: var(--neutral-white); /* Usually white bg */
+  font-size: 1.6rem; /* Base size */
+  appearance: none; /* Basic style reset */
+  /* Add background arrow indicator later if needed */
+}
+
+select:focus {
+  border-color: var(--accent-blue); /* Use accent color */
+  box-shadow: 0 0 0 2px var(--accent-blue-transparent, rgba(66, 165, 245, 0.3)); /* Focus ring */
+}
+
+select option {
+  font-size: 1.6rem;
+  padding: 1rem 0; /* Adjust padding within options */
+}
+
+input {
+  width: 100%; /* Keep full width */
+  height: 4.8rem; /* Consistent height ~48px */
+  border: 1px solid var(--border-color);
+  border-radius: 0.8rem; /* Consistent radius ~8px */
+  margin-bottom: 1.6rem; /* Consistent spacing */
+  padding: 0 1.6rem; /* Horizontal padding */
+  font-size: 1.6rem;
+  letter-spacing: 0.05rem;
+  background-color: var(--neutral-white); /* Usually white bg */
+  color: var(--text-color);
+  outline-color: var(--accent-blue);
+}
+
+input:focus {
+   border-color: var(--accent-blue); /* Use accent color */
+   box-shadow: 0 0 0 2px var(--accent-blue-transparent, rgba(66, 165, 245, 0.3)); /* Focus ring */
+}
+
+/* === Buttons (Refactored) === */
+
+.topButton {
+  border: none;
+  height: 4.4rem; /* ~44px */
+  width: 4.4rem; /* ~44px */
+  background-color: transparent;
+  border-radius: 50%;
+  display: inline-flex; /* Use flex for centering icon */
+  align-items: center;
+  justify-content: center;
+}
+
+.topButton svg {
+    width: 2.4rem; /* Control icon size */
+    height: 2.4rem;
+    fill: var(--darkBlue); /* Use primary color */
+}
+
+.topButton:active {
+  /* Subtle background on press */
+  background-color: rgba(0, 0, 0, 0.05); 
+}
+[data-theme='dark'] .topButton:active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+/* General purpose primary action button */
+.button-primary, .download /* Applying similar style */ {
+  padding: 1.2rem 2.4rem; /* Adjust padding */
+  background-color: var(--primary-blue); /* Use variable */
+  color: var(--neutral-white); /* White text */
+  border: none;
+  font-size: 1.6rem; /* Base font size */
+  font-weight: 600; /* Medium/semibold */
+  border-radius: 2rem; /* Pill shape */
+  margin-top: 1.6rem; /* Consistent margin */
+  text-align: center;
+  display: inline-block; /* Allow margin */
+  cursor: pointer;
+}
+.button-primary:active, .download:active {
+   opacity: 0.85;
+   transform: scale(0.98);
+}
+
+/* Floating Action Button (FAB) style for Tick Buttons */
+.tickButton, 
+.subTickButton {
+  height: 6rem; /* ~60px */
+  width: 6rem; /* ~60px */
+  background-color: var(--primary-blue); /* Use variable */
   border: none;
   border-radius: 50%;
-  padding-top: 5px;
+  display: flex; /* Center icon easily */
+  align-items: center;
+  justify-content: center;
   position: fixed;
-  bottom: 15vh;
-  right: 7vw;
+  box-shadow: 0 4px 12px var(--shadow-color); /* Add shadow */
+  z-index: 10; /* Ensure it's above other content */
+}
+[data-theme='dark'] .tickButton, 
+[data-theme='dark'] .subTickButton {
+    box-shadow: 0 4px 12px var(--shadow-color-dark);
+}
+
+.tickButton svg, 
+.subTickButton svg {
+  fill: var(--neutral-white); /* White icon */
+  width: 2.8rem; /* Adjust icon size */
+  height: 2.8rem;
+}
+
+/* Position FABs using rem */
+.tickButton {
+  /* Position relative to main nav bar (adjust as needed) */
+  bottom: 10rem; /* Example: Above a potential 8rem nav */
+  right: 1.6rem; 
 }
 
 .subTickButton {
-  background-color: #124559;
-  color: white;
-  height: 70px;
-  width: 70px;
-  border: none;
-  border-radius: 50%;
-  padding-top: 5px;
-  position: fixed;
-  bottom: 7vw;
-  right: 7vw;
-}
-.subTickButton svg{
-  fill: #fff;
+   /* Position below main FAB or nav bar */
+  bottom: 2.4rem; /* Example: Lower position */
+  right: 1.6rem; 
 }
 
-.extra {
+/* === Desktop/Mobile View Hiding === */
+@media(max-width: 767px) { /* Changed breakpoint slightly */
+  .DesktopHead {
+    display: none;
+  }
+}
+
+@media(min-width: 768px) {
+  .App { /* Hide the mobile app container */
+    display: none;
+  }
+
+  .DesktopHead { /* Style the desktop message */
+    display: flex;
+    position: fixed; 
+    inset: 0; /* Covers whole screen */
+    background-color: var(--neutral-white); 
+    z-index: 1000; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--neutral-dark);
+  }
+}
+
+/* === Responsive Font Size Adjustment (Optional) === */
+@media (max-width: 360px) {
+  html {
+    /* Slightly smaller base font on very small screens */
+    font-size: 58%; /* Makes 1rem = ~9.3px */
+  }
+  /* You could also adjust specific large headings here if needed */
+  .heading {
+     font-size: 2.4rem; 
+  }
+}
+
+/* === Other Classes (Review and Refine) === */
+.search-btn { /* Likely needs more specific styling in component */
+  margin: 0; /* Reset margin */
+  padding: 0.8rem; /* Add some padding */
+}
+
+.extra { /* Review if this class is still needed */
   display: flex;
-  justify-content: start;
-  gap: 5vw;
-  margin-bottom: 5vw;
+  justify-content: flex-start; /* Corrected value */
+  gap: 1.6rem;
+  margin-bottom: 1.6rem;
 }
 
-.exerciseCard h3 {
-  margin-top: 2.5vh;
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 1px;
+.option { /* Review usage - likely needs context */
+  font-size: 1.4rem; /* Adjust size */
 }
 
-.exerciseCard p {
-  font-size: 16px;
-  font-weight: 300;
+.selected { /* Review usage - likely needs context */
+  border-radius: 1rem; /* Consistent radius */
+  /* Add visual selected state, e.g., background or border */
+  background-color: var(--accent-blue-transparent, rgba(66, 165, 245, 0.1)); 
 }
 
-select {
-  padding: 10px 20px;
-  margin-right: 20px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: none;
-}
-
-.option {
-  font-size: 12px;
-
-
-}
-
-.selected {
-  border-radius: 10px;
-}
-input{
-  width: 100%;
-  height: 5vh;
-  border: 1.2px solid #598392;
-  border-radius: 2vh;
-  margin-bottom: 2vh;
-  padding-left: 3vw;
-  font-size: 16px;
-  color: var(--text-color);
-  background-color: var(--background-color);
-  letter-spacing: 1px;
-  outline: none;
-}
-.comingsoon{
+.comingsoon {
   display: flex;
   justify-content: center;
-  font-size: 40px;
+  font-size: 2.4rem; /* Adjust size */
   font-weight: 300;
+  padding: 4rem 1.6rem; /* Add padding */
+  color: var(--neutral-medium); /* Use secondary text color */
 }

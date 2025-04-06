@@ -17,12 +17,14 @@ function WorkoutPage() {
         }
     }, []);
 
-    
+
 
     return (
         <>
             <div className="page">
-                <h1 className="heading">Workouts</h1>
+                <div className="column">
+                    <h1 className="heading">Workouts</h1>
+                </div>
                 <button
                     className="addNewWorkout"
                     onClick={() => navigate("/selectExercises")}
@@ -31,7 +33,7 @@ function WorkoutPage() {
                 </button>
                 <div className="column">
                     <p className="text">Select your default workout</p>
-                    <button className="plus" onClick={() => navigate("/defaultExercise")}>
+                    {/* <button className="plus" onClick={() => navigate("/defaultExercise")}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             height="30px"
@@ -41,7 +43,7 @@ function WorkoutPage() {
                         >
                             <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
                         </svg>
-                    </button>
+                    </button> */}
                 </div>
                 {defaultWorkouts.map(workout => (
                     <div key={workout._id} onClick={() => handleWorkoutClick(workout)}>

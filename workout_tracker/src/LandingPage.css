@@ -1,228 +1,341 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+/* LandingPage.css - Refactored Styles */
+
+/* Remove @import for Kanit font */
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: "Kanit", sans-serif;
-  color: var(--text-color);
-}
-
-:root {
-  --darkBlue: #124559;
-  --lightBlue: #598392;
-  --background-color: white;
-  --text-color: #124559;
-  --nav-color: #EFF6E0;
-}
-
-/* Navigation */
-.navLandingPage {
-  background-color: var(--nav-color);
-  padding: 1rem 4rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 35vw;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  z-index: 50;
-}
-
-.logo-container {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  width: 120px;
-  height: auto;
-}
-
-/* Buttons */
-.btnlogin {
-  padding: 0.75rem 1.5rem;
-  border-radius: 9999px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  width: 8rem;
-  transition: all 0.3s ease;
-}
-
-.btnregister {
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    font-size: 1.3rem;
-    font-weight: 600;
-    cursor: pointer;
-    width: 60vw;
-    transition: all 0.3s ease;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    /* Apply Inter font consistently */
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   }
-
-.btn-primary {
-  background-color: var(--darkBlue);
-  color: white;
-  border: none;
-}
-
-.btn-primary:active {
-  background-color: #57737e;
-}
-
-.btn-secondary {
-  background-color: white;
-  color: var(--darkBlue);
-  border: 2px solid var(--darkBlue);
-}
-
-.btn-secondary:active {
-  background-color: #57737e;
-}
-
-/* Hero Section */
-.hero-section {
-  min-height: 80vh;
-  padding: 8rem 2rem 4rem;
-  background-image: linear-gradient(#eff6e0cb, #eff6e0dd),
-    url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.hero-content {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.hero-section h1 {
-  font-size: 3.5rem;
-  color: #124559;
-  margin-bottom: 1.5rem;
-}
-
-.hero-section p {
-  font-size: 1.5rem;
-  color: #57737e;
-  margin-bottom: 2rem;
-}
-
-/* Features Section */
-.features-section {
-  padding: 4rem 2rem;
-  background-color: white;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  text-align: center;
-  margin-bottom: 3rem;
-  color: var(--darkBlue);
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.feature-card {
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-.feature-card:hover {
-  transform: scale(1.05);
-}
-
-.feature-card h3 {
-  font-size: 1.25rem;
-  margin: 1rem 0;
-  color: var(--darkBlue);
-}
-
-.feature-card p {
-  color: var(--lightBlue);
-}
-
-
-/* Footer */
-footer {
-  background-color: #124559;
-  color: white;
-  padding: 2rem 4rem;
-  border-top: 1px solid #eee;
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-}
-
-.footer-section h3 {
-    color: white;
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-}
-
-.footer-section p {
-    color: #a1bac4;
-  margin-bottom: 1rem;
-}
-
-.footer-links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.footer-link {
-  color: #a1bac4;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.footer-link:hover {
-  color: var(--darkBlue);
-}
-
-.footer-bottom {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid #eee;
-  text-align: center;
-  color: var(--lightBlue);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
+  
+  /* Assume Palette 1 variables (--primary-blue, --accent-blue, --neutral-*, etc.) */
+  /* are defined globally (e.g., in index.css) */
+  
+  /* --- Base --- */
+  body { /* Or apply to a root div if body styles are elsewhere */
+    color: var(--text-color); 
+    background-color: var(--background-color); 
+  }
+  
+  a {
+    color: var(--accent-blue);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  
+  /* --- Navigation --- */
   .navLandingPage {
-    padding: 1rem 2rem;
+    background-color: var(--neutral-white); /* White background */
+    padding: 1.2rem 3.2rem; /* Use rem */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100; 
+    border-bottom: 1px solid var(--border-color); /* Subtle separator */
+    box-shadow: 0 1px 3px var(--shadow-color); /* Subtle shadow */
   }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    width: 9rem; /* Use rem (~90px) */
+    height: auto;
+  }
+  
+  /* --- Buttons (Consistent Styling) --- */
 
+/* Login Button (Secondary Style) */
+.btnlogin {
+    padding: 1rem 2rem; 
+    border-radius: 1rem; /* Consistent moderate rounding */
+    font-weight: 600;
+    font-size: 1.5rem; 
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--primary-blue);
+    border: 1.5px solid var(--primary-blue);
+    transition: background-color 0.2s ease-out, transform 0.1s ease-out;
+    text-align: center;
+    line-height: 1.4; 
+    display: inline-block; 
+    text-decoration: none; /* In case it's an 'a' tag */
+    user-select: none;
+    -webkit-user-select: none; 
+  }
+  
+  .btnlogin:hover {
+    /* Subtle background fill on hover */
+    background-color: var(--primary-blue-light, #E3F2FD); /* Define --primary-blue-light */
+  }
+  
+  .btnlogin:active {
+    transform: scale(0.98); /* Press effect */
+    background-color: var(--primary-blue-light, #E3F2FD); 
+    opacity: 0.9;
+  }
+  /* Dark mode secondary button hover/active */
+  [data-theme='dark'] .btnlogin:hover {
+    background-color: var(--primary-blue-light-dark, rgba(66, 165, 245, 0.15)); 
+  }
+  [data-theme='dark'] .btnlogin:active {
+    background-color: var(--primary-blue-light-dark, rgba(66, 165, 245, 0.15));
+  }
+  
+  
+  /* Register Button (Primary Style) */
+  .btnregister {
+    padding: 1.1rem 2.4rem; /* Slightly larger padding */
+    border-radius: 1rem; /* Consistent moderate rounding */
+    font-weight: 600;
+    font-size: 1.6rem; /* Slightly larger font */
+    cursor: pointer;
+    background-color: var(--primary-blue);
+    color: var(--neutral-white);
+    border: 1.5px solid var(--primary-blue);
+    transition: background-color 0.2s ease-out, transform 0.1s ease-out, box-shadow 0.2s ease-out;
+    text-align: center;
+    line-height: 1.4; 
+    display: inline-block; 
+    text-decoration: none; 
+    user-select: none;
+    -webkit-user-select: none; 
+    margin-top: 1.6rem; /* Space above */
+    width: auto; /* Let padding define width */
+    max-width: 32rem; /* Optional: constrain width */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  
+  .btnregister:hover {
+    background-color: var(--accent-blue);
+    border-color: var(--accent-blue);
+    transform: translateY(-2px); /* Lift effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
+  }
+  
+  .btnregister:active {
+    transform: translateY(0px) scale(0.98); /* Press effect */
+    opacity: 0.95;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); 
+  }
+  /* --- Hero Section --- */
+  .hero-section {
+    /* Calculate min-height based on approximate nav height */
+    /* Assuming nav height ~6rem (adjust if needed) */
+    min-height: calc(90vh - 6rem); 
+    /* Add top padding equal to nav height + extra space */
+    padding: 12rem 2rem 6rem 2rem; 
+    /* Use variables for gradient overlay */
+    /* Using neutral-light for overlay */
+    background-image: linear-gradient(rgba(245, 245, 245, 0.85), rgba(245, 245, 245, 0.9)),
+    url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); /* <<<=== UPDATE IMAGE URL HERE */
+    background-size: cover;
+    background-position: center center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .hero-content {
+    max-width: 80rem; 
+    margin: 0 auto;
+  }
+  
   .hero-section h1 {
-    font-size: 2.5rem;
+    /* Responsive font size: min, preferred (viewport based), max */
+    font-size: clamp(2.8rem, 6vw, 4.5rem); 
+    color: var(--primary-blue); 
+    margin-bottom: 1.6rem; 
+    font-weight: 700; 
+    line-height: 1.2;
   }
-
+  
   .hero-section p {
-    font-size: 1.25rem;
+    font-size: clamp(1.6rem, 3vw, 2rem); 
+    color: var(--neutral-medium); 
+    margin-bottom: 2.4rem; 
+    line-height: 1.6;
+    max-width: 60rem; 
+    margin-left: auto;
+    margin-right: auto;
   }
-
+  
+  /* --- Features Section --- */
+  .features-section {
+    padding: 6rem 0; /* More vertical padding, no horizontal (handled by container) */
+    background-color: var(--neutral-white); 
+  }
+  
+  /* Optional container to constrain width */
+  .container { 
+      max-width: 120rem; /* e.g., 1200px */
+      margin: 0 auto;
+      padding: 0 1.6rem; /* Padding inside container */
+  }
+  
   .section-title {
-    font-size: 2rem;
+    font-size: clamp(2.4rem, 5vw, 3.2rem); 
+    text-align: center;
+    margin-bottom: 4rem; 
+    color: var(--primary-blue); /* Use primary color */
+    font-weight: 700;
   }
-}
+  
+  .features-grid {
+    display: grid;
+    /* Adjust minmax for better control, e.g., 28rem */
+    grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr)); 
+    gap: 2.4rem; 
+  }
+  
+  .feature-card {
+    background-color: var(--neutral-white); 
+    padding: 2.4rem; 
+    border-radius: 1.6rem; /* Softer radius */
+    box-shadow: 0 4px 10px var(--shadow-color); 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center; 
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-5px); /* Lift effect */
+    box-shadow: 0 8px 20px var(--shadow-color); 
+  }
+  
+  .feature-icon {
+    color: var(--primary-blue); 
+    margin-bottom: 1.2rem; 
+    /* Size is set via prop in JSX, e.g., size={48} */
+  }
+  
+  .feature-card h3 {
+    font-size: 1.8rem; 
+    font-weight: 600;
+    margin-top: 1rem; 
+    margin-bottom: 0.8rem; 
+    color: var(--text-color); 
+  }
+  
+  .feature-card p {
+    color: var(--neutral-medium); 
+    font-size: 1.5rem; 
+    line-height: 1.6;
+  }
+  
+  
+  /* --- Footer --- */
+  footer {
+    /* Darker background using primary blue */
+    background-color: var(--primary-blue); 
+    color: var(--neutral-white); 
+    padding: 4rem 2rem 2rem 2rem; 
+    border-top: none; 
+  }
+  
+  .footer-content {
+    max-width: 120rem;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    gap: 3rem; 
+    color: var(--neutral-white); 
+  }
+  
+  .footer-section h3 {
+      color: var(--neutral-white); 
+    font-size: 1.8rem; 
+    margin-bottom: 1.2rem; 
+    font-weight: 600;
+  }
+  
+  .footer-section p {
+      /* Lighter text for paragraphs in footer */
+      color: var(--neutral-light); 
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    line-height: 1.6;
+  }
+  
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem; 
+  }
+  
+  .footer-link {
+    color: var(--neutral-light); /* Lighter text for links */
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 1.5rem;
+    display: inline-flex; /* Align icon and text */
+    align-items: center;
+    gap: 0.8rem; /* Space between icon and text if using icons */
+  }
+  .footer-link:hover {
+    color: var(--accent-blue); /* Use accent color for hover */
+    text-decoration: underline;
+  }
+  
+  .footer-bottom {
+    margin-top: 3rem; 
+    padding-top: 2rem; 
+    border-top: 1px solid rgba(255, 255, 255, 0.2); /* Subtle separator */
+    text-align: center;
+    color: var(--neutral-light); /* Lighter text */
+    font-size: 1.4rem;
+  }
+  
+  /* --- Responsive Design --- */
+  @media (max-width: 768px) {
+    .navLandingPage {
+      padding: 1rem 1.6rem; /* Adjust padding */
+    }
+  
+    .logo {
+        width: 8rem; /* Smaller logo */
+    }
+  
+    .lp-btn {
+        padding: 0.8rem 1.6rem; /* Adjust button padding */
+        font-size: 1.4rem;
+    }
+  
+    .hero-section {
+        padding: 10rem 1.6rem 4rem 1.6rem; /* Adjust padding */
+        min-height: calc(100vh - 5rem); /* Adjust based on smaller nav */
+    }
+    /* Font sizes use clamp() for responsiveness */
+  
+    .features-section {
+        padding: 4rem 1.6rem;
+    }
+    .features-grid {
+        grid-template-columns: 1fr; /* Stack features */
+        gap: 1.6rem;
+    }
+    .feature-card {
+        padding: 2rem; /* Adjust card padding */
+    }
+  
+    footer {
+      padding: 3rem 1.6rem 1.6rem 1.6rem;
+    }
+    .footer-content {
+        grid-template-columns: 1fr; /* Stack footer sections */
+        text-align: center;
+    }
+    .footer-links {
+        align-items: center; /* Center links when stacked */
+    }
+  }

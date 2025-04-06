@@ -1,48 +1,173 @@
-p{
-    font-size: 18px;
-    font-weight: 400;
-    letter-spacing: 1px;
-    margin-bottom: 5px;
-    color: var(--text-color);
-}
-.profile p{
-    
-    font-size: 16px;
-    color: var(--text-color);
-    letter-spacing: 1px;
-    
-}
-.input{
-    width: 100%;
-    height: 5vh;
-    border: 1.5px solid #598392;
-    border-radius: 2vh;
-    margin-bottom: 1vh;
-    padding-left: 3vw;
-    font-size: 16px;
-    color: var(--text-color);
-    background-color: var(--background-color);
-    letter-spacing: 1px;
-}
-.profileImage{
-    height: 30vw;
-    width: 30vw;
-}
-.center{
+/* Profile.css - V7 - Grid, Fixed Label Width, Left-aligned Value */
+
+/* --- Page Header --- */
+.page > .column > .heading { 
+    margin-bottom: 1.6rem; 
+    text-align: center; 
+    color: var(--primary-blue);
+  }
+  
+  /* --- Profile Image --- */
+  .center { 
     display: flex;
     justify-content: center;
-
-}
-.profileBox{
-    margin:1vh 3vw 0vw 3vw;
-
-}
-.profileInfo{
-    max-width: 55vw;
-    margin: 1vh 0 1vh 0;
-}
-.logout{
-    background-color: #598392;
-    margin-top: 1vh;
-    height: 7vh;
-}
+    margin-bottom: -4rem; /* Keep overlap */
+    position: relative; 
+    z-index: 5; 
+  }
+  
+  .profileImage {
+    width: 10rem; 
+    height: 10rem;
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 4px solid var(--neutral-white); 
+    background-color: var(--neutral-light); 
+    box-shadow: 0 5px 15px var(--shadow-color); 
+  }
+  [data-theme='dark'] .profileImage {
+     border-color: var(--neutral-medium-bg); 
+     background-color: var(--neutral-dark-bg);
+     box-shadow: 0 5px 15px var(--shadow-color-dark);
+  }
+  
+  /* --- Profile Data Card --- */
+  .profileBox {
+    background-color: var(--neutral-white); 
+    border-radius: 1.6rem;
+    padding: 5.6rem 2rem 1.6rem 2rem; /* Adjusted L/R padding slightly */
+    box-shadow: 0 6px 25px var(--shadow-color); 
+    margin: 0 auto 3.2rem auto; 
+    max-width: 50rem; 
+    position: relative; 
+    z-index: 1; 
+  }
+  [data-theme='dark'] .profileBox {
+      background-color: var(--neutral-medium-bg); 
+      box-shadow: 0 6px 25px var(--shadow-color-dark);
+  }
+  
+  /* Style rows within the profile box - GRID LAYOUT */
+  .profileBox .column1 { 
+    display: grid;
+    /* Define two columns: 
+       1st column (Label): Fixed width (e.g., 9rem). Adjust if needed.
+       2nd column (Value): Takes the remaining available space (1fr). */
+    grid-template-columns: 9rem 1fr; 
+    align-items: center; /* Vertically align items in the middle */
+    column-gap: 1.6rem; /* Space between fixed label and value columns */
+    padding: 1.4rem 0; /* Vertical padding for the row */
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 0; 
+  }
+  .profileBox .column1:last-child {
+    border-bottom: none; 
+  }
+  [data-theme='dark'] .profileBox .column1 {
+      border-bottom-color: var(--border-color-dark);
+  }
+  
+  /* Style the label part (<p> tag) */
+  /* Assumes the <p> is the first element in .column1 */
+  .profileBox .column1 > p:first-of-type { 
+    font-size: 1.4rem; 
+    font-weight: 500; /* Medium weight */
+    color: var(--neutral-medium); 
+    margin: 0; 
+    text-align: left; /* Keep label text left-aligned */
+    text-transform: none; /* Sentence case */
+    letter-spacing: normal;
+    white-space: nowrap; 
+    /* Optional: Add overflow handling if a label is wider than the fixed width */
+    /* overflow: hidden; text-overflow: ellipsis; */
+  }
+  
+  /* Style the value part (.profileInfo - input) */
+  .profileInfo { 
+    background: transparent;
+    border: none;
+    border-bottom: none; 
+    border-radius: 0;
+    padding: 0; 
+    margin: 0;
+    display: block; 
+    width: 100%; 
+    
+    /* --- Text alignment --- */
+    text-align: left; /* **** CHANGED: Align value text LEFT **** */
+    
+    font-size: 1.6rem; 
+    font-weight: 500; 
+    color: var(--text-color); 
+    line-height: 1.4; 
+  
+    pointer-events: auto; 
+    user-select: auto;
+  }
+  [data-theme='dark'] .profileInfo {
+      color: var(--text-color);
+  }
+  
+  /* --- Logout Button (Keep V4/V5 style - Secondary Accent) --- */
+  .profile-logout-btn { 
+    display: block; 
+    width: 100%; 
+    max-width: 32rem; 
+    margin: 2.4rem auto 0 auto; /* Adjusted top margin */
+    padding: 1.2rem 2.4rem;
+    border-radius: 1rem; 
+    border: 1.5px solid var(--accent-blue); 
+    
+    background-color: transparent; 
+    color: var(--accent-blue); 
+    
+    font-size: 1.6rem; 
+    font-weight: 600; 
+    text-align: center;
+    
+    cursor: pointer;
+    transition: background-color 0.2s ease-out, color 0.2s ease-out, transform 0.1s ease-out;
+  }
+  
+  .profile-logout-btn:hover {
+    background-color: var(--accent-blue); 
+    color: var(--neutral-white); 
+  }
+  
+  .profile-logout-btn:active {
+    background-color: var(--accent-blue);
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+  /* Dark mode logout button */
+  [data-theme='dark'] .profile-logout-btn {
+      border-color: var(--accent-blue-dark);
+      color: var(--accent-blue-dark);
+  }
+  [data-theme='dark'] .profile-logout-btn:hover {
+      background-color: var(--accent-blue-dark);
+      color: var(--neutral-white); 
+  }
+  [data-theme='dark'] .profile-logout-btn:active {
+      background-color: var(--accent-blue-dark);
+      opacity: 0.85;
+      transform: scale(0.98);
+  }
+  
+  /* --- Error Message Styling (Keep as before) --- */
+  .error-message { 
+    background-color: #ffebee; 
+    color: #c62828; 
+    border: 1px solid #ef9a9a; 
+    border-radius: 0.8rem;
+    padding: 1.2rem 1.6rem;
+    margin: 0 auto 2rem auto; 
+    text-align: center;
+    max-width: 50rem; 
+    font-size: 1.4rem;
+  }
+  [data-theme='dark'] .error-message {
+    background-color: #4e1a1a; 
+    color: #ffcdd2; 
+    border-color: #c62828; 
+  }

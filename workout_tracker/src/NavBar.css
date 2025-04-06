@@ -1,26 +1,95 @@
-nav{
-    display: flex;
-    justify-content: space-around;
-    background-color: var(--nav-color);
-    height: 25vw;
-    width: 100vw;
-  }
-  .navLink{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-    text-decoration: none;
-    width: 25vw;
-    border-radius: 50%;
-    -webkit-tap-highlight-color: transparent;
-  }
+/* NavBar.css */
+
+nav {
+  /* Positioning & Box Model */
+  position: fixed; /* Stick to bottom */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  /* Consistent height (~72px), adjust 7.2rem value if needed */
+  height: 7.2rem; 
+  z-index: 100; /* Ensure it's above scrolling page content */
+
+  /* Appearance */
+  background-color: var(--nav-color); /* Use variable from index.css */
+  /* Subtle separator line */
+  border-top: 1px solid var(--border-color); 
+  /* Optional: Replace border-top with a shadow for a more layered look */
+  /* box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.06); */
+  /* [data-theme='dark'] & { box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.15); } */
   
-  .navLink :active{
-    background-color: #aec3b034;
+  /* Layout */
+  display: flex;
+  /* Items will be distributed by .navLink flex: 1 */
+  align-items: stretch; /* Make links fill the nav height */
+}
+
+.navLink {
+  /* Layout - Each link takes equal width */
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center icon & text vertically */
+  align-items: center; /* Center icon & text horizontally */
+  /* Adjust padding (e.g., 8px top/bottom, 4px left/right) */
+  padding: 0.8rem 0.4rem; 
+  gap: 0.4rem; /* Space between icon and text */
   
-  }
-  .active{
-    background-color: #aec3b029;
-  }
+  /* Appearance */
+  text-decoration: none;
+  background-color: transparent; /* Default background */
+   /* Remove the 50% radius - usually not wanted for full bar */
+  border-radius: 0;
+  /* Keeps the default browser blue highlight away on tap */
+  -webkit-tap-highlight-color: transparent; 
+  /* Smooth transitions for color/background changes */
+  transition: background-color 0.15s ease-out; 
+}
+
+.navLink svg {
+  /* Control icon size (~28px). Overrides SVG attributes if needed */
+  width: 2.8rem; 
+  height: 2.8rem;
+  /* Default icon color (uses secondary text variable) */
+  fill: var(--lightBlue); 
+  transition: fill 0.15s ease-out; 
+}
+
+.navLink p {
+   /* Slightly smaller text for nav items (~12px) */
+  font-size: 1.2rem; 
+  font-weight: 500; /* Medium weight */
+   /* Default text color (uses secondary text variable) */
+  color: var(--lightBlue);
+  text-align: center;
+  line-height: 1.2; /* Tighter line height for small text */
+  transition: color 0.15s ease-out;
+}
+
+/* Tap State (Momentary press feedback) - Corrected selector */
+.navLink:active {
+  /* Very subtle background color change on tap */
+  background-color: rgba(0, 0, 0, 0.05); 
+}
+/* Dark mode tap state */
+[data-theme='dark'] .navLink:active {
+   background-color: rgba(255, 255, 255, 0.08); 
+}
+
+
+/* Active State (Indicating the current page via .active class from Router) */
+.navLink.active {
+   /* Optional: Add a subtle background to active link */
+   /* background-color: rgba(13, 71, 161, 0.05); */ 
+}
+
+.navLink.active svg {
+  /* Use primary interactive color for active icon */
+  fill: var(--darkBlue); 
+}
+
+.navLink.active p {
+  /* Use primary interactive color for active text */
+  color: var(--darkBlue); 
+  font-weight: 600; /* Make active text slightly bolder */
+}

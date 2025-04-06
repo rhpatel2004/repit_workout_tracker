@@ -106,10 +106,10 @@ function SelectExercises() {
         </select>
       </div>
 
-      <div>
+      <div className="exercise-list-container"> 
         {loading && <p>Loading exercises...</p>}
         {error && (
-          <p>
+          <p  className="error-message">
             Error fetching exercises:{" "}
             {error.response?.data?.message || error.message}
           </p>

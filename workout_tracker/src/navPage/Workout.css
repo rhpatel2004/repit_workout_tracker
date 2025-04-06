@@ -1,42 +1,271 @@
-.addNewWorkout{
-    width: 92vw;
-    height: 7vh;
-    border: none;
-    border-radius: 2vh;
-    background-color: #124559;
-    color: white;
-    margin: 2vh 0;
-    font-size: 18px;
-    letter-spacing: 2px;
+/* Workout.css - Spacing Adjustments */
+
+/* Add more space above the main heading specifically on this page */
+/* (Ensure this selector is specific enough if .heading is used differently elsewhere) */
+.page .heading {
+    /* Targeting .heading within .page */
+    /* Keep added space above heading */
+    margin-bottom: 2.4rem;
+    /* Keep added space below heading */
+    /* text-align: center; */
+    /* **** REMOVE THIS LINE **** */
 }
 
-.plus{
+/* --- Primary Action Button ("Add New Workout") --- */
+.addNewWorkout {
+    /* Sizing & Box Model */
+    display: block;
+    /* **** CHANGED: Allow button to fill container width **** */
+    width: 100%;
+    /* **** REMOVED: max-width limit **** */
+    /* max-width: 35rem; */
+    height: 5.2rem;
     border: none;
-    height: 30px;
-    width: 30px; 
-    margin-right: 5vw;
-    background-color: transparent;
-    border-radius: 50%;
-}
-.plus:active{
-    background-color: #aec3b029 ;
-}
+    border-radius: 1.6rem;
+    /* Adjusted margin: Keep vertical, remove auto horizontal */
+    margin: 1rem 0 2.4rem 0;
+    padding: 0 1.6rem;
 
-.workoutCard{
-    border: 1.5px solid #598392;
-    border-radius: 5vw;
-    padding: 20px 0px 20px 30px;
-    margin: 20px 0;
-}
-.workoutCard ul{
-    list-style-type: none;
-}
-.workoutCard h3{
-    font-size: 18;
+    /* Appearance (Keep as before) */
+    background-color: var(--primary-blue);
+    color: var(--neutral-white);
+
+    /* Typography (Keep as before) */
+    font-size: 1.6rem;
     font-weight: 600;
-    letter-spacing: 1px;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+
+    /* States (Keep as before) */
+    cursor: pointer;
+    transition: background-color 0.2s ease-out, transform 0.1s ease-out, box-shadow 0.2s ease-out;
+    box-shadow: 0 2px 5px rgba(13, 71, 161, 0.2);
 }
-.workoutCard ul li,.workoutCard p{
-    font-size: 16px;
-    font-weight: 400;
+
+/* Keep hover/active/dark mode styles as before */
+/* ... */
+/* Keep hover/active/dark mode styles as before */
+.addNewWorkout:hover {
+    /* ... */
 }
+
+.addNewWorkout:active {
+    /* ... */
+}
+
+[data-theme='dark'] .addNewWorkout {
+    /* ... */
+}
+
+[data-theme='dark'] .addNewWorkout:hover {
+    /* ... */
+}
+
+[data-theme='dark'] .addNewWorkout:active {
+    /* ... */
+}
+
+
+/* --- Section Header Row ("Select default..." + Plus Button) --- */
+/* Targets the .column div specifically on this page */
+.page>.column {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* **** ADJUSTED MARGIN **** */
+    /* Reduced top margin, kept bottom margin */
+    /* margin-top: 1.6rem;  */
+    margin-bottom: 1.6rem;
+    padding: 0 0.8rem;
+}
+
+/* Style for the text label */
+.page>.column>.text {
+    color: var(--neutral-medium);
+    font-size: 1.5rem;
+    margin-bottom: 0;
+    font-weight: 500;
+}
+
+
+/* Workout.css - Additions/Modifications for SelectExercises Page */
+
+/* --- Header Alignment (H1 with Back Button) --- */
+/* Targets the .heading specifically within .subPage */
+.subPage>.heading {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    /* Adjust space between button and text */
+    margin-bottom: 1.6rem;
+    /* Space below header */
+    /* Inherit font size/weight/color from index.css */
+}
+
+/* Ensure heading text takes remaining space and aligns */
+.subPage>.heading {
+    /* Existing base styles apply */
+}
+
+/* Reset margin on the button inside heading */
+.subPage>.heading .topButton {
+    margin: 0;
+    flex-shrink: 0;
+    /* Prevent button from shrinking */
+}
+
+/* --- Filter Row (Text + Select Dropdown) --- */
+/* Target .column specifically in .subPage */
+.subPage>.column {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0;
+    /* Reset top margin */
+    margin-bottom: 2.4rem;
+    /* Space below filter row */
+    padding: 0 0.8rem;
+    /* Optional: slight horizontal padding */
+    gap: 1.6rem;
+    /* Space between text and select */
+}
+
+.subPage>.column>.text {
+    color: var(--neutral-medium);
+    font-size: 1.5rem;
+    margin-bottom: 0;
+    font-weight: 500;
+    flex-shrink: 0;
+    /* Prevent text label from shrinking */
+}
+
+select.dropDown {
+    flex-grow: 1;
+    /* Allow select to take available space */
+    /* Optional: Limit max width if it becomes too wide */
+    /* max-width: 22rem; */
+    /* Base styles (border, padding, arrow) inherited from index.css */
+}
+
+/* Option styling inherited from index.css */
+/* select.dropDown .option { } */
+
+/* --- Exercise List Container --- */
+/* Target the div wrapping the exercise list results */
+/* Consider adding class="exercise-list-container" in JSX for reliability */
+/* Replace the old :has() rule with this: */
+.exercise-list-container {
+    margin-top: 1rem; /* Space above the list/message */
+    /* Add padding to clear FAB and potentially NavBar */
+    padding-bottom: 12rem; /* Adjust as needed */
+  }
+  
+/* --- Exercise Card Styling --- */
+.exercise-card {
+    background-color: var(--neutral-white);
+    border: 1px solid var(--border-color);
+    /* Start with transparent left border */
+    border-left: 4px solid transparent;
+    border-radius: 0.8rem;
+    /* Use rem for padding */
+    padding: 1.2rem 1.6rem;
+    /* Use rem for margin */
+    margin-bottom: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+    position: relative;
+    /* For potential pseudo-elements */
+}
+
+.exercise-card:hover {
+    background-color: var(--neutral-light);
+    /* Subtle hover */
+    border-color: var(--neutral-medium);
+    /* Slightly darker border on hover */
+}
+
+.exercise-card h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0 0 0.4rem 0;
+    /* Reset letter-spacing from potential inline styles */
+    letter-spacing: normal;
+}
+
+.exercise-card p {
+    font-size: 1.3rem;
+    color: var(--neutral-medium);
+    margin: 0;
+}
+
+/* --- Selected State --- */
+/* Define these light blue colors in :root in index.css */
+/* --primary-blue-light: #E3F2FD; */
+/* --primary-blue-light-dark: rgba(66, 165, 245, 0.15); */
+.exercise-card.selected {
+    background-color: var(--primary-blue-light, #E3F2FD);
+    border-color: var(--primary-blue);
+    /* Use primary blue for border */
+    border-left: 4px solid var(--primary-blue);
+    /* Show solid left border */
+    /* Optional: Adjust padding slightly if left border pushes content */
+    /* padding-left: calc(1.6rem - 3px); */
+}
+
+.exercise-card.selected h3 {
+    color: var(--primary-blue);
+    /* Highlight title */
+}
+
+/* Dark mode selected state */
+[data-theme='dark'] .exercise-card {
+    background-color: var(--neutral-medium-bg);
+    border-color: var(--border-color-dark);
+}
+
+[data-theme='dark'] .exercise-card:hover {
+    background-color: var(--neutral-dark-bg);
+    border-color: var(--neutral-medium);
+}
+
+[data-theme='dark'] .exercise-card.selected {
+    background-color: var(--primary-blue-light-dark, rgba(66, 165, 245, 0.15));
+    border-color: var(--primary-blue-dark);
+    border-left-color: var(--primary-blue-dark);
+}
+
+[data-theme='dark'] .exercise-card.selected h3 {
+    color: var(--primary-blue-dark);
+}
+
+
+/* --- Loading / Error / Empty States --- */
+/* Target the parent div holding the messages (improve selector if possible) */
+/* Consider adding class="exercise-feedback" to the div in JSX */
+.subPage>div>p {
+    text-align: center;
+    font-size: 1.5rem;
+    color: var(--neutral-medium);
+    font-style: italic;
+    /* Italicize feedback messages */
+}
+
+/* Style specific error message paragraph - Add class="error-message" in JSX */
+.error-message {
+    color: var(--danger-color, #D32F2F);
+    font-style: normal;
+}
+
+[data-theme='dark'] .error-message {
+    /* Adjust dark mode error color if needed */
+}
+
+
+/* --- FAB (.subTickButton) --- */
+/* Styles are primarily in index.css. Check positioning */
+/* Make sure the padding-bottom on the list container or .subPage is sufficient */
+/* Example override if FAB is too low: */
+/* .subTickButton {
+      bottom: 10rem; /* Raise it to clear NavBar */
+/* } */

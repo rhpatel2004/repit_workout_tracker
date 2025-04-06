@@ -16,3 +16,131 @@ Link{
     font-size: 30px;
     font-weight: 400;
 }
+/* trainer.css - Styles for Trainer Dashboard */
+
+/* --- Page Structure --- */
+/* Ensure .page from index.css has enough bottom padding for TrainerNav */
+/* This rule might already exist or be sufficient in index.css */
+.page {
+    padding-bottom: 10rem; /* Adjust if TrainerNav height differs */
+  }
+  
+  /* Heading */
+  .page .heading {
+    /* Rely on index.css for base style (font, color, weight) */
+    /* Ensure consistent alignment and spacing */
+    text-align: left; 
+    margin-top: 1.6rem; /* Add space above if needed */
+    margin-bottom: 2.4rem; /* Consistent space below heading */
+  }
+  
+  /* Main content area below heading */
+  .dashboard-content {
+    /* Add margin if needed */
+  }
+  
+  /* --- Loading / Error / Empty States --- */
+  /* Target the specific paragraphs */
+  .dashboard-content > p { 
+    text-align: center;
+    padding: 3.2rem 1.6rem;
+    font-size: 1.5rem;
+    color: var(--neutral-medium);
+    font-style: italic; 
+  }
+  /* Add class="error-message" in JSX for specific error styling */
+  .error-message { 
+     color: var(--danger-color, #D32F2F); 
+     font-style: normal;
+  }
+  [data-theme='dark'] .error-message {
+      /* Adjust dark mode error color if needed */
+  }
+  
+  
+  /* --- Client List --- */
+  .client-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    /* Optional: Add gap if using display: grid later */
+    /* display: grid; gap: 1.2rem; */
+  }
+  
+  /* --- Client Card Styling --- */
+  /* *** IMPORTANT: Use className="client-card" in Dashboard.jsx *** */
+  .client-card {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem; /* Space between image and text */
+    
+    background-color: var(--neutral-white);
+    border-radius: 1.2rem; /* Consistent card radius */
+    padding: 2.5rem 1.6rem;
+    margin-bottom: 1.2rem; /* Space between client cards */
+    box-shadow: 0 2px 5px var(--shadow-color);
+    
+    position: relative; /* For chevron pseudo-element */
+    text-decoration: none; /* Added via Link style prop, but good fallback */
+    color: inherit; 
+    
+    transition: box-shadow 0.2s ease-out, transform 0.2s ease-out;
+  }
+  .client-card:hover {
+    box-shadow: 0 4px 10px var(--shadow-color);
+    transform: translateY(-2px); /* Subtle lift */
+  }
+  /* Add chevron arrow for visual cue that it's interactive */
+  .client-card::after {
+    content: '›'; /* Right-pointing angle bracket */
+    position: absolute;
+    right: 1.6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: var(--neutral-medium);
+    opacity: 0.7;
+    transition: opacity 0.2s ease-out;
+  }
+  .client-card:hover::after {
+    opacity: 1;
+  }
+  
+  
+  /* Dark mode client card */
+  [data-theme='dark'] .client-card {
+      background-color: var(--neutral-medium-bg);
+      box-shadow: 0 2px 5px var(--shadow-color-dark);
+  }
+  [data-theme='dark'] .client-card:hover {
+      box-shadow: 0 4px 10px var(--shadow-color-dark);
+  }
+  [data-theme='dark'] .client-card::after {
+    color: var(--neutral-text-medium-dark);
+  }
+  
+  
+  /* Client Image */
+  .client-card img {
+    width: 4.4rem; /* Consistent image size (~44px) */
+    height: 4.4rem;
+    border-radius: 50%; /* Circular */
+    object-fit: cover; /* Prevent distortion */
+    flex-shrink: 0; /* Prevent image shrinking */
+    background-color: var(--neutral-light); /* Placeholder bg */
+  }
+  
+  /* Client Name */
+  .client-card p {
+    font-size: 1.6rem;
+    font-weight: 600; /* Make name stand out */
+    color: var(--text-color);
+    margin: 0; /* Reset margin */
+    flex-grow: 1; /* Allow name to take available space */
+    /* Handle long names gracefully */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 1.6rem; /* Add padding so text doesn't overlap chevron */
+  }

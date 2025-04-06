@@ -130,7 +130,7 @@ function ProfilePage() {
                 </div>
 
 
-                <button className="addNewWorkout logout" onClick={handleLogout}>
+                <button className="profile-logout-btn" onClick={handleLogout}>
                     Log Out
                 </button>
             </div>

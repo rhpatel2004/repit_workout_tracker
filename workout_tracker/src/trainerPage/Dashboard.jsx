@@ -95,7 +95,7 @@ function Dashboard() {
                                     <Link to={`/trainer/clients/${client._id}/workouts`} 
                                     key={client._id}
                                     style={{ textDecoration: 'none', color: 'inherit' }} >
-                                        <div className="workoutCard" key={client._id}>
+                                        <div className="client-card" key={client._id}>
                                             {client.profilePictureUrl && (
                                                 <img
                                                     src={client.profilePictureUrl}

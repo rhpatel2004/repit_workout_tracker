@@ -1,33 +1,197 @@
+/* HistoryCard.css - Complete Revised Styles */
+
 .workoutCard {
-    border: 1.5px solid #598392;
-    border-radius: 5vw;
-    padding: 20px 0px 20px 30px;
-    margin: 20px 0;
-}
+    background-color: var(--neutral-white);
+    /* **** CHANGED: Increase border-radius **** */
+    border-radius: 1.6rem; /* Matches Profile/Auth cards (16px) */
+    padding: 1.6rem; 
+    margin: 0; 
+    border-left: 4px solid var(--primary-blue); 
+    box-shadow: 0 2px 6px var(--shadow-color); 
+    transition: box-shadow 0.2s ease-out, transform 0.2s ease-out; 
+    overflow: hidden; 
+  }
+  
+  .workoutCard:hover {
+     box-shadow: 0 5px 12px var(--shadow-color);
+     /* Optional: Subtle lift effect on hover */
+     /* transform: translateY(-2px); */ 
+  }
+  /* Dark mode card styles */
+  [data-theme='dark'] .workoutCard {
+      background-color: var(--neutral-medium-bg);
+      border-left-color: var(--primary-blue-dark);
+      box-shadow: 0 2px 6px var(--shadow-color-dark);
+  }
+  [data-theme='dark'] .workoutCard:hover {
+      box-shadow: 0 5px 12px var(--shadow-color-dark);
+      /* transform: translateY(-2px); */
+  }
+  
+  /* In HistoryCard.css */
 
-.workoutCard h3 {
-    font-size: 1.5rem; 
+/* Clickable header row */
+.workoutCard > .column { 
+    cursor: pointer;
+    position: relative; /* Keep for positioning context if needed */
+    display: flex;
+    justify-content: space-between; /* Pushes text block and button apart */
+    /* --- Explicitly Ensure Vertical Centering --- */
+    align-items: center; /* This is the key property */
+    gap: 1rem; /* Space between text block and button */
+    /* Reset potentially interfering properties */
+    align-content: initial; 
+    align-self: initial;
+  }
+  
+  /* Workout Name (No changes needed, just for context) */
+  .workoutCard h3 { 
+    font-size: 1.6rem; 
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0 0 0.2rem 0; 
+    line-height: 1.3;
+  }
+  
+  /* Date Display (No changes needed, just for context) */
+  .workoutCard > .column p { 
+    font-size: 1.3rem; 
+    color: var(--neutral-medium);
     margin: 0;
-}
-.workoutCard span{
-    text-decoration: none;
-}
-.workoutCard p {
-    font-size: 1rem;
-    margin: 5px 0;
-}
-
-.workoutDetails h4 {
-    font-size: 1.25rem; /* Set font size for exercise headings */
-    margin: 10px 0 5px; /* Margin above and below */
-}
-
-.workoutDetails ul {
-    list-style-type: none; /* Remove bullet points */
-    padding-left: 0; /* Remove default padding */
-}
-
-.workoutDetails li {
-    font-size: 0.9rem; /* Set font size for exercise details */
-    margin-left: 10px; /* Add left margin for nested lists */
-}
+    line-height: 1.3;
+  }
+  
+  
+  /* Delete Button (.plus) - Should be vertically centered by the parent's align-items: center */
+  .plus { 
+    display: inline-flex; /* Use flex to center SVG inside button */
+    align-items: center; /* Center SVG vertically inside button */
+    justify-content: center; /* Center SVG horizontally inside button */
+    flex-shrink: 0; /* Prevent button from shrinking */
+    margin: 0; /* Reset margins */
+    z-index: 2; 
+  
+    border: none;
+    background: transparent;
+    padding: 0.8rem; /* Tappable area */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.15s ease-out;
+  }
+  /* Keep SVG, hover, active styles as they were */
+  .plus svg {
+    width: 2rem; 
+    height: 2rem;
+    fill: var(--neutral-medium); 
+    transition: fill 0.15s ease-out;
+  }
+  .plus:hover svg {
+    fill: var(--danger-color, #D32F2F); 
+  }
+  .plus:active {
+    background-color: var(--danger-bg-light, rgba(211, 47, 47, 0.1)); 
+  }
+  
+  /* --- Rest of the styles (.workoutDetails, etc.) remain unchanged --- */
+  /* ... */
+  /* Expandable Details Section */
+  .workoutDetails {
+    /* Smooth transition using max-height */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, opacity 0.2s ease-out 0.1s, margin-top 0.4s ease-out, padding-top 0.4s ease-out, border-top-width 0.4s ease-out;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0px solid transparent; /* Start border transparent */
+    color: var(--neutral-medium); 
+  }
+  /* Styles for when card is expanded (using data-expanded attribute) */
+  .workoutCard[data-expanded="true"] .workoutDetails {
+    max-height: 1500px; /* Large enough value */
+    opacity: 1;
+    margin-top: 1.6rem; /* Space above details */
+    padding-top: 1.6rem; /* Padding above details */
+    border-top: 1px solid var(--border-color); /* Separator line */
+    transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out 0.1s, margin-top 0.5s ease-in-out, padding-top 0.5s ease-in-out, border-top-width 0.1s linear;
+  }
+  [data-theme='dark'] .workoutCard[data-expanded="true"] .workoutDetails {
+      border-top-color: var(--border-color-dark);
+  }
+  
+  
+  /* Titles within Details ("Workout Note", "Exercises") */
+  .workoutDetails h4 { 
+    font-size: 1.4rem; 
+    font-weight: 600;
+    color: var(--text-color); 
+    margin: 0 0 0.8rem 0; /* Default margin below titles */
+  }
+  
+  /* Specific styling for "Workout Note" heading */
+  .workoutDetails > h4:first-of-type {
+      margin-bottom: 0.4rem; /* Reduce space below "Workout Note" title */
+  }
+  
+  /* Notes Paragraph - Smaller and less space */
+  /* Targets the <p> immediately following the first <h4> */
+  .workoutDetails > h4:first-of-type + p { 
+     font-size: 1.2rem; /* Smaller font */
+     font-style: italic; /* Optional: Italicize */
+     line-height: 1.4; /* Tighter line height */
+     margin-bottom: 1.2rem; /* Reduced space AFTER notes */
+     color: var(--neutral-medium);
+  }
+  
+  /* Adjust margin for "Exercises" H4 if it follows Notes P */
+  .workoutDetails > p + h4 {
+      margin-top: 1.2rem; /* Ensure adequate space above Exercises title */
+  }
+  
+  
+  /* Exercises List */
+  .workoutDetails > ul { /* Main ul for exercises */
+    list-style: none;
+    padding: 0;
+  }
+  
+  .workoutDetails > ul > li { /* Each exercise li */
+    margin-bottom: 1.6rem; /* Space between exercises */
+  }
+  .workoutDetails > ul > li:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* Exercise Name Title */
+  .workoutDetails > ul > li > h4 { 
+    font-size: 1.4rem; 
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0 0 0.6rem 0; /* Space below exercise name */
+  }
+  
+  /* Sets List */
+  .workoutDetails > ul > li > ul { /* ul for sets */
+    list-style: none; 
+    padding-left: 1.6rem; /* Indent sets */
+    margin: 0;
+    border-left: 2px solid var(--border-color); 
+  }
+  [data-theme='dark'] .workoutDetails > ul > li > ul {
+      border-left-color: var(--border-color-dark);
+  }
+  
+  /* Each Set li */
+  .workoutDetails > ul > li > ul > li { 
+    font-size: 1.4rem; 
+    line-height: 1.4;
+    color: var(--neutral-medium);
+    margin: 0 0 0.6rem 0; /* Space between sets */
+    position: relative; 
+  }
+  
+  /* Spans within set details (Reps, Weight etc.) */
+  .workoutDetails span {
+    margin-left: 0.2rem; 
+    margin-right: 0.5rem; 
+  }

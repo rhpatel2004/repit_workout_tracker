@@ -228,7 +228,7 @@ function MakeWorkout() {
                       <input
                         className="detailInp"
                         type="number"
-                        placeholder="Weight"
+                        placeholder="Weight(kg)"
                         value={set.weight}
                         onChange={(e) =>
                           handleInputChange(

@@ -1,34 +1,203 @@
-.label{
-    display: flex;
-    justify-content: flex-start;
-    align-items:center;
-    padding: 7px;
-    gap: 5px;
-}
+/* login.css - Enhanced Styles */
 
-.label p{
-    font-size: 25px;
-    font-weight: 400;
-    margin: 0;
-}
-.btn{
-    width: 92vw;
-    height: 7vh;
+/* --- Auth Card --- */
+/* login.css - Update the .auth-card rule */
+
+.auth-card {
+    background-color: var(--neutral-white); 
+    border-radius: 1.6rem; 
+    /* --- ADJUSTED PADDING --- */
+    /* Reduce left/right padding (e.g., from 2.4rem to 1.6rem) */
+    padding: 3.2rem 1.6rem; 
+    box-shadow: 0 6px 20px var(--shadow-color); 
+    margin: 4rem auto; 
+    /* --- ADJUSTED WIDTH --- */
+    /* Reduce external side margins (e.g., from 1.6rem each side to 1.2rem each side) */
+    width: calc(100% - 2.4rem); 
+    max-width: 42rem; /* Keep max-width for now, can increase later if needed */
+  }
+  
+  /* Ensure dark mode version inherits the new padding/width */
+  [data-theme='dark'] .auth-card {
+      background-color: var(--neutral-medium-bg); 
+      box-shadow: 0 6px 20px var(--shadow-color-dark);
+  }
+  
+  /* --- Optional: Adjust column gap if needed --- */
+  /* If the two-column layout (First/Last Name) still feels tight: */
+  /* .column1 {
+      gap: 1.2rem; /* Reduce gap slightly from 1.6rem */
+  /* } */
+  
+  /* --- Form Layout (adjustments for card) --- */
+  .auth-card .heading {
+    margin-top: 0; /* Remove top margin, card padding handles it */
+    margin-bottom: 0.8rem; 
+    text-align: center; 
+    color: var(--primary-blue); /* Ensure heading uses primary color */
+    font-weight: 700; /* Make heading bolder */
+    font-size: 3rem; /* Slightly larger heading */
+  }
+  
+  .auth-card .text {
+    margin-bottom: 3.2rem; /* Space below subtext */
+    text-align: center; 
+    font-size: 1.5rem; /* Slightly larger subtext */
+    color: var(--lightBlue); /* Use secondary text color */
+  }
+  
+  .auth-card form {
+    /* Form itself doesn't need top margin if card has padding */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  
+  /* --- Input Labels (Refined) --- */
+  .label {
+    display: flex;
+    align-items: center; 
+    padding-bottom: 0.6rem; /* Slightly less space below label */
+    gap: 0.6rem; /* Slightly less space between icon/text */
+  }
+  
+  .label svg {
+    width: 1.8rem; /* Slightly smaller icon */
+    height: 1.8rem;
+    fill: var(--lightBlue); 
+  }
+  
+  .label p {
+    font-size: 1.4rem; 
+    font-weight: 500; /* Medium weight */
+    color: var(--neutral-medium); /* Use medium gray to de-emphasize vs input */
+    margin: 0; 
+  }
+  
+  /* --- Spacing between form elements (adjust if needed) --- */
+  input + .label, 
+  select + .label,
+  input + .column1,
+  .column1 + .label,
+  input + select /* Added this for Role -> Select Trainer */
+   {
+    margin-top: 1.8rem; /* Slightly reduced space */
+  }
+  input, select {
+      margin-bottom: 0.4rem; 
+  }
+  .column1 {
+    gap: 1.6rem;
+    margin-bottom: 0.4rem; 
+  }
+  .column1 input, .column1 select {
+     margin-bottom: 0; 
+  }
+  
+  
+  /* --- Submit Button (`.btn`) - Enhanced --- */
+  .btn {
+    width: 100%; 
+    height: 5.2rem; 
     border: none;
-    border-radius: 2vh;
-    background-color: var(--darkBlue);
-    color: white;
-    margin: 2vh 0;
-    font-size: 18px;
-    letter-spacing: 2px;
-}
-form h3{
-    font-weight: 400;
-    display: flex;
-    justify-content: center;
-}
-form a{
-    font-weight: 600;
-}
-
+    border-radius: 1rem; 
+    margin: 2.8rem 0 1.6rem 0; /* Adjusted top margin */
+    padding: 0 1.6rem; 
+  
+    /* --- Gradient Background for more impact --- */
+    background-image: linear-gradient(to right, var(--accent-blue) 0%, var(--primary-blue) 50%, var(--primary-blue) 100%);
+    background-size: 200% auto; /* For hover effect */
+    color: var(--neutral-white); 
     
+    font-size: 1.6rem; 
+    font-weight: 600; 
+    letter-spacing: 0.1rem; 
+    text-transform: uppercase; /* Uppercase for strong CTA */
+    
+    cursor: pointer;
+    transition: background-position 0.4s ease-out, transform 0.1s ease-out, box-shadow 0.2s ease-out;
+    box-shadow: 0 2px 5px rgba(13, 71, 161, 0.2); /* Subtle shadow */
+  }
+  
+  .btn:hover { 
+    background-position: right center; /* Shift gradient on hover */
+    box-shadow: 0 4px 10px rgba(13, 71, 161, 0.3); /* Enhance shadow on hover */
+  }
+  
+  .btn:active {
+    /* Keep gradient, fade slightly */
+    opacity: 0.9; 
+    transform: scale(0.98); 
+    box-shadow: 0 1px 3px rgba(13, 71, 161, 0.2); /* Reduce shadow on press */
+  }
+  /* Dark mode gradient (adjust if needed) */
+  [data-theme='dark'] .btn {
+      background-image: linear-gradient(to right, var(--accent-blue-dark) 0%, var(--primary-blue-dark) 50%, var(--primary-blue-dark) 100%);
+      box-shadow: 0 2px 5px rgba(66, 165, 245, 0.2);
+  }
+  [data-theme='dark'] .btn:hover {
+      box-shadow: 0 4px 10px rgba(66, 165, 245, 0.3);
+  }
+  [data-theme='dark'] .btn:active {
+      opacity: 0.9;
+      transform: scale(0.98);
+      box-shadow: 0 1px 3px rgba(66, 165, 245, 0.2);
+  }
+  
+  
+  /* --- Link below form --- */
+  form h3 {
+    font-weight: 400; 
+    font-size: 1.4rem; 
+    text-align: center;
+    margin-top: 2.4rem; 
+    color: var(--neutral-medium); 
+  }
+  
+  form h3 a {
+    font-weight: 600; 
+    color: var(--accent-blue); 
+    text-decoration: none; 
+    margin-left: 0.5rem; 
+    transition: color 0.15s ease-out;
+  }
+  
+  form h3 a:hover {
+    text-decoration: underline; 
+    color: var(--primary-blue); 
+  }
+  [data-theme='dark'] form h3 a {
+     color: var(--accent-blue-dark);
+  }
+  [data-theme='dark'] form h3 a:hover {
+     color: var(--primary-blue-dark);
+  }
+
+
+@media (max-width: 400px) { 
+    /* --- Responsive adjustments for very small screens --- */
+  
+    .column1 {
+      flex-direction: column; /* Stack items vertically */
+      align-items: stretch; /* Make items take full available width */
+      gap: 1.6rem; /* Use gap for vertical spacing between stacked items */
+    }
+  
+    /* Ensure the divs containing the selects inside column1 take full width */
+    .column1 > div {
+      width: 100%; 
+    }
+    
+    /* Remove margin overrides if they conflict with gap */
+    .column1 input, .column1 select {
+      margin-bottom: 0; /* Rely on gap for spacing */
+    }
+    .column1 {
+      margin-bottom: 1.6rem; /* Add margin below the whole stacked column */
+    }
+    
+    /* You might need to adjust spacing for elements FOLLOWING .column1 */
+    .column1 + .label {
+        margin-top: 1.6rem; /* Ensure consistent spacing below the stacked column */
+    }
+  }

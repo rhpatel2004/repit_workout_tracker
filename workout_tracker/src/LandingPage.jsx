@@ -87,26 +87,35 @@ function LandingPage() {
 
       {/* Footer */}
       <footer>
-        <div className="footer-content">
-          <div className="footer-section">
-            <h3>About the Developer</h3>
-            <p>
-            I'm Rohan Patel, a fitness-enthusiast and full-stack developer who leveraged technical skills and creative vision to design and build RepIt.
-            </p>
-          </div>
-          <div className="footer-section">
-            <h3>Connect With Me</h3>
-            <div className="footer-links">
-              <a href="" className="footer-link">rhpatel2004@gmail</a>
-              <a href="https://github.com/rhpatel2004" target="_blank" rel="noopener noreferrer" className="footer-link">GitHub</a>
-              <a href="https://www.linkedin.com/in/rohan-patel-6826822b6?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" className="footer-link">LinkedIn</a>
-            </div>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} Repit. All rights reserved.</p>
-        </div>
-      </footer>
+  <div className="footer-content">
+    {/* Section 1: About Repit */}
+    <div className="footer-section">
+      <h3>About Repit</h3>
+      <p>
+        Repit is designed to be your ultimate fitness companion, empowering you 
+        to track workouts, monitor progress, and achieve your goals efficiently. 
+        Built with passion by fitness enthusiasts, for fitness enthusiasts.
+      </p>
+    </div>
+
+    {/* Section 2: Quick Links (Optional) */}
+    {/* Add links if you have relevant pages like Features, Pricing (future), etc. */}
+    {/* <div className="footer-section">
+      <h3>Quick Links</h3>
+      <div className="footer-links">
+        <Link to="/features" className="footer-link">Features</Link>
+        <Link to="/contact" className="footer-link">Contact</Link> 
+      </div>
+    </div> */}
+
+
+
+  </div>
+  <div className="footer-bottom">
+    {/* Updated Copyright reflecting app name */}
+    <p>&copy; {new Date().getFullYear()} Repit. All rights reserved.</p> 
+  </div>
+</footer>
     </div>
   );
 }
