@@ -11,7 +11,8 @@ function LandingPage() {
       {/* Navigation */}
       <nav className="navLandingPage">
         <div className="logo-container">
-          <img src="/repit-logo.png" alt="Repit Logo" className="logo" />
+          <img src="/repit-icon.png" alt="Repit Logo" className="logo" />
+          <h2>REPIT</h2>
         </div>
         <button className="btnlogin btn-secondary"  onClick={() => window.location.href='/login'}>Login</button>
       </nav>
