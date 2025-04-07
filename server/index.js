@@ -1,4 +1,4 @@
-require('dotenv').config(); 
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -490,28 +490,109 @@ router.get('/exercise/:id', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+// In your routes file (e.g., routes/exerciseRoutes.js)
 
-// Route to get exercises
 router.get('/exercises', async (req, res) => {
     try {
-        const { muscleGroup, userId } = req.query;
-        let query = { isPublic: true };
+        const { muscleGroup, userId, trainerId, search } = req.query; 
+        console.log(`--- GET /exercises V_FIX2: muscleGroup='${muscleGroup}', userId='${userId || 'N/A'}', trainerId='${trainerId || 'N/A'}', search='${search || ''}' ---`);
 
-        if (muscleGroup && muscleGroup !== "All") {
-            query.muscleGroup = muscleGroup;
-        }
+        let finalQuery = {};
+        const orConditions = [];
 
-        const publicExercises = await Exercise.find(query);
+        // --- Base Filters ---
+        const searchFilter = (search && search.trim() !== "") ? { name: { $regex: new RegExp(search.trim(), 'i') } } : {};
+        const muscleGroupFilter = (muscleGroup && !["All", "custom", "trainer_private"].includes(muscleGroup)) 
+            ? { muscleGroup: { $regex: new RegExp(`^${muscleGroup}$`, 'i') } } 
+            : {};
 
-        let userExercises = [];
+        // --- Determine Query Logic based on Requester ---
+
         if (userId) {
-            userExercises = await Exercise.find({ isPublic: false, userId: userId });
+            // --- USER REQUEST ---
+             console.log("Handling request for a User");
+
+            // Define potential exercises user can see
+            // 1. ALL Public exercises 
+            orConditions.push({ isPublic: true }); 
+            // 2. User's own private custom exercises
+            orConditions.push({ isPublic: false, userId: userId });
+            // 3. Exercises from the user's assigned trainer (private to trainer/clients)
+            try {
+                 const user = await User.findById(userId);
+                 if (user && user.trainerId) {
+                     console.log(`User ${userId} is assigned trainer: ${user.trainerId}`);
+                     orConditions.push({ isPublic: false, trainerId: user.trainerId });
+                 } else {
+                     console.log("User not found or has no assigned trainer.");
+                 }
+            } catch(userError) {
+                 console.error("Error fetching user to find trainerId:", userError);
+            }
+             
+            if (muscleGroup === "custom") {
+                 // Filter: ONLY user's custom exercises requested
+                 console.log("Filtering for user's custom exercises only.");
+                 finalQuery = { 
+                     isPublic: false, 
+                     userId: userId,
+                     ...searchFilter // Apply search within custom
+                 };
+            } else {
+                 // Filter: "All" or Specific Muscle Group
+                 // Combine all visible types + apply search/muscle filters
+                 finalQuery = {
+                     $or: orConditions, // Should see public OR their own OR their trainer's
+                     ...searchFilter,
+                     ...muscleGroupFilter // Applies filter across the $or results
+                 };
+            }
+
+        } else if (trainerId) {
+            // --- TRAINER REQUEST ---
+             console.log("Handling request for a Trainer");
+
+            if (muscleGroup === "trainer_private") {
+                 // Filter: ONLY exercises created by this trainer requested
+                 console.log("Filtering for exercises added by this trainer only.");
+                 finalQuery = {
+                     isPublic: false, // Trainer's exercises are private
+                     trainerId: trainerId,
+                     ...searchFilter // Apply search within these
+                 };
+                 // No muscle group filter needed here
+            } else {
+                 // Filter: "All" or Specific Muscle Group
+                 // Trainer sees all PUBLIC exercises AND their own added exercises
+                 orConditions.push(
+                     { isPublic: true },                         // All public exercises
+                     { isPublic: false, trainerId: trainerId }  // Added by this trainer (private)
+                 );
+                 finalQuery = {
+                     $or: orConditions,
+                     ...searchFilter,
+                     ...muscleGroupFilter // Apply muscle group if not "All"
+                 };
+            }
+        } else {
+            // --- NO CONTEXT - Show only PUBLIC exercises ---
+             console.log("Handling request with no user/trainer context (showing public only).");
+             finalQuery = {
+                 isPublic: true,
+                 // Remove restriction on trainerId having to NOT exist
+                 ...searchFilter,
+                 ...muscleGroupFilter
+             };
         }
 
-        const exercises = [...publicExercises, ...userExercises];
-        console.log("Fetched exercises:", exercises);
+        // --- Execute Query ---
+        console.log("Final Query:", JSON.stringify(finalQuery));
+        const exercises = await Exercise.find(finalQuery);
+        console.log(`Found ${exercises.length} exercises.`);
+        
         res.status(200).json(exercises);
-    } catch (error) {
+
+    } catch (error) { 
         console.error('Error fetching exercises:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
@@ -565,6 +646,107 @@ router.get("/getWorkouts/:userId", async (req, res) => {
         res.status(500).json({ message: "Error fetching workouts", err });
     }
 });
+
+
+router.post('/addCustomExercise', async (req, res) => { // Removed 'protect' middleware
+    try {
+        // 1. Extract data AND userId directly from request body
+        // ===>>> THIS IS INSECURE - userId should come from verified token/session <<<===
+        const { name, description, muscleGroup, equipment, category, userId } = req.body;
+
+        // 2. Basic check if userId was sent in the body (doesn't verify the user!)
+        if (!userId) {
+            // Decide how to handle missing userId during testing
+            // Option 1: Return an error
+            return res.status(400).json({ message: 'User ID missing in request body (INSECURE - requires auth)' });
+            // Option 2: Use a default test ID (Less ideal)
+            // const testUserId = 'YOUR_TEST_USER_ID'; // Replace with a valid ObjectId for testing
+            // userId = testUserId; 
+        }
+
+        // 3. Basic Validation for other fields
+        if (!name || !muscleGroup || !category) {
+            return res.status(400).json({ message: 'Missing required fields: name, muscleGroup, and category' });
+        }
+        const validCategories = Exercise.schema.path('category').enumValues;
+        if (!validCategories.includes(category.toLowerCase())) {
+            return res.status(400).json({ message: `Invalid category. Must be one of: ${validCategories.join(', ')}` });
+        }
+
+
+        // 4. Create new exercise document instance
+        const newCustomExercise = new Exercise({
+            name: name.trim(),
+            description: description ? description.trim() : undefined,
+            muscleGroup: muscleGroup,
+            equipment: equipment ? equipment.trim() : 'Bodyweight',
+            category: category.toLowerCase(),
+            isPublic: false, // Set to false for custom exercises
+            userId: userId,  // *** Using potentially insecure userId from request body ***
+        });
+
+        // 5. Save to database
+        const savedExercise = await newCustomExercise.save();
+
+        // 6. Send success response
+        console.log('Custom exercise saved (INSECURELY linked to):', userId);
+        res.status(201).json({
+            message: 'Custom exercise saved (INSECURE - NO AUTH)',
+            exercise: savedExercise
+        });
+
+    } catch (error) {
+        // 7. Handle potential errors
+        console.error("Error saving custom exercise (NO AUTH):", error);
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ message: 'Validation Error', errors: error.errors });
+        }
+        res.status(500).json({ message: 'Server error while adding custom exercise.' });
+    }
+});
+router.post('/trainer/addExercise', async (req, res) => {
+    try {
+        // Get data including trainerId from body (INSECURE)
+        const { name, description, muscleGroup, equipment, category, trainerId } = req.body;
+
+        // Validation...
+        if (!trainerId) { return res.status(400).json({ message: 'Trainer ID missing...' }); }
+        if (!name || !muscleGroup || !category) { return res.status(400).json({ message: 'Missing fields...' }); }
+        const validCategories = Exercise.schema.path('category').enumValues;
+        if (!validCategories.includes(category.toLowerCase())) {
+            return res.status(400).json({ message: `Invalid category. Must be one of: ${validCategories.join(', ')}` });
+        }
+
+        const newExercise = new Exercise({
+            name: name.trim(),
+            description: description ? description.trim() : undefined,
+            muscleGroup: muscleGroup,
+            equipment: equipment ? equipment.trim() : 'Bodyweight',
+            category: category.toLowerCase(),
+
+            // *** Trainer adding exercise: isPublic IS FALSE, link trainerId ***
+            isPublic: false,
+            trainerId: trainerId,  // Link to the trainer who created it
+            userId: null,          // Not linked to a specific user 
+        });
+
+        const savedExercise = await newExercise.save();
+
+        console.log('Trainer custom exercise saved (private, tagged):', trainerId);
+        res.status(201).json({
+            message: 'Exercise added successfully!',
+            exercise: savedExercise
+        });
+
+    } catch (error) {
+        console.error("Error in /trainer/addExercise route:", error);
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ message: 'Validation Error', errors: error.errors });
+        }
+        res.status(500).json({ message: 'Server error while adding exercise.' });
+    }
+});
+
 
 // Start the server
 const PORT = 3001;
