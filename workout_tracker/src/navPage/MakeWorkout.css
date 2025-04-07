@@ -13,6 +13,7 @@
 
 .page>.column:first-of-type>.heading {
     margin-bottom: 0;
+    margin-top: 0;
 }
 
 .page>.column:first-of-type .topButton {
@@ -25,52 +26,125 @@
     align-items: center;
     justify-content: flex-start;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* Container for Workout Name and Edit Button */
+.workout-name-row {
+    display: flex;
+    align-items: center;
+    /* Keep vertically centered */
+    gap: 1rem;
+    /* Space between input and button */
+    margin-bottom: 2.6rem;
+    /* Keep consistent spacing below */
 }
 
 input.workoutName {
-    /* flex-grow: 1;  */
-    /* **** CHANGED: Increased size **** */
-    width: min-content;
-    font-size: 2.4rem;
-    font-weight: 700;
-    margin-bottom: 0;
+    /* --- Layout & Sizing --- */
+    flex-grow: 1;
+    margin-bottom: 0rem;
+    /* Allow input to take space */
+    min-width: 10rem;
+    /* Prevent input getting too small */
     height: auto;
-    padding: 0.6rem 0;
-    border: none;
-    border-bottom: 2px solid transparent;
-    /* Underline effect only when editable */
+    /* Let content dictate height */
+    /* **** CHANGED: Apply consistent padding ALWAYS **** */
+    padding: 0.8rem 1.2rem;
+    /* **** CHANGED: Apply consistent border ALWAYS (start transparent) **** */
+    border: 1.5px solid transparent;
+    /* **** CHANGED: Apply consistent radius ALWAYS **** */
+    border-radius: 0.8rem;
+
+    /* --- Typography --- */
+    font-size: 2.4rem;
+    /* Keep larger size */
+    font-weight: 700;
+    /* Keep bolder */
+    line-height: 1.3;
+    /* Adjust if needed */
+    color: var(--text-color);
+    /* Base text color */
+
+    /* --- Appearance & Transitions --- */
     background-color: transparent;
-    transition: border-color 0.2s ease-out, background-color 0.2s ease-out, border-radius 0.2s ease-out, padding 0.2s ease-out;
-    border-radius: 0;
+    /* Start transparent */
+    outline: none;
+    /* Remove default focus outline */
+    transition: border-color 0.2s ease-out, background-color 0.2s ease-out;
 }
 
+/* Style when read-only (hide the input box look) */
 input.workoutName:read-only {
-    border-bottom-color: transparent;
+    border-color: transparent;
+    background-color: transparent;
     cursor: default;
     box-shadow: none;
+    /* Optional: Reduce padding slightly when read-only for text look */
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
 }
 
+/* Style when editable */
 input.workoutName:not(:read-only) {
-    border-radius: 0.8rem;
-    padding: 0.8rem 1.2rem;
-    border: 1.5px solid var(--border-color);
-    /* Show full border when editing */
+    border-color: var(--border-color);
+    /* Show border */
     background-color: var(--neutral-white);
+    /* Show background */
 }
 
-input.workoutName:focus {
+/* Style when focused (and editable) */
+input.workoutName:focus:not(:read-only) {
     border-color: var(--primary-blue);
+    /* Highlight border */
     box-shadow: none;
+    /* Remove default focus glow */
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] input.workoutName:read-only {
+    color: var(--text-color);
+    /* Ensure text color is correct */
 }
 
 [data-theme='dark'] input.workoutName:not(:read-only) {
     border-color: var(--border-color-dark);
     background-color: var(--neutral-medium-bg);
+    color: var(--text-color);
+    /* Ensure text color */
 }
 
+[data-theme='dark'] input.workoutName:focus:not(:read-only) {
+    border-color: var(--primary-blue-dark);
+}
+
+
+/* Edit button - ensure size and no shrinking */
 button.edit {
-    /* Keep V3 style - icon button beside name */
+    min-width: 4rem;
+    /* Ensure space */
+    height: 4rem;
+    /* Consistent square-ish tappable area */
+    flex-shrink: 0;
+    /* *** Crucial: Prevent shrinking *** */
+    /* Keep other V6 styles: */
+    border: none;
+    background: transparent;
+    padding: 0.8rem;
+    margin: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease-out;
+}
+
+button.edit svg {
+    width: 2.4rem;
+    height: 2.4rem;
+    fill: var(--neutral-medium);
+    transition: fill 0.15s ease-out;
 }
 
 /* ... button.edit states/dark mode ... */
@@ -156,7 +230,8 @@ h3.exercise-name {
     font-weight: 600;
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: var(--darkBlue);;
+    color: var(--darkBlue);
+    ;
 }
 
 /* Container for all sets */
@@ -170,6 +245,7 @@ h3.exercise-name {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-direction: row;
     /* Align items to start */
     /* flex-wrap: wrap; */
     /* Allow wrapping */
@@ -299,10 +375,10 @@ button.removeBtn svg {
 
 
 
-  
- 
 
-  button.saveBtn  {
+
+
+button.saveBtn {
     /* Sizing & Box Model */
     display: block;
     /* **** CHANGED: Allow button to fill container width **** */
@@ -331,13 +407,14 @@ button.removeBtn svg {
     transition: background-color 0.2s ease-out, transform 0.1s ease-out, box-shadow 0.2s ease-out;
     box-shadow: 0 2px 5px rgba(13, 71, 161, 0.2);
 }
-button.saveBtn{
-    background-color: var(--accent-blue); 
-    color: var(--neutral-white); 
-  }
-  
-  button.saveBtn {
+
+button.saveBtn {
+    background-color: var(--accent-blue);
+    color: var(--neutral-white);
+}
+
+button.saveBtn {
     background-color: var(--accent-blue);
     opacity: 0.85;
     transform: scale(0.98);
-  }
+}

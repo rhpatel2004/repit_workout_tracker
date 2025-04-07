@@ -3,7 +3,6 @@
 /* --- Page Header --- */
 .page > .column > .heading { 
     margin-bottom: 1.6rem; 
-    text-align: center; 
     color: var(--primary-blue);
   }
   

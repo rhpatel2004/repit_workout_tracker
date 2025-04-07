@@ -20,6 +20,8 @@ import Exercises from "./trainerPage/Exercises";
 import TrainerProfile from "./trainerPage/TrainerProfile";
 import ClientWorkoutHistory from "./trainerPage/ClientWorkoutHistory";
 import ProtectedRoute from "./ProtectedRoute"; // Import ProtectedRoute
+import CustomExercise from "./component/CustomExercise";
+import TrainerAddExercise from "./component/TrainerAddExercise"
 
 function App() {
 
@@ -47,6 +49,7 @@ function App() {
             <Route path="/selectExercises" element={<SelectExercises />} />
             <Route path="/defaultExercise" element={<DefaultExercise />} />
             <Route path="/makeWorkout" element={<MakeWorkout />} />
+            <Route path="/customExercise" element={<CustomExercise />} />
             {/* Add other user-only routes here */}
           </Route>
 
@@ -58,6 +61,7 @@ function App() {
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/exercises" element={<Exercises />} />
             <Route path="/trainer/clients/:clientId/workouts" element={<ClientWorkoutHistory />} />
+            <Route path="/trainerAddExercise" element={<TrainerAddExercise />} />
             {/* Add other trainer-only routes here */}
           </Route>
 

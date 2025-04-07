@@ -1,0 +1,118 @@
+/* Styles for CustomExercise Form Page */
+
+/* Apply to the page container for consistent padding */
+/* Use .page if your component root div has that class */
+.custom-exercise-page {
+    padding: 2.4rem 1.6rem 10rem 1.6rem; /* Consistent padding, space for potential NavBar */
+    min-height: 100vh;
+  }
+  
+  /* --- Header Styling (Assuming reuse of structure) --- */
+  /* Ensure heading row has consistent spacing */
+  .custom-exercise-page > .column:first-of-type { 
+     margin-bottom: 2.4rem; 
+     display: flex; 
+    
+     justify-content: flex-start; 
+     padding: 0; 
+  }
+  /* Ensure heading style consistency */
+  .custom-exercise-page .heading {
+    display: flex; 
+    align-items: center;
+    gap: 1rem; 
+    margin: 0; 
+    flex-grow: 1; 
+    /* Inherits font size, color etc from base .heading */
+  }
+  /* Ensure back button style consistency */
+  .custom-exercise-page .topButton {
+    margin: 0; 
+    flex-shrink: 0; 
+    /* Inherits styles from base .topButton */
+  }
+  
+  
+  /* --- Form Container --- */
+  .custom-exercise-form {
+    max-width: 50rem; /* Limit form width for readability */
+    margin: 0 auto; /* Center form on wider screens */
+  }
+  
+  /* Spacing between each form group (label + input) */
+  .form-group {
+    margin-bottom: 1rem; /* Consistent space between form fields */
+  }
+  .form-group:last-of-type {
+    margin-bottom: 0; /* No margin after last field before button */
+  }
+  
+  
+  /* Form Labels */
+  .form-label {
+    display: block; /* Label on its own line */
+    font-size: 1.4rem;
+    font-weight: 500; /* Medium weight */
+    color: var(--neutral-medium);
+    margin-bottom: 0.6rem; /* Space between label and input */
+  }
+  
+  /* Inputs, Selects, Textareas */
+  /* These will primarily inherit the refined styles from your index.css */
+  /* Add specific overrides below if needed */
+  
+  /* Ensure standard height for inputs/selects used here */
+  .custom-exercise-form input[type="text"],
+  .custom-exercise-form select {
+    /* Should inherit height: 4.8rem from index.css */
+    min-height: 4.8rem; /* Ensure minimum height */
+    border-radius: 1.6rem;
+    /* Inherit padding, border, radius etc from base input/select styles in index.css */
+  }
+  
+  /* Style for Textarea (reusing .notes class) */
+  .custom-exercise-form textarea.notes {
+     /* Base styles like border, radius, padding, font inherited from index.css textarea */
+     min-height: 8rem; /* Set desired default height */
+     height: auto;
+     resize: vertical; /* Allow user resize */
+  }
+  
+  /* Ensure focus styles from index.css apply */
+  .custom-exercise-form input:focus,
+  .custom-exercise-form textarea:focus,
+  .custom-exercise-form select:focus {
+      /* Styles defined in index.css should handle border color/shadow */
+  }
+  
+  /* Ensure dark mode styles from index.css apply */
+  [data-theme='dark'] .custom-exercise-form input,
+  [data-theme='dark'] .custom-exercise-form select,
+  [data-theme='dark'] .custom-exercise-form textarea.notes {
+      /* Styles defined in index.css should handle dark background/border */
+  }
+  
+  
+  /* Error Message */
+  .custom-exercise-form .error-message {
+     /* Base error style should be in index.css or similar */
+     /* This selector ensures it applies within this form */
+     margin-top: 1.6rem;
+     text-align: center;
+     /* Example base styles if not defined globally */
+     /* color: var(--danger-color, #D32F2F); */
+     /* background-color: var(--danger-bg-light, rgba(211, 47, 47, 0.1)); */
+     /* padding: 1rem; */
+     /* border-radius: 0.8rem; */
+     /* font-size: 1.4rem; */
+  }
+  
+  
+  /* Save Button */
+  .custom-exercise-form .addNewWorkout {
+    /* Should inherit primary button styling (.addNewWorkout or .button-primary) */
+    /* Ensure correct margin and width */
+    margin-top: 1.2rem; 
+    display: block;
+    width: 100%; /* Make button full width */
+  }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import NavBar from "../NavBar";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ function MakeWorkout() {
   const [workoutNote, setWorkoutNote] = useState(""); // State for workout note
   const [selectedDate, setSelectedDate] = useState(new Date()); // State for selected date
 
+  const workoutNameInputRef = useRef(null); 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
@@ -90,8 +91,26 @@ function MakeWorkout() {
     setWorkoutName(e.target.value);
   };
 
+  // *** Updated function to START editing ***
   const toggleEditWorkoutName = () => {
-    setIsEditable(!isEditable);
+    setIsEditable(true); 
+    // We'll focus the input using an effect after the state updates
+  };
+
+  // *** Effect to focus the input when isEditable becomes true ***
+  useEffect(() => {
+    if (isEditable && workoutNameInputRef.current) {
+      workoutNameInputRef.current.focus();
+      // Optional: Select all text in the input for easy replacement
+      // workoutNameInputRef.current.select(); 
+    }
+  }, [isEditable]); // Run this effect only when isEditable changes
+
+  // *** Function to handle losing focus (blur) ***
+  const handleBlur = () => {
+    setIsEditable(false); // Set back to read-only
+    // Optional: You could add logic here to auto-save the name if it changed
+    // console.log("Workout name blurred, final value:", workoutName);
   };
 
   const saveWorkout = async () => {
@@ -135,7 +154,7 @@ function MakeWorkout() {
   };
 
   return (
-    <div className="page">
+    <div className="SubPage page">
       <div className="column">
         <h1 className="heading">
           <button
