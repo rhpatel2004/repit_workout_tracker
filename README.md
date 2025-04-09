@@ -50,5 +50,5 @@
 
 Built with ❤️ by **Rohan Patel**  
 🔗 [GitHub](https://github.com/rhpatel2004)  
-© 2024 Rohan Patel. All rights reserved.
+© 2024-2025 Rohan Patel. All rights reserved.
 
