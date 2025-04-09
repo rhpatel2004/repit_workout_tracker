@@ -94,7 +94,6 @@
      margin-bottom: 0; 
   }
   
-  
   /* --- Submit Button (`.btn`) - Enhanced --- */
   .btn {
     width: 100%; 
@@ -173,6 +172,21 @@
      color: var(--primary-blue-dark);
   }
 
+  .form-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  
+  /* @media screen and (min-width: 640px) {
+    .form-row {
+      flex-direction: row;
+    }
+    .form-row > * {
+      flex: 1;
+    }
+  } */
 
 @media (max-width: 400px) { 
     /* --- Responsive adjustments for very small screens --- */
