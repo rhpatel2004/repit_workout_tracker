@@ -1,0 +1,179 @@
+/* --- Mobile-First UI Styling for Guide Page --- */
+
+/* Color Variables */
+:root {
+    --primary-blue: #0D47A1;
+    --accent-blue: #42A5F5;
+    --success-green: #4CAF50;
+    --neutral-dark: #212121;
+    --neutral-medium: #757575;
+    --neutral-light: #F5F5F5;
+    --neutral-white: #FFFFFF;
+    --border-color: #E0E0E0;
+    --shadow-color: rgba(0, 0, 0, 0.06);/* 1rem = 16px */
+  }
+  
+  /* --- Guide Container --- */
+  .app-guide-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 2rem 2rem 4rem;
+    background-color: var(--neutral-white);
+    position: relative;
+    box-shadow: 0 0.2rem 0.5rem var(--shadow-color); /* 2px 8px */
+    border-radius: 0.2rem;
+    box-sizing: border-box;
+    min-height: 100vh;
+  }
+  
+  /* --- Guide Steps --- */
+  .guide-step {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .guide-screenshot {
+    width: fit-content;
+    height: auto;
+    max-height: 40rem; /* 300px */
+    object-fit: contain;
+    border: 0.2rem solid var(--border-color); /* 1px */
+    border-radius: 0.8rem;
+    margin-bottom: 2rem;
+  }
+  
+  .guide-step h3 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin-bottom: 2rem;
+  }
+  
+  .guide-step p {
+    font-size: 1.5rem;
+    color: var(--neutral-medium);
+    line-height: 1.5;
+    padding: 0 1.2rem;
+  }
+  
+  /* --- Navigation Buttons --- */
+  .guide-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 0.12rem solid var(--border-color);
+    padding-top: 2rem;
+    margin-top: 3rem;
+  }
+  
+  .guide-navigation button {
+    padding: 1.2rem 2rem;
+    font-size: 1.8rem;
+    font-weight: 500;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+    border: 0.12rem solid transparent;
+    width: 12rem;
+  }
+  
+  .guide-navigation button:first-of-type {
+    background-color: transparent;
+    color: var(--primary-blue);
+    border-color: var(--primary-blue);
+  }
+  
+  .guide-navigation button:first-of-type:hover:not(:disabled) {
+    background-color: rgba(13, 71, 161, 0.08);
+  }
+  
+  .guide-navigation button:last-of-type {
+    background-color: var(--primary-blue);
+    color: var(--neutral-white);
+  }
+  
+  .guide-navigation button:last-of-type:hover:not(:disabled) {
+    background-color: var(--accent-blue);
+  }
+  
+  .guide-navigation button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .guide-navigation span {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.6rem;
+    color: var(--neutral-medium);
+  }
+  
+  /* --- Skip Button --- */
+  .skip-button {
+    margin-top: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--accent-blue);
+    font-size: 1.5rem;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .skip-button:hover {
+    color: var(--primary-blue);
+  }
+  
+  /* --- Install Section --- */
+  .install-section {
+    border-top: 1.2rem solid var(--border-color);
+    padding-top: 2rem;
+    margin-top: 3rem;
+    text-align: center;
+  }
+  
+  .install-button {
+    margin-top: 1.5rem;
+    padding: 1.2rem 2.5rem;
+    font-size: 1.8rem;
+    background-color: var(--success-green);
+    color: var(--neutral-white);
+    border: none;
+    border-radius: 0.6rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .install-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* --- Back Button --- */
+  .topButton.guide-back-button {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-blue);
+    font-size: 1.8rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    z-index: 10;
+  }
+  
+  .topButton.guide-back-button:hover {
+    text-decoration: underline;
+  }
+  
+  .skip-link-area{
+    text-align: center;
+  }

@@ -22,7 +22,7 @@ import ClientWorkoutHistory from "./trainerPage/ClientWorkoutHistory";
 import ProtectedRoute from "./ProtectedRoute"; // Import ProtectedRoute
 import CustomExercise from "./component/CustomExercise";
 import TrainerAddExercise from "./component/TrainerAddExercise"
-
+import Guide from "./Guide"
 function App() {
 
   return (
@@ -38,6 +38,7 @@ function App() {
           {/* --- Public Routes --- */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/guide" element={<Guide />} />
 
           {/* --- Protected User Routes --- */}
           {/* All routes nested inside will be checked for "user" role */}

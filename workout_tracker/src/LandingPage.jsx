@@ -22,7 +22,7 @@ function LandingPage() {
         <div className="hero-content">
           <h1>Transform Your Fitness Journey</h1>
           <p>Track, analyze, and achieve your fitness goals with Repit</p>
-          <button className="btnregister btn-primary" onClick={() => window.location.href = '/register'} >Get Started Free</button>
+          <button className="btnregister btn-primary" onClick={() => window.location.href = '/guide'} >Get Started Free</button>
         </div>
       </section>
 
