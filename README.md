@@ -12,7 +12,7 @@
 
 ## 🚀 Features
 
-- **Role-Based Authentication** – Secure login system using **JWT** and **bcrypt** for individual users and trainers.
+- **Role-Based Authentication** – Secure login system using **bcrypt** for individual users and trainers.
 - **Dynamic Workout Logging** – Log reps, sets, weights, duration, and exercise details with real-time updates.
 - **Custom Exercise Library** – Add and manage personalized exercises beyond the preloaded 150+ options.
 - **Trainer Interface** – Trainers can monitor trainee workout history, assign exercises, and track progress.
