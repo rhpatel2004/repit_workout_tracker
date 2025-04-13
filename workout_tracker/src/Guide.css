@@ -68,18 +68,18 @@
     align-items: center;
     border-top: 0.12rem solid var(--border-color);
     padding-top: 2rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
   
   .guide-navigation button {
     padding: 1.2rem 2rem;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 500;
     border-radius: 0.6rem;
     cursor: pointer;
     transition: 0.2s ease;
     border: 0.12rem solid transparent;
-    width: 12rem;
+    width: 10rem;
   }
   
   .guide-navigation button:first-of-type {
