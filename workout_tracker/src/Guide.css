@@ -68,7 +68,7 @@
     align-items: center;
     border-top: 0.12rem solid var(--border-color);
     padding-top: 2rem;
-    margin-top: 3rem;
+    margin-top: 2rem;
   }
   
   .guide-navigation button {
@@ -130,14 +130,14 @@
   
   /* --- Install Section --- */
   .install-section {
-    border-top: 1.2rem solid var(--border-color);
+    border-top: 0.12rem solid var(--border-color);
     padding-top: 2rem;
-    margin-top: 3rem;
+    margin-top: 1rem;
     text-align: center;
   }
   
   .install-button {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     padding: 1.2rem 2.5rem;
     font-size: 1.8rem;
     background-color: var(--success-green);
