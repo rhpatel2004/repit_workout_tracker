@@ -40,9 +40,9 @@ export default defineConfig({
         ],
       },
       // Optional: Service Worker configuration (for offline, etc.)
-      // workbox: {
-      //   globPatterns: ['**/*.{js,css,html,ico,png,svg}']
-      // }
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}']
+      }
     })
   ],
   // ... your existing server proxy config (if you added it back) ...
