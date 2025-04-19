@@ -9,10 +9,19 @@ function HistoryCard({ workout, onDelete }) {
 
   const handleDeleteClick = (event) => {
     event.stopPropagation(); // Prevent card toggle
-    if (onDelete) { // Check if onDelete exists before calling
-      onDelete(workout._id);
+
+    // --- Add Confirmation ---
+    if (window.confirm("Are you sure you want to delete this workout history? This action cannot be undone.")) {
+         // User clicked OK
+         if (onDelete) { // Check if onDelete prop exists
+            onDelete(workout._id); // Call the delete function passed from HistoryPage
+         }
+    } else {
+        // User clicked Cancel - do nothing
+        console.log("Workout deletion aborted.");
     }
-  };
+    // -----------------------
+};
 
   const toggleDetails = () => {
     setIsExpanded((prev) => !prev);

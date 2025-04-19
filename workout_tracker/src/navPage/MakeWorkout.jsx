@@ -216,13 +216,20 @@ function MakeWorkout() {
 
    // Function for the top-left back button
    const handleBackWorkout = () => {
-       clearWorkoutState(); // Clear the session storage
+      //  clearWorkoutState(); 
        navigate('/selectExercises'); 
    }
    const handleCancelWorkout = () => {
-    clearWorkoutState(); // Clear the session storage
-    navigate('/workout'); // Navigate back to the main workout page
-}
+    // --- Add Confirmation ---
+    if (window.confirm("Are you sure you want to cancel this workout? Your progress will be lost.")) {
+        // User clicked OK
+        clearWorkoutState(); // Clear the session storage
+        navigate('/workout'); // Navigate back to the main workout page
+    } else {
+        // User clicked Cancel - do nothing
+        console.log("Workout cancellation aborted.");
+    }
+  };
 
 
   const saveWorkout = async () => {
