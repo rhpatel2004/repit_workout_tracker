@@ -17,6 +17,11 @@ function SelectExercises() {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
+    const storedSelections = sessionStorage.getItem('makeWorkoutSelections');
+    if (storedSelections) {
+      setSelectedExercises(JSON.parse(storedSelections));
+    }
+
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
       setUserId(storedUserId);
@@ -99,17 +104,28 @@ function SelectExercises() {
 
   const handleExerciseClick = (exercise) => {
     const exerciseId = exercise._id;
+    let updatedSelection;
     if (selectedExercises.includes(exerciseId)) {
       setSelectedExercises(
-        selectedExercises.filter((id) => id !== exerciseId)
+        updatedSelection = selectedExercises.filter((id) => id !== exerciseId)
       );
     } else {
-      setSelectedExercises([...selectedExercises, exerciseId]);
+      updatedSelection = [...selectedExercises, exerciseId];
     }
+    setSelectedExercises(updatedSelection);
+    // *** Save updated selection to session storage immediately ***
+    sessionStorage.setItem('makeWorkoutSelections', JSON.stringify(updatedSelection));
   };
 
   const isSelected = (exerciseId) => selectedExercises.includes(exerciseId);
 
+
+  const handleGoToMakeWorkout = () => {
+    // Save the final selection before navigating
+    sessionStorage.setItem('makeWorkoutSelections', JSON.stringify(selectedExercises));
+    navigate("/makeWorkout", { state: { selectedExercises } }); // Pass IDs
+  };
+  
   return (
     <div className="subPage">
 
@@ -192,11 +208,7 @@ function SelectExercises() {
 
       <button
         className="subTickButton"
-        onClick={() =>
-          navigate("/makeWorkout", {
-            state: { selectedExercises, muscleGroup: selection },
-          })
-        }
+        onClick={handleGoToMakeWorkout}
       >
         <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#ffffff"><path d="M379.33-244 154-469.33 201.67-517l177.66 177.67 378.34-378.34L805.33-670l-426 426Z" /></svg>
       </button>

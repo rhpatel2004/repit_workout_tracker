@@ -1,3 +1,4 @@
+// MakeWorkout.jsx
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import NavBar from "../NavBar";
@@ -6,161 +7,280 @@ import "./MakeWorkout.css";
 
 function MakeWorkout() {
   const API_URL = import.meta.env.VITE_API_BASE_URL;
-
   const location = useLocation();
   const navigate = useNavigate();
-  const selectedExerciseIds = location.state?.selectedExercises || [];
   const [exercises, setExercises] = useState([]);
   const [setsData, setSetsData] = useState({});
   const [userId, setUserId] = useState(null);
   const [workoutName, setWorkoutName] = useState("My Workout");
   const [isEditable, setIsEditable] = useState(false);
   const [startTime, setStartTime] = useState(null);
-  const [workoutNote, setWorkoutNote] = useState(""); // State for workout note
-  const [selectedDate, setSelectedDate] = useState(new Date()); // State for selected date
+  const [workoutNote, setWorkoutNote] = useState("");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const workoutNameInputRef = useRef(null);
 
-  const workoutNameInputRef = useRef(null); 
+  const clearWorkoutState = () => {
+    console.log("Clearing workout state from sessionStorage");
+    sessionStorage.removeItem('makeWorkoutSelections');
+    sessionStorage.removeItem('makeWorkoutSetsData');
+    sessionStorage.removeItem('makeWorkoutName');
+    sessionStorage.removeItem('makeWorkoutNote');
+    sessionStorage.removeItem('makeWorkoutDate');
+    sessionStorage.removeItem('makeWorkoutStartTime');
+  };
+
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
       setUserId(storedUserId);
     }
 
-    if (selectedExerciseIds.length > 0) {
-      fetchExercisesDetails();
-      setStartTime(new Date());
-    }
-  }, [selectedExerciseIds]);
+    // Restore or initialize state
+    const storedExerciseIds = JSON.parse(sessionStorage.getItem('makeWorkoutSelections') || '[]');
+    const storedSetsData = JSON.parse(sessionStorage.getItem('makeWorkoutSetsData') || '{}');
+    const storedWorkoutName = sessionStorage.getItem('makeWorkoutName');
+    const storedWorkoutNote = sessionStorage.getItem('makeWorkoutNote');
+    const storedDate = sessionStorage.getItem('makeWorkoutDate');
+    const storedStartTime = sessionStorage.getItem('makeWorkoutStartTime');
 
-  const fetchExercisesDetails = async () => {
+    // Use IDs passed from SelectExercises primarily, fall back to sessionStorage
+    const currentExerciseIds = location.state?.selectedExercises || storedExerciseIds;
+
+    if (currentExerciseIds.length > 0) {
+      // Only fetch if there are IDs to fetch
+      fetchExercisesDetails(currentExerciseIds);
+      // Restore other data only if there were IDs (meaning a workout was in progress)
+      if (storedExerciseIds.length > 0) {
+        setSetsData(storedSetsData);
+        if (storedWorkoutName) setWorkoutName(storedWorkoutName);
+        if (storedWorkoutNote) setWorkoutNote(storedWorkoutNote);
+        if (storedDate) setSelectedDate(new Date(storedDate));
+        if (storedStartTime) setStartTime(new Date(parseInt(storedStartTime)));
+        else setStartTime(new Date()); // Set start time if not restoring
+      } else {
+          //If no exerciseId are present then set start time to null.
+          setStartTime(null);
+      }
+    } else {
+      // If no IDs passed and none in storage, clear any lingering state
+      clearWorkoutState();
+      setStartTime(new Date()); // Start timer fresh
+    }
+
+    // Cleanup on component unmount *if not navigating to select more exercises*
+    // This is tricky, maybe better to clear ONLY on explicit cancel/save
+    // return () => {
+    //   // Consider if you want to clear state when leaving this page for other reasons
+    // };
+
+  }, []); // Run only once on initial mount
+
+  const fetchExercisesDetails = async (idsToFetch) => {
+    if (!idsToFetch || idsToFetch.length === 0) {
+        setExercises([]); // Clear exercises if no IDs
+        return;
+    };
     try {
       const exercisesDetails = await Promise.all(
-        selectedExerciseIds.map(async (id) => {
-          const response = await axios.get(
-            `${API_URL}/exercise/${id}`
-          );
+        idsToFetch.map(async (id) => {
+          const response = await axios.get(`${API_URL}/exercise/${id}`);
           return response.data;
         })
       );
       setExercises(exercisesDetails);
-      initializeSetsData(exercisesDetails);
+      // Don't re-initialize setsData here if restoring, handle in initializeSetsDataForNew
+       initializeSetsDataForNew(exercisesDetails); // Initialize only if not restored
     } catch (error) {
       console.error("Error fetching exercise details:", error);
     }
   };
 
-  const initializeSetsData = (exercisesDetails) => {
-    let newSetsData = {};
-    exercisesDetails.forEach((exercise) => {
-      newSetsData[exercise._id] = [
-        { reps: "", weight: "", duration: "", distance: "", restTime: "" },
-      ];
-    });
-    setSetsData(newSetsData);
-  };
+  // Initialize setsData only for exercises that don't have data yet
+  const initializeSetsDataForNew = (fetchedExercises) => {
+     setSetsData(prevSetsData => {
+        const newSetsData = {...prevSetsData};
+        fetchedExercises.forEach(exercise => {
+            // Only initialize if this exercise ID doesn't exist in setsData yet
+            if (!newSetsData[exercise._id]) {
+                 newSetsData[exercise._id] = [{ reps: "", weight: "", duration: "", distance: "", restTime: "" }];
+            }
+        });
+        return newSetsData;
+     });
+ };
 
+
+  // --- Input Handlers (No change needed, they update state which is saved on navigate) ---
   const handleInputChange = (exerciseId, setIndex, field, value) => {
-    setSetsData((prevSetsData) => ({
-      ...prevSetsData,
-      [exerciseId]: prevSetsData[exerciseId].map((set, index) =>
-        index === setIndex ? { ...set, [field]: value } : set
-      ),
-    }));
+    setSetsData((prevSetsData) => {
+        // Ensure the array exists before trying to map
+        const currentSets = prevSetsData[exerciseId] || [];
+        return {
+            ...prevSetsData,
+            [exerciseId]: currentSets.map((set, index) =>
+                index === setIndex ? { ...set, [field]: value } : set
+            ),
+        };
+    });
   };
 
   const addSet = (exerciseId) => {
     setSetsData((prevSetsData) => ({
       ...prevSetsData,
       [exerciseId]: [
-        ...prevSetsData[exerciseId],
+        ...(prevSetsData[exerciseId] || []), // Ensure array exists
         { reps: "", weight: "", duration: "", distance: "", restTime: "" },
       ],
     }));
   };
 
+  // *** MODIFIED removeSet Function ***
   const removeSet = (exerciseId, setIndex) => {
-    setSetsData((prevSetsData) => ({
-      ...prevSetsData,
-      [exerciseId]: prevSetsData[exerciseId].filter(
-        (_, index) => index !== setIndex
-      ),
-    }));
+    setSetsData((prevSetsData) => {
+      const currentSets = prevSetsData[exerciseId] || [];
+      const updatedSets = currentSets.filter((_, index) => index !== setIndex);
+
+      // Check if this was the last set for the exercise
+      if (updatedSets.length === 0) {
+        console.log(`Removing exercise ${exerciseId} as last set was deleted.`);
+
+        // 1. Remove the exercise from the main 'exercises' state
+        setExercises(prevExercises =>
+          prevExercises.filter(ex => ex._id !== exerciseId)
+        );
+
+        // 2. Remove the exercise entry from setsData
+        const { [exerciseId]: _, ...remainingSetsData } = prevSetsData; // Destructure to remove the key
+
+        // 3. Update session storage for both selections and sets data
+        const currentSelections = JSON.parse(sessionStorage.getItem('makeWorkoutSelections') || '[]');
+        const newSelections = currentSelections.filter(id => id !== exerciseId);
+        sessionStorage.setItem('makeWorkoutSelections', JSON.stringify(newSelections));
+        sessionStorage.setItem('makeWorkoutSetsData', JSON.stringify(remainingSetsData));
+
+        return remainingSetsData; // Return the state without the removed exercise key
+      } else {
+        // If sets still remain, just update the sets for this exercise
+        const newSetsData = {
+          ...prevSetsData,
+          [exerciseId]: updatedSets,
+        };
+        sessionStorage.setItem('makeWorkoutSetsData', JSON.stringify(newSetsData)); // Save changes
+        return newSetsData;
+      }
+    });
   };
 
   const handleWorkoutNameChange = (e) => {
     setWorkoutName(e.target.value);
   };
 
-  // *** Updated function to START editing ***
-  const toggleEditWorkoutName = () => {
-    setIsEditable(true); 
-    // We'll focus the input using an effect after the state updates
+   const handleWorkoutNoteChange = (e) => {
+    setWorkoutNote(e.target.value);
   };
 
-  // *** Effect to focus the input when isEditable becomes true ***
+   const handleDateChange = (e) => {
+    const newDate = new Date(e.target.value + "T00:00:00");
+    setSelectedDate(newDate);
+  };
+
+  const toggleEditWorkoutName = () => {
+    setIsEditable(true);
+  };
+
   useEffect(() => {
     if (isEditable && workoutNameInputRef.current) {
       workoutNameInputRef.current.focus();
-      // Optional: Select all text in the input for easy replacement
-      // workoutNameInputRef.current.select(); 
     }
-  }, [isEditable]); // Run this effect only when isEditable changes
+  }, [isEditable]);
 
-  // *** Function to handle losing focus (blur) ***
   const handleBlur = () => {
-    setIsEditable(false); // Set back to read-only
-    // Optional: You could add logic here to auto-save the name if it changed
-    // console.log("Workout name blurred, final value:", workoutName);
+    setIsEditable(false);
   };
+
+   // --- Navigation and Saving ---
+
+   // Renamed to reflect its purpose
+   const goToAddExercises = () => {
+       // Save current state before navigating
+       sessionStorage.setItem('makeWorkoutSelections', JSON.stringify(exercises.map(ex => ex._id))); // Save current IDs
+       sessionStorage.setItem('makeWorkoutName', workoutName);
+       sessionStorage.setItem('makeWorkoutNote', workoutNote);
+       sessionStorage.setItem('makeWorkoutDate', selectedDate.toISOString());
+       sessionStorage.setItem('makeWorkoutSetsData', JSON.stringify(setsData));
+       if (startTime) {
+           sessionStorage.setItem('makeWorkoutStartTime', startTime.getTime().toString());
+       }
+       navigate('/selectExercises'); // Go back to selection page
+   }
+
+   // Function for the top-left back button
+   const handleBackWorkout = () => {
+       clearWorkoutState(); // Clear the session storage
+       navigate('/selectExercises'); 
+   }
+   const handleCancelWorkout = () => {
+    clearWorkoutState(); // Clear the session storage
+    navigate('/workout'); // Navigate back to the main workout page
+}
+
 
   const saveWorkout = async () => {
     const endTime = new Date();
-    const duration = Math.round((endTime - startTime) / (1000 * 60));
+    const calculatedDuration = startTime ? Math.round((endTime - startTime) / (1000 * 60)) : 0;
 
     const workoutData = {
-        userId: userId,
-        workoutTemplateId: null, // Set to null for custom workouts
-        name: workoutName,
-        date: selectedDate, // Use selectedDate
-        duration: duration,
-        notes: workoutNote, // Include workoutNote
-        exercises: exercises.map(exercise => ({
-          exerciseId: exercise._id,
-          sets: setsData[exercise._id] || []
-        })),
-        isTemplate: false,
-      };
+      userId: userId,
+      workoutTemplateId: null,
+      name: workoutName,
+      date: selectedDate,
+      duration: calculatedDuration,
+      notes: workoutNote,
+      exercises: exercises.map((exercise) => ({
+        exerciseId: exercise._id,
+        // Filter out empty sets before saving
+        sets: (setsData[exercise._id] || []).filter(set => {
+            if (exercise.category === 'strength') return (set.reps !== '' && set.reps !== null) || (set.weight !== '' && set.weight !== null);
+            if (exercise.category === 'cardio') return (set.duration !== '' && set.duration !== null) || (set.distance !== '' && set.distance !== null);
+            if (exercise.category === 'bodyweight') return (set.reps !== '' && set.reps !== null);
+            return false;
+        })
+      })).filter(exercise => exercise.sets.length > 0), // Remove exercises with no valid sets
+      isTemplate: false,
+    };
+
+    // Basic Validation
+    if (!workoutData.name) {
+        alert("Please enter a workout name.");
+        return;
+    }
+    if (workoutData.exercises.length === 0) {
+        alert("Please log details for at least one exercise set.");
+        return;
+    }
 
     try {
-      const response = await axios.post(`${API_URL}/saveWorkout`, workoutData);
+      const response = await axios.post(
+        `${API_URL}/saveWorkout`,
+        workoutData
+      );
       console.log("Workout saved successfully:", response.data);
       alert("Workout saved successfully!");
+      clearWorkoutState(); // Clear stored state after successful save
       navigate("/history");
     } catch (error) {
       console.error("Error saving workout:", error);
-      if (error.response) {
-        console.error("Data:", error.response.data);
-        console.error("Status:", error.response.status);
-        console.error("Headers:", error.response.headers);
-        alert(`Failed to save workout: ${error.response.data.message}`);
-      } else if (error.request) {
-        console.error("No response received:", error.request);
-        alert("Failed to save workout: No response from server");
-      } else {
-        console.error("Error", error.message);
-        alert(`Failed to save workout: ${error.message}`);
-      }
+      alert("Failed to save workout. Please try again.");
     }
   };
 
+
   return (
-    <div className="SubPage page">
+    <div className="page"> {/* Changed from subPage based on your SelectExercises */}
       <div className="column">
         <h1 className="heading">
-          <button
-            className="topButton"
-            onClick={() => navigate("/selectExercises")}
-          >
+          {/* --- MODIFIED Back Button --- */}
+          <button className="topButton" onClick={handleBackWorkout}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
@@ -177,18 +297,20 @@ function MakeWorkout() {
 
       <div className="beside">
         <input
+          ref={workoutNameInputRef} // Assign ref
           type="text"
           className="workoutName"
           value={workoutName}
           onChange={handleWorkoutNameChange}
           readOnly={!isEditable}
+          onBlur={handleBlur} // Handle losing focus
         />
         <button className="edit" onClick={toggleEditWorkoutName}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            height="30px"
+            height="24px" // Matched size
             viewBox="0 -960 960 960"
-            width="30px"
+            width="24px" // Matched size
             fill="#124559"
           >
             <path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z" />
@@ -197,13 +319,13 @@ function MakeWorkout() {
       </div>
 
       {/* Workout Note Input */}
-      <div className="noteDiv">
+      <div className="noteDiv"> {/* Changed from noteDiv for consistency? */}
         <p className="text">Workout Note</p>
         <textarea
           className="notes"
           placeholder="Enter workout notes here..."
           value={workoutNote}
-          onChange={(e) => setWorkoutNote(e.target.value)}
+          onChange={handleWorkoutNoteChange}
         />
       </div>
 
@@ -214,9 +336,7 @@ function MakeWorkout() {
           className="picker"
           type="date"
           value={selectedDate.toISOString().slice(0, 10)}
-          onChange={(e) =>
-            setSelectedDate(new Date(e.target.value + "T00:00:00"))
-          }
+          onChange={handleDateChange} // Use specific handler
         />
       </div>
 
@@ -247,7 +367,7 @@ function MakeWorkout() {
                       <input
                         className="detailInp"
                         type="number"
-                        placeholder="Weight(kg)"
+                        placeholder="Weight (kg)" // Added unit
                         value={set.weight}
                         onChange={(e) =>
                           handleInputChange(
@@ -276,7 +396,7 @@ function MakeWorkout() {
                           )
                         }
                       />
-                      {/* <input
+                      <input
                         className="detailInp"
                         type="number"
                         placeholder="Distance (km)"
@@ -289,7 +409,7 @@ function MakeWorkout() {
                             e.target.value
                           )
                         }
-                      /> */}
+                      />
                     </div>
                   )}
                   {exercise.category === "bodyweight" && (
@@ -337,6 +457,17 @@ function MakeWorkout() {
             </div>
           </div>
         ))}
+        <div className="add-exercise-button-area">
+          <button
+            className="add-exercise-button"
+            onClick={goToAddExercises}
+          >
+            Add Exercise
+          </button>
+        </div>
+        <button className="cancelBtn" onClick={handleCancelWorkout}>
+          Cancel Workout
+        </button>
         <button className="saveBtn" onClick={saveWorkout}>
           Save Workout
         </button>

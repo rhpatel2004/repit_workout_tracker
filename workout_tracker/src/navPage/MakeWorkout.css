@@ -357,6 +357,7 @@ button.removeBtn svg {
     text-align: center;
     cursor: pointer;
     transition: background-color 0.2s ease-out, color 0.2s ease-out;
+    
     /* Remove card bottom integration */
 }
 
@@ -379,42 +380,68 @@ button.removeBtn svg {
 
 
 button.saveBtn {
-    /* Sizing & Box Model */
     display: block;
-    /* **** CHANGED: Allow button to fill container width **** */
     width: 100%;
-    /* **** REMOVED: max-width limit **** */
-    /* max-width: 35rem; */
     height: 5.2rem;
     border: none;
     border-radius: 1.6rem;
-    /* Adjusted margin: Keep vertical, remove auto horizontal */
-    margin: 2.5rem 0 2.4rem 0;
+    margin: 1rem 0 2.4rem 0;
     padding: 0 1.6rem;
 
-    /* Appearance (Keep as before) */
-    background-color: var(--primary-blue);
+    background-color: var(--accent-blue);
     color: var(--neutral-white);
-
-    /* Typography (Keep as before) */
     font-size: 1.6rem;
     font-weight: 600;
     letter-spacing: 0.1rem;
     text-transform: uppercase;
-
-    /* States (Keep as before) */
+    
     cursor: pointer;
+    transform: scale(0.98);
     transition: background-color 0.2s ease-out, transform 0.1s ease-out, box-shadow 0.2s ease-out;
     box-shadow: 0 2px 5px rgba(13, 71, 161, 0.2);
 }
 
-button.saveBtn {
-    background-color: var(--accent-blue);
-    color: var(--neutral-white);
+
+button.cancelBtn{
+    display: block;
+    width: 100%;
+    height: 5.2rem;
+    border-radius: 1.6rem ;
+    margin: 0rem 0 0rem 0;
+    padding: 0 1.6rem;
+
+    background-color: transparent;
+    color: rgb(255, 86, 86);
+    text-shadow: 0 1px 3px rgba(251, 103, 66, 0.2);;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    
+    cursor: pointer;
+    transform: scale(0.98);
+    transition: background-color 0.2s ease-out, transform 0.1s ease-out, box-shadow 0.2s ease-out;
+}
+.add-exercise-button-area{
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    border-top: 1px dashed var(--border-color);
 }
 
-button.saveBtn {
-    background-color: var(--accent-blue);
-    opacity: 0.85;
-    transform: scale(0.98);
+.add-exercise-button{
+    display: block;
+    width: auto;
+    /* Align left under set info, adjust margin */
+    margin: 1.5rem 0 1.5rem 0;
+    padding: 0.6rem 1.2rem;
+    border-radius: 1rem;
+    border: 1px solid var(--accent-blue);
+    background-color: transparent;
+    color: var(--accent-blue);
+    font-size: 1.4rem;
+    font-weight: 400;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease-out, color 0.2s ease-out;
 }

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import "./Workout.css";
 import NavBar from "../NavBar";
 import axios from "axios";
+import { clearMakeWorkoutSessionState } from "../utils/workoutState";
 
 function WorkoutPage() {
     const navigate = useNavigate();
@@ -16,6 +17,12 @@ function WorkoutPage() {
             setUserId(storedUserId);
         }
     }, []);
+    
+    const handleAddNewWorkoutClick = () => {
+        clearMakeWorkoutSessionState(); // Clear state BEFORE navigating
+        navigate("/selectExercises");
+    };
+
 
 
 
@@ -27,7 +34,7 @@ function WorkoutPage() {
                 </div>
                 <button
                     className="addNewWorkout"
-                    onClick={() => navigate("/selectExercises")}
+                    onClick={handleAddNewWorkoutClick}
                 >
                     Add New Workout
                 </button>
