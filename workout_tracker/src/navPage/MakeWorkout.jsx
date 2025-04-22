@@ -18,6 +18,10 @@ function MakeWorkout() {
   const [workoutNote, setWorkoutNote] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const workoutNameInputRef = useRef(null);
+  
+  const [selectedDateString, setSelectedDateString] = useState(
+    new Date().toISOString().slice(0, 10) // Default to today's date string
+  );
 
   const clearWorkoutState = () => {
     console.log("Clearing workout state from sessionStorage");
@@ -46,6 +50,9 @@ function MakeWorkout() {
     // Use IDs passed from SelectExercises primarily, fall back to sessionStorage
     const currentExerciseIds = location.state?.selectedExercises || storedExerciseIds;
 
+    // Store the date as a YYYY-MM-DD string to avoid timezone issues in the input
+   
+
     if (currentExerciseIds.length > 0) {
       // Only fetch if there are IDs to fetch
       fetchExercisesDetails(currentExerciseIds);
@@ -58,8 +65,8 @@ function MakeWorkout() {
         if (storedStartTime) setStartTime(new Date(parseInt(storedStartTime)));
         else setStartTime(new Date()); // Set start time if not restoring
       } else {
-          //If no exerciseId are present then set start time to null.
-          setStartTime(null);
+        //If no exerciseId are present then set start time to null.
+        setStartTime(null);
       }
     } else {
       // If no IDs passed and none in storage, clear any lingering state
@@ -77,8 +84,8 @@ function MakeWorkout() {
 
   const fetchExercisesDetails = async (idsToFetch) => {
     if (!idsToFetch || idsToFetch.length === 0) {
-        setExercises([]); // Clear exercises if no IDs
-        return;
+      setExercises([]); // Clear exercises if no IDs
+      return;
     };
     try {
       const exercisesDetails = await Promise.all(
@@ -89,7 +96,7 @@ function MakeWorkout() {
       );
       setExercises(exercisesDetails);
       // Don't re-initialize setsData here if restoring, handle in initializeSetsDataForNew
-       initializeSetsDataForNew(exercisesDetails); // Initialize only if not restored
+      initializeSetsDataForNew(exercisesDetails); // Initialize only if not restored
     } catch (error) {
       console.error("Error fetching exercise details:", error);
     }
@@ -97,30 +104,30 @@ function MakeWorkout() {
 
   // Initialize setsData only for exercises that don't have data yet
   const initializeSetsDataForNew = (fetchedExercises) => {
-     setSetsData(prevSetsData => {
-        const newSetsData = {...prevSetsData};
-        fetchedExercises.forEach(exercise => {
-            // Only initialize if this exercise ID doesn't exist in setsData yet
-            if (!newSetsData[exercise._id]) {
-                 newSetsData[exercise._id] = [{ reps: "", weight: "", duration: "", distance: "", restTime: "" }];
-            }
-        });
-        return newSetsData;
-     });
- };
+    setSetsData(prevSetsData => {
+      const newSetsData = { ...prevSetsData };
+      fetchedExercises.forEach(exercise => {
+        // Only initialize if this exercise ID doesn't exist in setsData yet
+        if (!newSetsData[exercise._id]) {
+          newSetsData[exercise._id] = [{ reps: "", weight: "", duration: "", distance: "", restTime: "" }];
+        }
+      });
+      return newSetsData;
+    });
+  };
 
 
   // --- Input Handlers (No change needed, they update state which is saved on navigate) ---
   const handleInputChange = (exerciseId, setIndex, field, value) => {
     setSetsData((prevSetsData) => {
-        // Ensure the array exists before trying to map
-        const currentSets = prevSetsData[exerciseId] || [];
-        return {
-            ...prevSetsData,
-            [exerciseId]: currentSets.map((set, index) =>
-                index === setIndex ? { ...set, [field]: value } : set
-            ),
-        };
+      // Ensure the array exists before trying to map
+      const currentSets = prevSetsData[exerciseId] || [];
+      return {
+        ...prevSetsData,
+        [exerciseId]: currentSets.map((set, index) =>
+          index === setIndex ? { ...set, [field]: value } : set
+        ),
+      };
     });
   };
 
@@ -175,11 +182,11 @@ function MakeWorkout() {
     setWorkoutName(e.target.value);
   };
 
-   const handleWorkoutNoteChange = (e) => {
+  const handleWorkoutNoteChange = (e) => {
     setWorkoutNote(e.target.value);
   };
 
-   const handleDateChange = (e) => {
+  const handleDateChange = (e) => {
     const newDate = new Date(e.target.value + "T00:00:00");
     setSelectedDate(newDate);
   };
@@ -198,36 +205,36 @@ function MakeWorkout() {
     setIsEditable(false);
   };
 
-   // --- Navigation and Saving ---
+  // --- Navigation and Saving ---
 
-   // Renamed to reflect its purpose
-   const goToAddExercises = () => {
-       // Save current state before navigating
-       sessionStorage.setItem('makeWorkoutSelections', JSON.stringify(exercises.map(ex => ex._id))); // Save current IDs
-       sessionStorage.setItem('makeWorkoutName', workoutName);
-       sessionStorage.setItem('makeWorkoutNote', workoutNote);
-       sessionStorage.setItem('makeWorkoutDate', selectedDate.toISOString());
-       sessionStorage.setItem('makeWorkoutSetsData', JSON.stringify(setsData));
-       if (startTime) {
-           sessionStorage.setItem('makeWorkoutStartTime', startTime.getTime().toString());
-       }
-       navigate('/selectExercises'); // Go back to selection page
-   }
+  // Renamed to reflect its purpose
+  const goToAddExercises = () => {
+    // Save current state before navigating
+    sessionStorage.setItem('makeWorkoutSelections', JSON.stringify(exercises.map(ex => ex._id))); // Save current IDs
+    sessionStorage.setItem('makeWorkoutName', workoutName);
+    sessionStorage.setItem('makeWorkoutNote', workoutNote);
+    sessionStorage.setItem('makeWorkoutDate', selectedDate.toISOString());
+    sessionStorage.setItem('makeWorkoutSetsData', JSON.stringify(setsData));
+    if (startTime) {
+      sessionStorage.setItem('makeWorkoutStartTime', startTime.getTime().toString());
+    }
+    navigate('/selectExercises'); // Go back to selection page
+  }
 
-   // Function for the top-left back button
-   const handleBackWorkout = () => {
-      //  clearWorkoutState(); 
-       navigate('/selectExercises'); 
-   }
-   const handleCancelWorkout = () => {
+  // Function for the top-left back button
+  const handleBackWorkout = () => {
+    //  clearWorkoutState(); 
+    navigate('/selectExercises');
+  }
+  const handleCancelWorkout = () => {
     // --- Add Confirmation ---
     if (window.confirm("Are you sure you want to cancel this workout? Your progress will be lost.")) {
-        // User clicked OK
-        clearWorkoutState(); // Clear the session storage
-        navigate('/workout'); // Navigate back to the main workout page
+      // User clicked OK
+      clearWorkoutState(); // Clear the session storage
+      navigate('/workout'); // Navigate back to the main workout page
     } else {
-        // User clicked Cancel - do nothing
-        console.log("Workout cancellation aborted.");
+      // User clicked Cancel - do nothing
+      console.log("Workout cancellation aborted.");
     }
   };
 
@@ -235,6 +242,8 @@ function MakeWorkout() {
   const saveWorkout = async () => {
     const endTime = new Date();
     const calculatedDuration = startTime ? Math.round((endTime - startTime) / (1000 * 60)) : 0;
+
+    const dateToSave = new Date(selectedDateString + "T00:00:00.000Z");
 
     const workoutData = {
       userId: userId,
@@ -247,10 +256,10 @@ function MakeWorkout() {
         exerciseId: exercise._id,
         // Filter out empty sets before saving
         sets: (setsData[exercise._id] || []).filter(set => {
-            if (exercise.category === 'strength') return (set.reps !== '' && set.reps !== null) || (set.weight !== '' && set.weight !== null);
-            if (exercise.category === 'cardio') return (set.duration !== '' && set.duration !== null) || (set.distance !== '' && set.distance !== null);
-            if (exercise.category === 'bodyweight') return (set.reps !== '' && set.reps !== null);
-            return false;
+          if (exercise.category === 'strength') return (set.reps !== '' && set.reps !== null) || (set.weight !== '' && set.weight !== null);
+          if (exercise.category === 'cardio') return (set.duration !== '' && set.duration !== null) || (set.distance !== '' && set.distance !== null);
+          if (exercise.category === 'bodyweight') return (set.reps !== '' && set.reps !== null);
+          return false;
         })
       })).filter(exercise => exercise.sets.length > 0), // Remove exercises with no valid sets
       isTemplate: false,
@@ -258,12 +267,12 @@ function MakeWorkout() {
 
     // Basic Validation
     if (!workoutData.name) {
-        alert("Please enter a workout name.");
-        return;
+      alert("Please enter a workout name.");
+      return;
     }
     if (workoutData.exercises.length === 0) {
-        alert("Please log details for at least one exercise set.");
-        return;
+      alert("Please log details for at least one exercise set.");
+      return;
     }
 
     try {

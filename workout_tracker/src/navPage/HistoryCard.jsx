@@ -20,7 +20,7 @@ function HistoryCard({ workout, onDelete }) {
         // User clicked Cancel - do nothing
         console.log("Workout deletion aborted.");
     }
-    // -----------------------
+   
 };
 
   const toggleDetails = () => {

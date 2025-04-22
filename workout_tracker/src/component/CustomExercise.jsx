@@ -18,11 +18,12 @@ function CustomExercise() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [returnPath, setReturnPath] = useState('/selectExercises');
 
   // --- Dropdown Options ---
   const muscleGroupOptions = [
     // Add a placeholder/disabled option
-    { label: "Select Muscle Group", value: "" }, 
+    { label: "Select Muscle Group", value: "" },
     // Keep your original options, excluding "All"
     { label: "Chest", value: "Chest" },
     { label: "Back", value: "Back" },
@@ -49,6 +50,11 @@ function CustomExercise() {
     } else {
       console.error("User ID not found. Redirecting to login.");
       navigate("/login"); // Redirect if no user ID
+    }
+    // Get return path from sessionStorage on mount
+    const path = sessionStorage.getItem('customExerciseReturnPath');
+    if (path) {
+      setReturnPath(path);
     }
   }, [navigate]);
 
@@ -77,20 +83,33 @@ function CustomExercise() {
 
     try {
       // *** Replace with your actual API endpoint ***
-      const response = await axios.post(`${API_URL}/addCustomExercise`, newExerciseData); 
-      
+      const response = await axios.post(`${API_URL}/addCustomExercise`, newExerciseData);
+
       console.log("Custom exercise saved:", response.data);
       alert("Custom exercise saved successfully!");
-      navigate("/selectExercises"); // Navigate back after saving
+
+      // Clear the session storage item *before* navigating back
+      sessionStorage.removeItem('customExerciseReturnPath');
+
+      setTimeout(() => {
+        navigate(returnPath); // Use the returnPath state
+      }, 500); // Delay
+
     } catch (err) {
       const errorMsg = err.response?.data?.message || err.message || "Failed to save exercise.";
       console.error("Error saving custom exercise:", err);
       setError(errorMsg);
       alert(`Error: ${errorMsg}`);
-    } finally {
       setLoading(false);
-    }
+    } 
   };
+  // Determine the back navigation path
+  const handleGoBack = () => {
+    // Clear the session storage item when explicitly going back
+    sessionStorage.removeItem('customExerciseReturnPath');
+    navigate(returnPath); // Use the returnPath state
+};
+
 
   // --- Render ---
   return (
@@ -98,9 +117,9 @@ function CustomExercise() {
     <div className="page custom-exercise-page">
 
       {/* Header */}
-      <div className="column" style={{ marginBottom: '2.4rem' }}> 
+      <div className="column" style={{ marginBottom: '2.4rem' }}>
         <h1 className="heading">
-          <button className="topButton" onClick={() => navigate("/selectExercises")}>
+          <button className="topButton" onClick={handleGoBack}>
             {/* Back Arrow SVG */}
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" /></svg>
           </button>
@@ -110,8 +129,8 @@ function CustomExercise() {
 
       {/* Form */}
       {/* Add class for specific form styling if needed */}
-      <form onSubmit={handleSaveExercise} className="custom-exercise-form"> 
-        
+      <form onSubmit={handleSaveExercise} className="custom-exercise-form">
+
         {/* Exercise Name */}
         <div className="form-group">
           {/* Using a specific class for labels in this form */}
@@ -122,7 +141,7 @@ function CustomExercise() {
             value={exerciseName}
             onChange={(e) => setExerciseName(e.target.value)}
             placeholder="e.g., Kneeling Cable Crunch"
-            required 
+            required
           />
         </div>
 
@@ -132,7 +151,7 @@ function CustomExercise() {
           {/* Reusing .notes class for textarea styling */}
           <textarea
             id="description"
-            className="notes" 
+            className="notes"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="e.g., How to perform, tips, target muscles..."
@@ -151,7 +170,7 @@ function CustomExercise() {
           >
             {muscleGroupOptions.map((option) => (
               // Disable the placeholder option
-              <option key={option.value} value={option.value} disabled={option.value === ""}> 
+              <option key={option.value} value={option.value} disabled={option.value === ""}>
                 {option.label}
               </option>
             ))}
@@ -161,7 +180,7 @@ function CustomExercise() {
         {/* Equipment */}
         <div className="form-group">
           {/* Label updated */}
-          <label htmlFor="equipment" className="form-label">Equipment Needed (Optional)</label> 
+          <label htmlFor="equipment" className="form-label">Equipment Needed (Optional)</label>
           <input
             type="text"
             id="equipment"
@@ -196,15 +215,15 @@ function CustomExercise() {
         <button
           type="submit"
           // Using primary button style from Workout page
-          className="addNewWorkout" 
-          disabled={loading} 
-          style={{marginTop: '3.2rem'}} // Ensure space above button
+          className="addNewWorkout"
+          disabled={loading}
+          style={{ marginTop: '3.2rem' }} // Ensure space above button
         >
           {loading ? "Saving..." : "Save Exercise"}
         </button>
       </form>
       {/* Remove NavBar if it's global or handled by parent route */}
-      {/* <NavBar /> */} 
+      {/* <NavBar /> */}
     </div>
   );
 }

@@ -1,0 +1,73 @@
+/* WorkoutCard.css (or your main CSS file) */
+
+.workoutCard {
+    background-color: white; /* Or var(--neutral-white) */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px; /* Add space between cards */
+    box-shadow: 0 2px 4px var(--shadow-color);
+    cursor: pointer; /* Indicate it's clickable */
+    transition: box-shadow 0.2s ease-in-out;
+  }
+  
+  .workoutCard:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12); /* Slightly stronger shadow on hover */
+  }
+  
+  .workoutCard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    /* Using 'column' class might work if defined elsewhere, otherwise use flex here */
+  }
+  
+  .workoutCard-header .column h3 {
+    margin: 0; /* Remove default margin */
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--darkBlue);
+  }
+  .workoutCard-header.column {
+    margin-bottom: 0px;
+  }
+  /* Style for the delete button */
+  .delete-template-btn {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    line-height: 1; /* Align icon nicely */
+  }
+  
+  .delete-template-btn svg {
+     color: #e53e3e; /* Red color for delete */
+     transition: color 0.2s ease;
+  }
+  .delete-template-btn:hover svg {
+     color: #c53030; /* Darker red on hover */
+  }
+  
+  
+  .template-exercises h4 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--neutral-medium);
+    margin-bottom: 5px;
+    margin-top: 10px; /* Space above exercise list */
+    border-top: 1px solid var(--border-color); /* Separator line */
+    padding-top: 10px;
+  }
+  
+  .template-exercises ul {
+    list-style: none;
+    padding-left: 5px; /* Small indent */
+    margin: 0;
+  }
+  
+  .template-exercises li {
+    font-size: 1.2rem;
+    color: var(--neutral-dark);
+    margin-bottom: 3px;
+  }

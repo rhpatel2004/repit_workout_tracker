@@ -3,12 +3,9 @@
 /* Add more space above the main heading specifically on this page */
 /* (Ensure this selector is specific enough if .heading is used differently elsewhere) */
 .page .heading {
-    /* Targeting .heading within .page */
-    /* Keep added space above heading */
+
     margin-bottom: 2.4rem;
-    /* Keep added space below heading */
-    /* text-align: center; */
-    /* **** REMOVE THIS LINE **** */
+
 }
 
 /* --- Primary Action Button ("Add New Workout") --- */
@@ -38,7 +35,8 @@
 /* ... */
 /* Keep hover/active/dark mode styles as before */
 .addNewWorkout:hover {
-    /* ... */
+    background-color: var(--primary-blue-light);
+    color: var(--neutral-medium);
 }
 
 .addNewWorkout:active {
@@ -120,6 +118,11 @@
     /* Prevent text label from shrinking */
 }
 
+.column1 .text {
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+
 select.dropDown {
     flex-grow: 1;
     /* Allow select to take available space */
@@ -136,11 +139,13 @@ select.dropDown {
 /* Consider adding class="exercise-list-container" in JSX for reliability */
 /* Replace the old :has() rule with this: */
 .exercise-list-container {
-    margin-top: 1rem; /* Space above the list/message */
+    margin-top: 1rem;
+    /* Space above the list/message */
     /* Add padding to clear FAB and potentially NavBar */
-    padding-bottom: 12rem; /* Adjust as needed */
-  }
-  
+    padding-bottom: 12rem;
+    /* Adjust as needed */
+}
+
 /* --- Exercise Card Styling --- */
 .exercise-card {
     background-color: var(--neutral-white);
@@ -255,44 +260,556 @@ select.dropDown {
 
 /* Search Input Container */
 .search-container {
-    margin-bottom: 0rem; /* Space below search bar, above filter */
-    position: relative; /* For potential icon positioning */
-  }
-  
-  /* Search Input Field */
-  input.search-input[type="search"] {
+    margin-bottom: 0rem;
+    /* Space below search bar, above filter */
+    position: relative;
+    /* For potential icon positioning */
+}
+
+/* Search Input Field */
+input.search-input[type="search"] {
     /* Inherit base input styles from index.css */
     width: 100%;
     /* Match standard input height or make slightly smaller */
-    height: 4.4rem; 
+    height: 4.4rem;
     min-height: 4.4rem;
     border: 1.5px solid var(--border-color);
-    border-radius: 1.6rem; 
-    padding: 0 1.6rem; /* Adjust padding if adding icon */
+    border-radius: 1.6rem;
+    padding: 0 1.6rem;
+    /* Adjust padding if adding icon */
     font-size: 1.5rem;
     background-color: var(--neutral-white);
     color: var(--text-color);
     outline: none;
     transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out;
-  }
-  input.search-input[type="search"]:focus {
+}
+
+input.search-input[type="search"]:focus {
     border-color: var(--primary-blue);
     /* Optional focus shadow */
     /* box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.15); */
-  }
-  /* Clear button (X) styling in WebKit */
-  input.search-input[type="search"]::-webkit-search-cancel-button {
-      /* Optional: Style or hide default clear button */
-      cursor: pointer;
-      /* -webkit-appearance: none; */ 
-  }
-  
-  /* Dark mode search input */
-  [data-theme='dark'] input.search-input[type="search"] {
+}
+
+/* Clear button (X) styling in WebKit */
+input.search-input[type="search"]::-webkit-search-cancel-button {
+    /* Optional: Style or hide default clear button */
+    cursor: pointer;
+    /* -webkit-appearance: none; */
+}
+
+/* Dark mode search input */
+[data-theme='dark'] input.search-input[type="search"] {
     background-color: var(--neutral-medium-bg);
     border-color: var(--border-color-dark);
-  }
-  [data-theme='dark'] input.search-input[type="search"]:focus {
+}
+
+[data-theme='dark'] input.search-input[type="search"]:focus {
     border-color: var(--primary-blue-dark);
     /* box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2); */
-  }
+}
+
+/* ============================================= */
+/* == NEW STYLES for FOLDERS & TEMPLATES == */
+/* ============================================= */
+
+/* --- General Layout for Folders/Templates Area --- */
+
+.folder-template-area {
+    margin-top: 2.4rem;
+    /* Space above the first folder/uncategorized */
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    /* Space between folder sections */
+}
+
+.folder-section {
+    /* Add a subtle border or background for visual separation */
+    background-color: var(--neutral-white);
+    border: 1px solid var(--border-color);
+    border-radius: 1.2rem;
+    /* Slightly larger radius for sections */
+    overflow: hidden;
+    /* Ensure content respects border-radius */
+    transition: box-shadow 0.2s ease-out;
+}
+
+[data-theme='dark'] .folder-section {
+    background-color: var(--neutral-medium-bg);
+    border-color: var(--border-color-dark);
+}
+
+/* --- Folder Header Styling (Accordion-like) --- */
+
+.folder-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.6rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-out;
+    border-bottom: 1px solid var(--border-color);
+    /* Separator line */
+}
+
+/* Remove bottom border if the folder section is NOT expanded */
+.folder-section:not(:has(.template-grid)) .folder-header {
+    border-bottom: none;
+}
+
+/* Fallback for browsers not supporting :has() - might show border always */
+@supports not selector(:has(.template-grid)) {
+    .folder-header {
+        border-bottom: 1px solid var(--border-color) !important;
+        /* Ensure it shows if :has not supported */
+    }
+
+    .folder-header.selected {
+        /* Keep border when selected if :has() fails */
+    }
+}
+
+
+.folder-header h3 {
+    font-size: 1.8rem;
+    /* Slightly larger than card titles */
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+    /* Reset default margin */
+}
+
+/* Style for the currently expanded/selected folder header */
+.folder-header.selected {
+    background-color: var(--primary-blue-light, #E3F2FD);
+    /* Use light blue highlight */
+    border-bottom-color: var(--primary-blue);
+    /* Match border to highlight */
+}
+
+.folder-header.selected h3 {
+    color: var(--primary-blue);
+    /* Match text color to highlight */
+}
+
+
+[data-theme='dark'] .folder-header {
+    border-bottom-color: var(--border-color-dark);
+}
+
+[data-theme='dark'] .folder-header:hover {
+    background-color: var(--neutral-dark-bg);
+    /* Darker hover */
+}
+
+[data-theme='dark'] .folder-header.selected {
+    background-color: var(--primary-blue-light-dark, rgba(66, 165, 245, 0.15));
+    border-bottom-color: var(--primary-blue-dark);
+}
+
+[data-theme='dark'] .folder-header.selected h3 {
+    color: var(--primary-blue-dark);
+}
+
+/* Add styles for folder action icons (Edit/Delete) if you add them later */
+/* .folder-actions { display: flex; gap: 0.8rem; } */
+/* .folder-actions button { ... } */
+
+
+/* --- Template Grid Styling --- */
+
+.template-grid {
+    display: grid;
+    /* Responsive grid: fills with columns between 250px and 1fr */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.6rem;
+    /* Gap between template cards */
+    padding: 1.6rem;
+    /* Padding inside the expanded folder section */
+    /* Animate the appearance/disappearance - optional */
+    /* max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out; */
+}
+
+/* Style for when the grid is shown (can use JS to add class or rely on conditional rendering) */
+/* .folder-section.expanded .template-grid {
+     max-height: 1000px; /* Large enough value */
+/* padding: 1.6rem; */
+/* } */
+
+
+/* Message when no templates are present */
+.no-templates-message {
+    grid-column: 1 / -1;
+    /* Span full grid width */
+    text-align: center;
+    padding: 2rem 1.6rem;
+    font-size: 1.5rem;
+    color: var(--neutral-medium);
+    font-style: italic;
+}
+
+/* --- WorkoutCard / Template Card Styling --- */
+/* Adding .template-card for specificity */
+.workoutCard.template-card {
+    background-color: var(--neutral-white);
+    border: 1px solid var(--border-color);
+    border-radius: 0.8rem;
+    /* Match other cards */
+    padding: 1.2rem 1.6rem;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    cursor: pointer;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out;
+    display: flex;
+    /* Use flexbox for layout */
+    flex-direction: column;
+    /* Stack header and exercises */
+    justify-content: space-between;
+    /* Push exercises down */
+    min-height: 120px;
+    /* Give cards a minimum height */
+}
+
+.workoutCard.template-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px var(--shadow-color);
+    border-color: var(--neutral-medium);
+}
+
+.workoutCard.template-card:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Header within the template card */
+.workoutCard-header.column {
+    /* Reusing .column, ensure specificity */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    /* Align items to top */
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    /* Space between header and exercise list */
+}
+
+.workoutCard.template-card h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+    /* Reset margin */
+    /* Allow text to wrap */
+    word-break: break-word;
+    flex-grow: 1;
+    /* Allow title to take space */
+}
+
+/* Delete button specific styles */
+.delete-template-btn {
+    background: none;
+    border: none;
+    padding: 0.4rem;
+    /* Small padding for click area */
+    cursor: pointer;
+    line-height: 0;
+    /* Prevent extra space */
+    border-radius: 50%;
+    transition: background-color 0.2s ease-out;
+    flex-shrink: 0;
+    /* Prevent button from shrinking */
+}
+
+.delete-template-btn svg {
+    fill: #E53E3E;
+    /* Use a specific danger color */
+    width: 1.8rem;
+    /* Adjust size as needed */
+    height: 1.8rem;
+    display: block;
+}
+
+.delete-template-btn:hover {
+    background-color: rgba(229, 62, 62, 0.1);
+    /* Subtle red background on hover */
+}
+
+/* Exercises section within the card */
+.template-exercises {
+    margin-top: auto;
+    /* Pushes this section down if card grows */
+}
+
+.template-exercises h4 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--neutral-medium);
+    margin-bottom: 0.6rem;
+    border-top: 1px solid var(--border-color);
+    /* Separator line */
+    padding-top: 0.8rem;
+    /* Space above text after line */
+}
+
+.template-exercises ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 6em;
+    /* Limit height and allow scroll if needed */
+    overflow-y: auto;
+    /* Add scroll for long lists */
+}
+
+.template-exercises li {
+    font-size: 1.3rem;
+    color: var(--neutral-medium);
+    padding: 0.2rem 0;
+    /* Small vertical padding */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Dark Mode Template Card */
+[data-theme='dark'] .workoutCard.template-card {
+    background-color: var(--neutral-medium-bg);
+    border-color: var(--border-color-dark);
+    box-shadow: 0 2px 4px var(--shadow-color-dark);
+}
+
+[data-theme='dark'] .workoutCard.template-card:hover {
+    border-color: var(--neutral-medium);
+    box-shadow: 0 5px 10px var(--shadow-color-dark);
+}
+
+[data-theme='dark'] .workoutCard.template-card h3 {
+    color: var(--text-color);
+    /* Or a slightly brighter dark theme text */
+}
+
+[data-theme='dark'] .delete-template-btn svg {
+    /* Keep red or adjust if needed for contrast */
+}
+
+[data-theme='dark'] .delete-template-btn:hover {
+    background-color: rgba(239, 83, 80, 0.2);
+    /* Darker hover bg */
+}
+
+[data-theme='dark'] .template-exercises h4 {
+    color: var(--neutral-medium);
+    /* Check contrast */
+    border-top-color: var(--border-color-dark);
+}
+
+[data-theme='dark'] .template-exercises li {
+    color: var(--neutral-medium);
+    /* Check contrast */
+}
+
+
+/* --- Create Folder Modal Styling --- */
+
+.create-folder-backdrop {
+    position: fixed;
+    inset: 0;
+    /* top, right, bottom, left = 0 */
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Slightly darker backdrop */
+    z-index: 1040;
+    /* Below modal, above content */
+    display: flex;
+    /* Use flex to center modal */
+    justify-content: center;
+    align-items: center;
+    padding: 1.6rem;
+    /* Padding for small screens */
+}
+
+.create-folder-modal {
+    position: relative;
+    /* Change from fixed for flex centering */
+    background-color: var(--neutral-white);
+    padding: 2.4rem 2rem;
+    /* More padding */
+    z-index: 1050;
+    border-radius: 1.2rem;
+    /* Match folder section radius */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border: none;
+    /* Remove previous border */
+    width: 100%;
+    max-width: 400px;
+    /* Limit maximum width */
+    /* Animation */
+    opacity: 0;
+    transform: scale(0.95);
+    animation: modalFadeIn 0.3s ease-out forwards;
+}
+
+@keyframes modalFadeIn {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+.create-folder-modal h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--darkBlue);
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 1.6rem;
+}
+
+/* Form specific styles */
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    /* Space between input and actions */
+}
+
+.modal-input {
+    /* Inherits styles from index.css input */
+    /* Add specific overrides if needed */
+    margin-bottom: 0;
+    /* Remove default bottom margin */
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    /* Space between buttons */
+    justify-content:space-between;
+    /* Align buttons to the right */
+}
+
+.folder-selection-container .column .plus svg{
+    height: 2.5rem;
+    width: 2.5rem;
+}
+
+/* Secondary button style */
+.button-secondary {
+    padding: 1.2rem 2.4rem; /* Adjust padding */
+  background-color: var(--neutral-light); /* Use variable */
+  color: var(--neutral-medium); /* White text */
+  border: 1px solid var(--border-color);
+  font-size: 1.6rem; /* Base font size */
+  font-weight: 600; /* Medium/semibold */
+  border-radius: 2rem; /* Pill shape */
+  margin-top: 1.6rem; /* Consistent margin */
+  text-align: center;
+  display: inline-block; /* Allow margin */
+  cursor: pointer;
+  transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+}
+.button-secondary:hover {
+    background-color: var(--border-color);
+    border-color: var(--neutral-medium);
+}
+
+/* Message styling */
+.modal-message {
+    margin-top: 1.6rem;
+    margin-bottom: 0;
+    text-align: center;
+    font-size: 1.4rem;
+    padding: 0.8rem;
+    border-radius: 0.4rem;
+}
+
+.modal-message.success {
+    color: var(--success-green, #388E3C);
+    /* Use success green or fallback */
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+.modal-message.error {
+    color: var(--danger-color, #D32F2F);
+    /* Use danger color or fallback */
+    background-color: rgba(211, 47, 47, 0.1);
+}
+
+/* Dark Mode Modal */
+[data-theme='dark'] .create-folder-modal {
+    background-color: var(--neutral-dark-bg);
+    /* Darker modal background */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .create-folder-modal h2 {
+    color: var(--primary-blue-dark);
+    /* Brighter heading in dark mode */
+}
+
+[data-theme='dark'] .button-secondary {
+    background-color: var(--neutral-medium-bg);
+    color: var(--neutral-light);
+    border-color: var(--border-color-dark);
+}
+
+[data-theme='dark'] .button-secondary:hover {
+    background-color: var(--border-color-dark);
+    border-color: var(--neutral-light);
+}
+
+[data-theme='dark'] .modal-message.success {
+    color: #81C784;
+    /* Lighter green */
+    background-color: rgba(129, 199, 132, 0.15);
+}
+
+[data-theme='dark'] .modal-message.error {
+    color: #E57373;
+    /* Lighter red */
+    background-color: rgba(229, 115, 115, 0.15);
+}
+
+.btn-column {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.btn-column .plus svg {
+    height: 2.5rem;
+    width: 2.5rem;
+}
+.btn-column .plus svg:active {
+    /* color: var(--primary-blue); */
+}
+
+/* Adjustments to Template/Folder header icons */
+.column1>.column .plus {
+    /* Targeting the + icons in the header row */
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    padding: 0.6rem;
+    /* Add padding for click area */
+    transition: background-color 0.2s ease-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.column1>.column .plus:hover {
+    background-color: var(--neutral-light);
+}
+
+.column1>.column .plus svg {
+    width: 2.5rem;
+    /* Adjust icon size if needed */
+    height: 2.5rem;
+    /* Ensure fill colors match theme - they seem okay */
+}
+
+[data-theme='dark'] .column1>.column .plus:hover {
+    background-color: var(--neutral-medium-bg);
+}

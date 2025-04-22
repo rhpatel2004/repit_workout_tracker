@@ -190,17 +190,8 @@
 
 @media (max-width: 400px) { 
     /* --- Responsive adjustments for very small screens --- */
-  
-    .column1 {
-      flex-direction: column; /* Stack items vertically */
-      align-items: stretch; /* Make items take full available width */
-      gap: 1.6rem; /* Use gap for vertical spacing between stacked items */
-    }
-  
     /* Ensure the divs containing the selects inside column1 take full width */
-    .column1 > div {
-      width: 100%; 
-    }
+    
     
     /* Remove margin overrides if they conflict with gap */
     .column1 input, .column1 select {

@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const User = require("./models/user");
 const Workout = require("./models/completedWorkouts"); // Update the import path to completedWorkouts.js
-const DefaultWorkout = require('./models/default');
+const Folder = require('./models/folders');
 const Exercise = require('./models/exercise');
 const WorkoutTemplate = require('./models/workoutTemplate'); // Import your WorkoutTemplate model
 const bcrypt = require('bcrypt');
@@ -482,6 +482,133 @@ router.post('/trainer/addExercise', async (req, res) => {
             return res.status(400).json({ message: 'Validation Error', errors: error.errors });
         }
         res.status(500).json({ message: 'Server error while adding exercise.' });
+    }
+});
+
+// Create a Folder (for the logged-in user)
+router.post('/folders', async (req, res) => { // Add verifyToken later
+    try {
+        const { name } = req.body;
+        // const userId = req.user.userId; // Get from verified token LATER
+        const userId = req.body.userId; // TEMPORARY - Get from request body
+
+        if (!userId) return res.status(401).json({ message: "User ID required (Auth missing)" });
+        if (!name || !name.trim()) return res.status(400).json({ message: "Folder name is required" });
+
+        const newFolder = new Folder({
+            userId: userId, // Associate with the user
+            name: name.trim(),
+            isDefaultTrainerFolder: false,
+            trainerId: null
+        });
+
+        const savedFolder = await newFolder.save();
+        res.status(201).json(savedFolder);
+    } catch (error) {
+        console.error("Error creating folder:", error);
+        res.status(500).json({ message: "Error creating folder", error: error.message });
+    }
+});
+
+// Get Folders for a User
+router.get('/folders', async (req, res) => { // Add verifyToken later
+    try {
+        const userId = req.query.userId; // Get from query parameter (TEMPORARY)
+        // const userId = req.user.userId; // Get from verified token LATER
+
+        if (!userId) return res.status(401).json({ message: "User ID required (Auth missing)" });
+
+        const folders = await Folder.find({ userId: userId }); // Find folders ONLY for this user
+        res.status(200).json(folders);
+    } catch (error) {
+        console.error("Error fetching folders:", error);
+        res.status(500).json({ message: "Error fetching folders", error: error.message });
+    }
+});
+
+
+// --- Workout Template Routes ---
+
+// Create a Workout Template
+router.post('/workout-templates', async (req, res) => { // Add verifyToken later
+    try {
+        const { name, exercises, folderId } = req.body;
+        // const userId = req.user.userId; // Get from verified token LATER
+        const userId = req.body.userId; // TEMPORARY
+
+        if (!userId) return res.status(401).json({ message: "User ID required (Auth missing)" });
+        if (!name || !exercises || !Array.isArray(exercises)) {
+            return res.status(400).json({ message: 'Missing required fields (name, exercises)' });
+        }
+        if (folderId && !mongoose.Types.ObjectId.isValid(folderId)) {
+             return res.status(400).json({ message: 'Invalid folder ID format' });
+        }
+
+        // Optional: Check if folderId actually belongs to the user if provided
+        if (folderId) {
+            const folder = await Folder.findOne({ _id: folderId, userId: userId });
+            if (!folder) {
+                return res.status(404).json({ message: 'Folder not found or does not belong to user' });
+            }
+        }
+
+        const newTemplate = new WorkoutTemplate({
+            userId, // Template belongs to this user
+            trainerId: null, // Not created by a trainer
+            name: name.trim(),
+            exercises: exercises.map(exerciseId => ({ exerciseId })), // Ensure correct format
+            folderId: folderId || null, // Assign folderId or null
+        });
+
+        const savedTemplate = await newTemplate.save();
+        res.status(201).json(savedTemplate);
+    } catch (error) {
+        console.error("Error creating workout template:", error);
+        res.status(500).json({ message: "Error creating workout template", error: error.message });
+    }
+});
+
+// Get Workout Templates for a User
+router.get('/workout-templates', async (req, res) => { // Add verifyToken later
+    try {
+        const userId = req.query.userId; // Get from query parameter (TEMPORARY)
+         // const userId = req.user.userId; // Get from verified token LATER
+
+        if (!userId) return res.status(401).json({ message: "User ID required (Auth missing)" });
+
+        // Find templates created ONLY by this user
+        const templates = await WorkoutTemplate.find({ userId: userId })
+                            .populate('exercises.exerciseId', 'name'); // Populate exercise names
+        res.status(200).json(templates);
+    } catch (error) {
+        console.error("Error fetching workout templates:", error);
+        res.status(500).json({ message: "Error fetching workout templates", error: error.message });
+    }
+});
+
+// Delete Workout Template (Example - Needs Auth)
+router.delete('/workout-templates/:templateId', async (req, res) => { // Add verifyToken later
+    try {
+        const { templateId } = req.params;
+        // const userId = req.user.userId; // Get from verified token LATER
+        const userId = req.body.userId; // TEMPORARY
+
+        if (!userId) return res.status(401).json({ message: "User ID required (Auth missing)" });
+        if (!mongoose.Types.ObjectId.isValid(templateId)) {
+            return res.status(400).json({ message: 'Invalid template ID' });
+        }
+
+        // Find and delete template only if it belongs to the user
+        const result = await WorkoutTemplate.findOneAndDelete({ _id: templateId, userId: userId });
+
+        if (!result) {
+            return res.status(404).json({ message: 'Template not found or unauthorized' });
+        }
+
+        res.status(200).json({ message: 'Template deleted successfully' });
+    } catch (error) {
+        console.error("Error deleting workout template:", error);
+        res.status(500).json({ message: 'Error deleting workout template', error: error.message });
     }
 });
 
