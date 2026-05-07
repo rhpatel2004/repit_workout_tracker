@@ -307,6 +307,36 @@ input.detailInp {
     background-color: var(--neutral-white);
 }
 
+.exercise-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.exercise-card-header h3 {
+    margin: 0;
+    flex: 1;
+}
+
+.exercise-delete-btn {
+    width: 3.2rem;
+    height: 3.2rem;
+    border: none;
+    border-radius: 50%;
+    background: rgba(239, 83, 80, 0.12);
+    color: rgb(211, 47, 47);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.exercise-delete-btn:hover {
+    background: rgba(239, 83, 80, 0.2);
+}
+
 /* ... detailInp number styles / dark mode ... */
 [data-theme='dark'] input.detailInp {
     /* styles... */

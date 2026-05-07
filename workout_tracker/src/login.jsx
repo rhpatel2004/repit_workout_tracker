@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import "./login.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState(""); // Initialize with empty string
     const [password, setPassword] = useState(""); // Initialize with empty string
     const navigate = useNavigate();
-    const API_URL = import.meta.env.VITE_API_BASE_URL;
+    const API_URL = import.meta.env.VITE_API_BASE_URL || "/api";
     console.log("API_URL:", API_URL);
     const handleSubmit = (e) => {
         console.log("handleSubmit triggered!");
@@ -96,7 +96,7 @@ function Login() {
                     </button>
 
                     <h3>
-                        Don't have an Account? <a href="/register">Create</a>
+                        Don't have an Account? <Link to="/register">Create</Link>
                     </h3>
                 </form>
                 </div> 

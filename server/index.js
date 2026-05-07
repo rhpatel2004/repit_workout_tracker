@@ -170,6 +170,39 @@ router.get("/getUser/:userId", async (req, res) => {
     }
 });
 
+router.put("/users/:userId/profile-photo", async (req, res) => {
+    const { userId } = req.params;
+    const { profilePictureUrl } = req.body;
+
+    try {
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "Invalid user ID" });
+        }
+
+        if (!profilePictureUrl || typeof profilePictureUrl !== "string") {
+            return res.status(400).json({ message: "profilePictureUrl is required" });
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { profilePictureUrl },
+            { new: true, runValidators: true }
+        ).select("-password");
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({
+            message: "Profile photo updated successfully",
+            user: updatedUser,
+        });
+    } catch (err) {
+        console.error("Error updating profile photo:", err);
+        res.status(500).json({ message: "Error updating profile photo", error: err.message });
+    }
+});
+
 router.get("/getWorkouts/:userId", async (req, res) => {
     const { userId } = req.params;
     console.log("Fetching workouts for userId:", userId);
@@ -442,6 +475,37 @@ router.post('/addCustomExercise', async (req, res) => { // Removed 'protect' mid
         res.status(500).json({ message: 'Server error while adding custom exercise.' });
     }
 });
+
+router.delete('/customExercise/:exerciseId', async (req, res) => {
+    try {
+        const { exerciseId } = req.params;
+        const userId = req.body?.userId || req.query?.userId;
+
+        if (!userId) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(exerciseId)) {
+            return res.status(400).json({ message: 'Invalid exercise ID' });
+        }
+
+        const exercise = await Exercise.findById(exerciseId);
+
+        if (!exercise) {
+            return res.status(404).json({ message: 'Exercise not found' });
+        }
+
+        if (exercise.isPublic || !exercise.userId || exercise.userId.toString() !== String(userId)) {
+            return res.status(403).json({ message: 'You can only delete your own custom exercises' });
+        }
+
+        await Exercise.findByIdAndDelete(exerciseId);
+        res.status(200).json({ message: 'Custom exercise deleted successfully' });
+    } catch (error) {
+        console.error("Error deleting custom exercise:", error);
+        res.status(500).json({ message: 'Server error while deleting custom exercise.' });
+    }
+});
 router.post('/trainer/addExercise', async (req, res) => {
     try {
         // Get data including trainerId from body (INSECURE)
@@ -615,6 +679,6 @@ router.delete('/workout-templates/:templateId', async (req, res) => { // Add ver
 
 // Start the server
 const PORT = 3001;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });

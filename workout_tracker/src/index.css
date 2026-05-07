@@ -45,6 +45,9 @@ html {
   --background-color: var(--neutral-light); /* Main background */
   --text-color: var(--neutral-dark);      /* Main text */
   --nav-color: var(--neutral-white);     /* Nav background */
+  --app-shell-width: 180rem;
+  --desktop-nav-width: 24rem;
+  --desktop-shell-padding: 3.2rem;
 }
 
 
@@ -388,30 +391,74 @@ input:focus {
   right: 1.6rem; 
 }
 
-/* === Desktop/Mobile View Hiding === */
-@media(max-width: 767px) { /* Changed breakpoint slightly */
-  .DesktopHead {
-    display: none;
-  }
-}
-
-@media(min-width: 768px) {
-  .App { /* Hide the mobile app container */
-    display: none;
+@media (min-width: 768px) {
+  body {
+    background:
+      radial-gradient(circle at top, rgba(66, 165, 245, 0.18), transparent 35%),
+      linear-gradient(180deg, #eef5ff 0%, #f5f7fb 45%, #edf2f7 100%);
+    padding: 0 10px;
   }
 
-  .DesktopHead { /* Style the desktop message */
+  .App {
+    width: min(100%, var(--app-shell-width));
+    min-height: 100vh;
+    margin: 0 auto;
+    background-color: var(--neutral-white);
+    border: 1px solid rgba(13, 71, 161, 0.08);
+    border-radius: 2.4rem;
+    box-shadow: 0 24px 60px rgba(13, 71, 161, 0.14);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .App.authApp {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .page,
+  .subPage {
+    min-height: 100vh;
+    padding-left: var(--desktop-shell-padding);
+    padding-right: var(--desktop-shell-padding);
+  }
+
+  .page {
+    padding-left: calc(var(--desktop-nav-width) + 4.8rem);
+    padding-bottom: 4.8rem;
+  }
+
+  .subPage {
+    padding-bottom: 3.2rem;
+  }
+
+  .App.authApp .subPage {
+    max-width: none;
+    min-height: 100vh;
+    padding: 0;
     display: flex;
-    position: fixed; 
-    inset: 0; /* Covers whole screen */
-    background-color: var(--neutral-white); 
-    z-index: 1000; 
-    justify-content: center; 
-    align-items: center; 
-    text-align: center;
-    font-size: 2rem;
-    font-weight: 500;
-    color: var(--neutral-dark);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tickButton {
+    right: calc((100vw - min(100vw - 4.8rem, var(--app-shell-width))) / 2 + 3.2rem);
+    bottom: 3.2rem;
+  }
+
+  .subTickButton {
+    right: calc((100vw - min(100vw - 4.8rem, var(--app-shell-width))) / 2 + 3.2rem);
+    bottom: 3.2rem;
+  }
+
+  .cardSpace {
+    gap: 2rem;
+  }
+
+  .heading {
+    font-size: 3.2rem;
   }
 }
 

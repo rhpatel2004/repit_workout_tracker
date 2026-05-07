@@ -16,7 +16,7 @@
     width: calc(100% - 2.4rem); 
     max-width: 42rem; /* Keep max-width for now, can increase later if needed */
   }
-  
+
   /* Ensure dark mode version inherits the new padding/width */
   [data-theme='dark'] .auth-card {
       background-color: var(--neutral-medium-bg); 
@@ -206,3 +206,16 @@
         margin-top: 1.6rem; /* Ensure consistent spacing below the stacked column */
     }
   }
+
+@media (min-width: 768px) {
+  .auth-card {
+    width: min(100%, 56rem);
+    padding: 4rem 3.2rem;
+    margin: 6rem auto;
+    border-radius: 2rem;
+  }
+
+  .form-row {
+    gap: 1.2rem;
+  }
+}
