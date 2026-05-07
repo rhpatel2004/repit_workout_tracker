@@ -813,3 +813,29 @@ input.search-input[type="search"]::-webkit-search-cancel-button {
 [data-theme='dark'] .column1>.column .plus:hover {
     background-color: var(--neutral-medium-bg);
 }
+
+@media (min-width: 768px) {
+    .addNewWorkout {
+        max-width: 32rem;
+        margin-bottom: 3.2rem;
+    }
+
+    .folder-template-area {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(32rem, 1fr));
+        align-items: start;
+        gap: 2rem;
+    }
+
+    .folder-section {
+        border-radius: 1.6rem;
+    }
+
+    .template-grid {
+        grid-template-columns: repeat(auto-fill, minmax(26rem, 1fr));
+    }
+
+    .exercise-list-container {
+        max-width: 84rem;
+    }
+}

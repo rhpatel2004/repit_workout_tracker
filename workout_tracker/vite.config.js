@@ -45,13 +45,12 @@ export default defineConfig({
       }
     })
   ],
-  // ... your existing server proxy config (if you added it back) ...
-  // server: {
-  //   proxy: {
-  //     '/api': {
-  //       target: 'http://localhost:3001',
-  //       changeOrigin: true,
-  //     },
-  //   },
-  // },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+    },
+  },
 });

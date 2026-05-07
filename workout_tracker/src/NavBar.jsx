@@ -10,7 +10,15 @@ function NavBar() {
 
         <>
 
-            <nav>
+            <nav className="appNav">
+
+                <div className="appNavBrand">
+                    <span className="appNavLogo">R</span>
+                    <div className="appNavTitle">
+                        <strong>RepIt</strong>
+                        <span>Workout Tracker</span>
+                    </div>
+                </div>
 
                 <NavLink className="navLink" to="/profile">
 

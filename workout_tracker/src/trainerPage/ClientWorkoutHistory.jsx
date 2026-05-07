@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import HistoryCard from "../navPage/HistoryCard"; 
 
 function ClientWorkoutHistory() {
-  const API_URL = import.meta.env.VITE_API_BASE_URL;
+  const API_URL = import.meta.env.VITE_API_BASE_URL || "/api";
 
   const navigate = useNavigate();
   const { clientId } = useParams(); // Get the client ID from the URL params
@@ -22,7 +22,14 @@ function ClientWorkoutHistory() {
         const response = await axios.get(
           `${API_URL}/getWorkouts/${clientId}`
         );
-        
+
+        if (!Array.isArray(response.data)) {
+          console.error("Unexpected workouts response:", response.data);
+          setWorkouts([]);
+          setError(new Error("Unable to load workout history right now."));
+          return;
+        }
+
         setWorkouts(response.data);
       } catch (error) {
         console.error("Error fetching workouts:", error);
@@ -33,7 +40,7 @@ function ClientWorkoutHistory() {
     };
 
     fetchWorkouts();
-  }, [clientId]);
+  }, [clientId, API_URL]);
 
   const handleGoBack = () => {
     navigate("/dashboard"); // Go back to the dashboard

@@ -1,4 +1,12 @@
 {
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix workout_tracker run dev",
+    "build": "npm --prefix workout_tracker run build",
+    "preview": "npm --prefix workout_tracker run preview",
+    "start": "npm --prefix server run start",
+    "dev:server": "npm --prefix server run start"
+  },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "normalize.css": "^8.0.1",

@@ -29,6 +29,76 @@
      background-color: var(--neutral-dark-bg);
      box-shadow: 0 5px 15px var(--shadow-color-dark);
   }
+
+  .profileImageSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .profileAvatarWrap {
+    position: relative;
+  }
+
+  .profileFileInput {
+    display: none;
+  }
+
+  .profileEditButton {
+    position: absolute;
+    right: 0.4rem;
+    bottom: 0.4rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: var(--accent-blue);
+    color: var(--neutral-white);
+    border: 3px solid var(--neutral-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 5px 12px var(--shadow-color);
+    transition: transform 0.18s ease, opacity 0.18s ease, background-color 0.18s ease;
+  }
+
+  .profileEditButton:hover {
+    transform: scale(1.08);
+  }
+
+  .profileEditButton.is-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .profileEditIcon {
+    width: 1.4rem;
+    height: 1.4rem;
+    fill: currentColor;
+  }
+
+  .profileEditStatus {
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .profileUploadHint {
+    font-size: 1.2rem;
+    color: var(--neutral-medium);
+    text-align: center;
+  }
+
+  [data-theme='dark'] .profileEditButton {
+    border-color: var(--neutral-medium-bg);
+    box-shadow: 0 5px 12px var(--shadow-color-dark);
+  }
+
+  [data-theme='dark'] .profileUploadHint {
+    color: var(--neutral-text-medium-dark);
+  }
   
   /* --- Profile Data Card --- */
   .profileBox {

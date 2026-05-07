@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./MakeWorkout.css";
 
 function MakeWorkout() {
-  const API_URL = import.meta.env.VITE_API_BASE_URL;
+  const API_URL = import.meta.env.VITE_API_BASE_URL || "/api";
   const location = useLocation();
   const navigate = useNavigate();
   const [exercises, setExercises] = useState([]);

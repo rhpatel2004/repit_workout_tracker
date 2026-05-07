@@ -116,7 +116,7 @@ Link{
   [data-theme='dark'] .client-card:hover {
       box-shadow: 0 4px 10px var(--shadow-color-dark);
   }
-  [data-theme='dark'] .client-card::after {
+[data-theme='dark'] .client-card::after {
     color: var(--neutral-text-medium-dark);
   }
   
@@ -143,4 +143,18 @@ Link{
     overflow: hidden;
     text-overflow: ellipsis;
     padding-right: 1.6rem; /* Add padding so text doesn't overlap chevron */
+  }
+
+  @media (min-width: 768px) {
+    .client-list ul {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+      gap: 1.6rem;
+    }
+
+    .client-card {
+      min-height: 9.2rem;
+      margin-bottom: 0;
+      border-radius: 1.6rem;
+    }
   }
