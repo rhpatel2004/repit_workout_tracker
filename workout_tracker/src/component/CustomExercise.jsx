@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./CustomExercise.css";
 
 function CustomExercise() {
-  const API_URL = import.meta.env.VITE_API_BASE_URL;
+  const API_URL = import.meta.env.VITE_API_BASE_URL || "/api";
   const navigate = useNavigate();
 
   // --- State for Form Fields ---

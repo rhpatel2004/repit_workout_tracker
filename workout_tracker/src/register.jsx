@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./login.css"; // Assuming this is your CSS file
 
 function Register() {
-  const API_URL = import.meta.env.VITE_API_BASE_URL;
+  const API_URL = import.meta.env.VITE_API_BASE_URL || "/api";
   console.log("API_URL:", API_URL);
 
   const [firstName, setFirstName] = useState(""); // State for first name
@@ -13,8 +13,9 @@ function Register() {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState("user");
-  const [trainerId, setTrainerId] = useState(null); // Store selected trainer's ID
+  const [trainerId, setTrainerId] = useState(""); // Store selected trainer's ID
   const [trainers, setTrainers] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,11 +26,12 @@ function Register() {
         setTrainers(res.data); // Update state with fetched trainers
       })
       .catch((err) => console.error("Error fetching trainers:", err));
-  }, []);
+  }, [API_URL]);
 
   const handleSubmit = (e) => {
     console.log("handleSubmit triggered!");
     e.preventDefault();
+    setErrorMessage("");
     axios
       .post(`${API_URL}/register`, {
         firstName, // Send firstName
@@ -44,7 +46,13 @@ function Register() {
         console.log(result);
         navigate("/login");
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        const message =
+          err.response?.data?.message ||
+          "Registration failed. Please check your details and try again.";
+        setErrorMessage(message);
+      });
   };
 
   return (
@@ -58,6 +66,7 @@ function Register() {
         </p> */}
 
         <form onSubmit={handleSubmit}>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
 
           <div className="label">
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#124559"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" /></svg>          <p>Name</p>
@@ -143,7 +152,7 @@ function Register() {
                   name="trainer"
                   id="trainer"
                   value={trainerId}
-                  onChange={(e) => setTrainerId(e.target.value || null)}
+                  onChange={(e) => setTrainerId(e.target.value)}
                 >
                   <option value="">None</option>
                   {trainers.map((trainer) => (
@@ -161,7 +170,7 @@ function Register() {
           </button>
 
           <h3>
-            Already have an Account? <a href="/login">Sign In</a>
+            Already have an Account? <Link to="/login">Sign In</Link>
           </h3>
         </form>
       </div>

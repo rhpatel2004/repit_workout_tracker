@@ -20,7 +20,7 @@ function DefaultExercise() {
   const [showCreateFolder, setShowCreateFolder] = useState(false);
   const [searchQuery, setSearchQuery] = useState(""); // *** State for search query ***
 
-  const API_URL = import.meta.env.VITE_API_BASE_URL;
+  const API_URL = import.meta.env.VITE_API_BASE_URL || "/api";
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -101,6 +101,26 @@ function DefaultExercise() {
     );
   };
   const isSelected = (exerciseId) => selectedExercises.includes(exerciseId);
+
+  const handleDeleteExercise = async (event, exerciseId) => {
+    event.stopPropagation();
+
+    if (!userId) return;
+    if (!window.confirm("Delete this custom exercise?")) return;
+
+    try {
+      await axios.delete(`${API_URL}/customExercise/${exerciseId}`, {
+        params: { userId },
+        data: { userId },
+      });
+
+      setExercises((prev) => prev.filter((exercise) => exercise._id !== exerciseId));
+      setSelectedExercises((prev) => prev.filter((id) => id !== exerciseId));
+    } catch (error) {
+      console.error("Error deleting custom exercise:", error);
+      alert(error.response?.data?.message || "Failed to delete exercise.");
+    }
+  };
 
   const handleFolderCreated = async () => {
     setShowCreateFolder(false);
@@ -256,7 +276,21 @@ function DefaultExercise() {
                 style={{/* your styles */ }}
                 onClick={() => handleExerciseClick(exercise)}
               >
-                <h3 style={{ letterSpacing: "1.5px" }}>{exercise.name}</h3>
+                <div className="exercise-card-header">
+                  <h3 style={{ letterSpacing: "1.5px" }}>{exercise.name}</h3>
+                  {exercise.userId === userId && !exercise.isPublic && (
+                    <button
+                      type="button"
+                      className="exercise-delete-btn"
+                      onClick={(event) => handleDeleteExercise(event, exercise._id)}
+                      title="Delete custom exercise"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                        <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360Z" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
                 <p>{exercise.muscleGroup} | {exercise.equipment}</p>
               </div>
             ))}

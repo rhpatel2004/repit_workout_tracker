@@ -4,26 +4,40 @@ import HistoryCard from "./HistoryCard";
 import NavBar from "../NavBar";
 
 function HistoryPage() {
-  const API_URL = import.meta.env.VITE_API_BASE_URL;
+  const API_URL = import.meta.env.VITE_API_BASE_URL || "/api";
 
   const [workouts, setWorkouts] = useState([]);
+  const [error, setError] = useState("");
   const userId = localStorage.getItem("userId");
 
-  useEffect(() => {
-    const fetchWorkouts = async () => {
-      try {
-        if (userId) {
-          const response = await axios.get(`${API_URL}/getWorkouts/${userId}`);
-          setWorkouts(response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching workouts:", error);
+  const fetchWorkouts = async () => {
+    try {
+      setError("");
+
+      if (!userId) {
+        setWorkouts([]);
+        return;
       }
-    };
-    
-    
+
+      const response = await axios.get(`${API_URL}/getWorkouts/${userId}`);
+      const workoutList = Array.isArray(response.data) ? response.data : [];
+
+      if (!Array.isArray(response.data)) {
+        console.error("Unexpected workouts response:", response.data);
+        setError("Unable to load workout history right now.");
+      }
+
+      setWorkouts(workoutList);
+    } catch (error) {
+      console.error("Error fetching workouts:", error);
+      setWorkouts([]);
+      setError("Failed to load workout history.");
+    }
+  };
+
+  useEffect(() => {
     fetchWorkouts();
-  }, [userId]);
+  }, [userId, API_URL]);
 
   const handleDelete = async (workoutId) => {
     try {
@@ -42,7 +56,7 @@ function HistoryPage() {
         error.response ? error.response.data : error.message
       );
       // Re-fetch workouts to revert the UI in case of an error
-      fetchWorkouts();
+      await fetchWorkouts();
     }
   };
 
@@ -53,6 +67,7 @@ function HistoryPage() {
           <h1 className="heading">History</h1>
         </div>
         <div className="cardSpace">
+          {error && <p>{error}</p>}
           {workouts.map((workout) => (
             <HistoryCard
               key={workout._id}

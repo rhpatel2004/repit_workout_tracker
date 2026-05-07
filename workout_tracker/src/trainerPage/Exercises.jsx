@@ -5,7 +5,7 @@ import TrainerNav from './TrainerNav'; // Make sure path is correct
 import '../navPage/Workout.css'; // Assuming styles are shared or create trainer.css
 
 function Exercises() {
-    const API_URL = import.meta.env.VITE_API_BASE_URL;
+    const API_URL = import.meta.env.VITE_API_BASE_URL || "/api";
     const navigate = useNavigate();
 
     // State for filters, search, data, loading, errors

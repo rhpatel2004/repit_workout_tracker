@@ -5,7 +5,7 @@ import axios from 'axios';
 function CreateFolder({ userId, onFolderCreated, onClose }) {
     const [folderName, setFolderName] = useState('');
     const [message, setMessage] = useState('');
-    const API_URL = import.meta.env.VITE_API_BASE_URL;
+    const API_URL = import.meta.env.VITE_API_BASE_URL || "/api";
 
     const handleSubmit = async (e) => {
         e.preventDefault();

@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 import "./trainer.css"
 
 function Dashboard() {
-    const API_URL = import.meta.env.VITE_API_BASE_URL;
+    const fallbackProfileImage = "profileDemo.png";
+    const API_URL = import.meta.env.VITE_API_BASE_URL || "/api";
     const [clients, setClients] = useState([]);
     const [selectedClient, setSelectedClient] = useState(null); // State for selected client ID
     const [selectedClientWorkouts, setSelectedClientWorkouts,] = useState([]); // State for selected client's workouts
@@ -96,18 +97,20 @@ function Dashboard() {
                                     key={client._id}
                                     style={{ textDecoration: 'none', color: 'inherit' }} >
                                         <div className="client-card" key={client._id}>
-                                            {client.profilePictureUrl && (
-                                                <img
-                                                    src={client.profilePictureUrl}
-                                                    alt={`${client.firstName} ${client.lastName}`}
-                                                    style={{
-                                                        width: 50,
-                                                        height: 50,
-                                                        borderRadius: "50%",
-                                                        marginRight: "10px",
-                                                    }}
-                                                />
-                                            )}
+                                            <img
+                                                src={client.profilePictureUrl || fallbackProfileImage}
+                                                alt={`${client.firstName} ${client.lastName}`}
+                                                onError={(event) => {
+                                                    event.currentTarget.onerror = null;
+                                                    event.currentTarget.src = fallbackProfileImage;
+                                                }}
+                                                style={{
+                                                    width: 50,
+                                                    height: 50,
+                                                    borderRadius: "50%",
+                                                    marginRight: "10px",
+                                                }}
+                                            />
                                             <p>{client.firstName} {client.lastName}</p>
                                         </div>
                                     </Link>

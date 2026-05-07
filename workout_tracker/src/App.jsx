@@ -24,54 +24,50 @@ import CustomExercise from "./component/CustomExercise";
 import TrainerAddExercise from "./component/TrainerAddExercise"
 import Guide from "./Guide"
 function App() {
+  const location = useLocation();
+  const isLandingPage = location.pathname === "/";
+  const isAuthPage = ["/login", "/register", "/guide"].includes(location.pathname);
 
   return (
     <>
-      <h1 className="DesktopHead">Only available for Mobile</h1>
-      <div className="landingpage">
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-        </Routes>
-      </div>
-      <div className="App">
-        <Routes>
-          {/* --- Public Routes --- */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/guide" element={<Guide />} />
+      {isLandingPage ? (
+        <div className="landingpage">
+          <LandingPage />
+        </div>
+      ) : (
+        <div className={`App${isAuthPage ? " authApp" : ""}`}>
+          <Routes>
+            {/* --- Public Routes --- */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/guide" element={<Guide />} />
 
-          {/* --- Protected User Routes --- */}
-          {/* All routes nested inside will be checked for "user" role */}
-          <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
-            <Route path="/workout" element={<WorkoutPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/history" element={<HistoryPage />} />
-            <Route path="/analysis" element={<AnalysisPage />} />
-            <Route path="/selectExercises" element={<SelectExercises />} />
-            <Route path="/defaultExercise" element={<DefaultExercise />} />
-            <Route path="/makeWorkout" element={<MakeWorkout />} />
-            <Route path="/customExercise" element={<CustomExercise />} />
-            {/* Add other user-only routes here */}
-          </Route>
+            {/* --- Protected User Routes --- */}
+            <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
+              <Route path="/workout" element={<WorkoutPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/history" element={<HistoryPage />} />
+              <Route path="/analysis" element={<AnalysisPage />} />
+              <Route path="/selectExercises" element={<SelectExercises />} />
+              <Route path="/defaultExercise" element={<DefaultExercise />} />
+              <Route path="/makeWorkout" element={<MakeWorkout />} />
+              <Route path="/customExercise" element={<CustomExercise />} />
+            </Route>
 
-          {/* --- Protected Trainer Routes --- */}
-          {/* All routes nested inside will be checked for "trainer" role */}
-          <Route element={<ProtectedRoute allowedRoles={["trainer"]} />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/trainerProfile" element={<TrainerProfile />} />
-            <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/exercises" element={<Exercises />} />
-            <Route path="/trainer/clients/:clientId/workouts" element={<ClientWorkoutHistory />} />
-            <Route path="/trainerAddExercise" element={<TrainerAddExercise />} />
-            {/* Add other trainer-only routes here */}
-          </Route>
+            {/* --- Protected Trainer Routes --- */}
+            <Route element={<ProtectedRoute allowedRoles={["trainer"]} />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/trainerProfile" element={<TrainerProfile />} />
+              <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/exercises" element={<Exercises />} />
+              <Route path="/trainer/clients/:clientId/workouts" element={<ClientWorkoutHistory />} />
+              <Route path="/trainerAddExercise" element={<TrainerAddExercise />} />
+            </Route>
 
-          {/* Optional: Catch-all route for unmatched paths */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-
-        </Routes>
-        {/* NO Global NavBars here - they are inside individual pages */}
-      </div>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
+      )}
     </>
   );
 }
